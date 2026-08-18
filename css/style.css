@@ -554,25 +554,35 @@ body.is-locked { overflow:hidden; }
    qo'yib bo'lmaydi, oq to'rtburchak bo'lib ko'rinardi. */
 .pshot {
   position:relative; overflow:hidden;
-  /* Och kulrang — oq emas (mijoz qarori): oq fonda kesilgan mahsulotning
-     chekkasi oqda ko'rinib qoladi, kulrangda esa yo'qoladi. */
-  background:var(--shot-bg);
+  /* To'rtburchak — to'q ko'k, brend shakli esa och kulrang (mijoz qarori
+     2026-08-18). Avval teskari edi. Kulrang oqdan sal ajralib turadi,
+     shuning uchun kadr oq bo'lim ustida ham chegarasi bilan o'qiladi. */
+  background:var(--enzo-800);
   display:flex; align-items:flex-end; justify-content:center;
 }
-/* Ko'k brend shakli PASTDA — tom qirrasi yuqoriga qaragan, cho'qqi 86% da,
-   o'ng chekka 0,876 nisbatda pastroq (DESIGN.md §3.1). */
+/* Och kulrang brend shakli PASTDA — mahsulot shu yuzada turadi.
+   Tom qirrasi yuqoriga qaragan, cho'qqi 86% da, o'ng chekka 0,876
+   nisbatda pastroq (DESIGN.md §3.1). */
 .pshot::before {
   content:''; position:absolute; left:0; right:0; bottom:0; height:45%;
-  background:var(--enzo-800);
+  background:var(--shot-bg);
   clip-path:polygon(0 18%, 86% 0, 100% 15.5%, 100% 100%, 0 100%);
 }
-/* Soya CSS dan beriladi: manba kadrdagi yumshoq oq soya kesib olingandan
-   keyin och nur bo`lib qolgan edi va ko`k ustida ko`rinib turardi.
-   drop-shadow alfa siluetiga ergashadi — istalgan fonda tabiiy chiqadi. */
-.pshot img { position:relative; z-index:1; width:88%; height:auto; display:block; margin-bottom:6%;
-  filter:drop-shadow(0 14px 18px rgba(10,15,28,.30)); }
+/* Soya kadrning o'zida — mijoz kadrlarni soyasi bilan toza qilib berdi
+   (2026-08-18), shuning uchun CSS soyasi olib tashlandi. */
+.pshot img { position:relative; z-index:1; width:88%; height:auto; display:block; margin-bottom:5%; }
 
 .product__media { grid-column:1 / -1; aspect-ratio:4/3; }
+@media (min-width:1024px) {
+  /* Kadr matn ustuni bilan bir balandlikda — pastki qirrasi
+     'Narxni bilib oling' tugmasining pastki chizig'iga tushadi
+     (mijoz qarori 2026-08-18). Nisbat o'rniga cho'zilish. */
+  .product__media { aspect-ratio:auto; align-self:stretch; }
+  /* Rasm qator balandligini belgilamasin — aks holda matni kaltaroq
+     kartochkalarda (ЖБИ) kadr matn ustunidan uzunroq bo'lib qolardi va
+     pastki qirralar bir chiziqda turmasdi (mijoz qarori 2026-08-18). */
+  .product__media img { position:absolute; bottom:5%; left:50%; transform:translateX(-50%); margin-bottom:0; }
+}
 .product__copy  { grid-column:1 / -1; margin-top:var(--s-32); align-self:center; }
 
 /* Mahsulot rasmi ustidagi plashka OLIB TASHLANDI (mijoz qarori, 2026-08-15).
@@ -753,38 +763,38 @@ body.is-locked { overflow:hidden; }
    boshlanadi — demak matn 78% dan yuqorida tugashi shart. Pastki
    bo'shliq shuni ta'minlaydi va piksel testi bilan tekshiriladi. */
 .phero { position:relative; overflow:hidden; background:var(--enzo-800);
-  padding-block:var(--s-56) var(--s-48); }
+  padding-block:var(--s-56) var(--s-40); }
 .phero__shape {
   position:absolute; inset:0; background:var(--shot-bg);
   clip-path:polygon(0 100%, 100% 51.5%, 100% 100%);
 }
 .phero > .container { position:relative; z-index:1; }
 .phero__media { grid-column:1 / -1; margin-top:var(--s-32); }
-.phero__media img { display:block; width:100%; height:auto; position:relative; z-index:1;
-  filter:drop-shadow(0 16px 22px rgba(10,15,28,.32)); }
+.phero__media img { display:block; width:100%; height:auto; position:relative; z-index:1; }
 
 /* Jadval keng — o'z ichida gorizontal siljiydi, sahifa esa qimirlamaydi */
 /* Muammo va Yechim — ikki TENG ustun. Avval muammo `head` (sarlavhali),
    yechim esa `body-col` (oddiy matn) edi: ikkisi bir xil vaznda
    ko'rinmasdi va yechim ikkinchi darajali bo'lib qolgan edi. */
-/* Mahsulot almashtirgichi — hero ostidagi ingichka qator.
-   Pastdagi kartochkalar bo'limi o'rniga: nishon yuqorida, foydalanuvchi
-   istalgan paytda boshqa mahsulotga o'tadi (mijoz tanlovi). */
-.pswitch { background:var(--white); border-bottom:1px solid var(--line); }
+/* Mahsulot almashtirgichi hero ICHIDA, nonda yo'l qatorida (mijoz qarori
+   2026-08-18). Avval hero bilan keyingi bo'lim orasida alohida oq qator
+   bo'lib turardi — ikki bo'lim orasiga tiqilgandek ko'rinardi va
+   sahifaga qo'shimcha balandlik qo'shardi. Endi u bo'sh joyni
+   egallamaydi: nonda yo'lning o'ng tomonida turadi. */
+/* Nav matn ustunidan tashqarida — 6 ustunga sig'masdi va ikki qatorga
+   bo'linib, matnni pastga surib yuborardi. Endi to'liq kenglikda. */
+.phero__nav { grid-column:1 / -1; display:flex; flex-wrap:wrap; align-items:baseline; gap:var(--s-16) var(--s-24); margin-bottom:var(--s-40); }
 .pswitch__list {
-  display:flex; gap:var(--s-32); list-style:none; margin:0; padding:0;
-  overflow-x:auto; -webkit-overflow-scrolling:touch;
+  display:flex; flex-wrap:wrap; gap:var(--s-24); list-style:none; margin:0; padding:0;
 }
-.pswitch__list::-webkit-scrollbar { display:none; }
 .pswitch__list a {
-  display:block; padding:var(--s-20) 0; white-space:nowrap;
-  color:var(--ink-60); font-weight:500; text-decoration:none;
-  border-bottom:2px solid transparent; margin-bottom:-1px;
-  transition:color 150ms var(--ease), border-color 150ms var(--ease);
+  color:var(--enzo-300); text-decoration:none; white-space:nowrap;
+  transition:color 150ms var(--ease);
 }
-.pswitch__list a:hover { color:var(--enzo-800); }
+.pswitch__list a:hover { color:var(--white); }
 /* Joriy mahsulot — havola emas, joyni bildiruvchi belgi */
-.pswitch__list a[aria-current] { color:var(--enzo-800); font-weight:600; border-bottom-color:var(--enzo-500); }
+.pswitch__list a[aria-current] { color:var(--white); font-weight:600; }
+@media (min-width:768px) { .phero__nav { justify-content:space-between; } }
 
 .duo__col { grid-column:1 / -1; }
 .duo__col + .duo__col { margin-top:var(--s-40); }
@@ -795,17 +805,26 @@ body.is-locked { overflow:hidden; }
   .duo__col + .duo__col { margin-top:0; }
 }
 
+/* Xarakteristika va jadval endi YONMA-YON emas, KETMA-KET va ikkalasi
+   ham to'liq kenglikda. Avval jadval 7 ustunga siqilgan edi: uzun
+   qiymatlar ikki qatorga bo'linib, qatorlar bir-biriga yopishardi.
+   Bo'lim balandroq bo'ldi, lekin o'qilishi ancha oson. */
 .tech__specs { grid-column:1 / -1; margin-top:var(--s-32); }
-.tech__table { grid-column:1 / -1; margin-top:var(--s-40); }
+.tech__table { grid-column:1 / -1; margin-top:var(--s-56); }
 @media (min-width:1024px) {
-  .tech__specs { grid-column:1 / span 5; margin-top:var(--s-48); }
-  .tech__table { grid-column:6 / span 7; margin-top:var(--s-48); }
-  .tech__table .spec-table__cap { margin-top:0; }
+  .tech__specs { margin-top:var(--s-40); }
+  /* Ro'yxat ikki ustunda — 5-7 qator bitta ustunda cho'zilib ketardi */
+  .tech__specs { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); column-gap:var(--s-72); border-top:0; }
+  .tech__specs > div { border-top:1px solid var(--line); border-bottom:0; }
 }
 .spec-table__cap  { margin-top:var(--s-40); margin-bottom:var(--s-16); color:var(--enzo-800); }
 .spec-table__wrap { overflow-x:auto; }
 .spec-table { width:100%; border-collapse:collapse; text-align:left; }
-.spec-table th, .spec-table td { padding:var(--s-12) var(--s-16); border-bottom:1px solid var(--line); vertical-align:top; }
+/* Qator balandligi oshirildi: 12px da uzun qiymatlar ikki qatorga
+   bo'linganda qo'shni qatorlar bilan qo'shilib ketardi */
+.spec-table th, .spec-table td { padding:var(--s-16) var(--s-24); border-bottom:1px solid var(--line); vertical-align:top; line-height:1.5; }
+.spec-table th:first-child, .spec-table td:first-child { padding-left:0; }
+.spec-table th:last-child,  .spec-table td:last-child  { padding-right:0; }
 .spec-table th { color:var(--ink-60); font-weight:600; white-space:nowrap; }
 .spec-table td:first-child { font-weight:600; white-space:nowrap; }
 .spec-table tbody tr:last-child td { border-bottom:0; }
@@ -814,12 +833,17 @@ body.is-locked { overflow:hidden; }
   /* Hero balandligi: mahsulot va matn ikkalasiga ham joy kerak, aks holda
      mikser avtomobili header'ga tegib qoladi. */
   /* Referens nisbati: balandlik ≈ kenglikning 0,31 i */
-  .phero { min-height:clamp(400px, 31vw, 540px); padding-block:var(--s-72) var(--s-40);
+  /* Matn pastroqqa tushirildi (mijoz qarori): yuqorida header bilan
+     orasidagi bo'shliq kattaroq, matn esa kadr o'rtasiga yaqinroq. */
+  .phero { min-height:clamp(490px, 34vw, 580px); padding-block:var(--s-128) var(--s-40);
     display:flex; align-items:center; }
   .phero > .container { width:100%; }
   /* Matn tepaga tekislanadi — markazda bo`lsa u pastga tushib, oq shakl
      qirrasi ostiga o`tib qolardi va och-ko`k matn oqda o`qilmasdi. */
-  .phero__copy  { grid-column:1 / span 6; align-self:start; }
+  /* Pastki bo'shliq matn blokini yuqoriroq ko'taradi. Kulrang uchburchak
+     qirrasi butun balandlik bo'ylab o'tadi, matn esa uzunligiga qarab
+     o'sadi — bu bo'shliq qirra bilan matn orasidagi zaxirani kafolatlaydi. */
+  .phero__copy  { grid-column:1 / span 6; align-self:center; padding-bottom:var(--s-72); }
   /* Mahsulot o'ng ustunda, pastga tekislanadi — kulrang yuzada turadi */
   .phero__media { grid-column:7 / span 6; margin-top:0; align-self:end; }
   /* Mahsulot sahifasida uchta raqam — bosh sahifadagi to'rttasi 2×2 bo'lib
@@ -840,6 +864,19 @@ body.is-locked { overflow:hidden; }
    bir chiziqda turishi uchun katak ichida pastga tekislanadi. */
 .capacity__nums--3 > div { display:flex; flex-direction:column; justify-content:flex-end; }
 
+
+/* Qirrali bo'lim ortidagi fon. `clip-path` bilan qirqilgan joyda sahifa
+   foni (oq) ko'rinardi, yuqoridagi bo'lim esa --surface edi — qirra
+   ustida rang sakrardi. O'rovchi shu bo'shliqni to'ldiradi. */
+.roof-bg { background:var(--surface); }
+
+/* Turkum kartochkasi — jadval o'rniga (ЖБИ). Kod yirik va rangli:
+   foydalanuvchi loyihada aynan shu belgini qidiradi. */
+.tcard { display:flex; flex-direction:column; gap:var(--s-8); }
+.tcard__kod { font-size:28px; font-weight:700; letter-spacing:-0.02em; color:var(--enzo-500); line-height:1; }
+.tcard__nom { color:var(--enzo-800); }
+.tcard__marka { font-weight:600; color:var(--ink); }
+.tcard__olcham { color:var(--ink-60); }
 
 /* --- §5.8b · Bosh direktor murojaati ------------------------------------ */
 

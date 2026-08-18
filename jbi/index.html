@@ -87,12 +87,21 @@
     <div class="phero__shape" aria-hidden="true"></div>
     <div class="container">
       <div class="grid">
-        <div class="phero__copy">
-          <nav class="crumbs t-caption" aria-label="Nonda yoʻl">
+        <div class="phero__nav t-caption">
+          <nav class="crumbs" aria-label="Nonda yoʻl">
             <a href="../">Bosh sahifa</a><span aria-hidden="true">/</span>
             <a href="../#mainproducts">Mahsulotlar</a><span aria-hidden="true">/</span>
-            <span aria-current="page">Temir-beton buyumlar</span>
+            <span aria-current="page">Temir-beton (ЖБИ)</span>
           </nav>
+          <!-- Mahsulot almashtirgichi: alohida qator emas, shu yerda -->
+          <ul class="pswitch__list" aria-label="Mahsulotlar">
+            <li><a href="../shifer/">Shifer</a></li>
+            <li><a href="../sement/">Sement</a></li>
+            <li><a href="../beton/">Tayyor beton</a></li>
+            <li><a href="./" aria-current="page">Temir-beton (ЖБИ)</a></li>
+          </ul>
+        </div>
+        <div class="phero__copy">
           <h1 class="t-display">Temir-beton (ЖБИ)</h1>
           <p class="t-body-l phero__lead measure">Oʻz sementimizda ishlab chiqariladi. Olti turkum, har biri laboratoriya tekshiruvidan oʻtadi.</p>
           <div class="phero__cta">
@@ -106,18 +115,6 @@
     </div>
   </section>
 
-  <!-- ═══ §6.2b · MAHSULOT ALMASHTIRGICHI ══════════════════════════════ -->
-  <!-- Doimiy navigatsiya: joriy mahsulot belgilangan, qolganlari havola. -->
-  <nav class="pswitch" aria-label="Mahsulotlar">
-    <div class="container">
-      <ul class="pswitch__list">
-        <li><a href="../shifer/">Shifer</a></li>
-        <li><a href="../sement/">Sement</a></li>
-        <li><a href="../beton/">Tayyor beton</a></li>
-        <li><a href="./" aria-current="page">Temir-beton (ЖБИ)</a></li>
-      </ul>
-    </div>
-  </nav>
 
   <!-- ═══ §6.3 · MUAMMO → YECHIM ════════════════════════════════════════ -->
   <section class="section">
@@ -157,19 +154,48 @@
 
         <div class="tech__table reveal">
           <h3 class="t-h4 spec-table__cap">Olti turkum</h3>
-          <div class="spec-table__wrap">
-            <table class="spec-table t-small">
-              <thead><tr><th>Turkum</th><th>Nima</th><th>Asosiy oʻlchamlar</th></tr></thead>
-              <tbody>
-                <tr><td>ПБ</td><td>Koʻp boʻshliqli qavat plitalari</td><td>ПБ24.12 – ПБ89.12 · uzunlik 2360–8860 mm · eni 1195 mm · B30</td></tr>
-                <tr><td>2ПК</td><td>Koʻp boʻshliqli qavat plitalari</td><td>1ПК29 – 1ПК71 · uzunlik 2860–7060 mm · eni 990 / 1190 mm · B15–B22,5</td></tr>
-                <tr><td>ЛИ</td><td>Irrigatsion novlar</td><td>ЛИ 30.3.6/4 va ЛИ 60.3.6/4 · uzunlik 3000 / 6000 mm · B22,5</td></tr>
-                <tr><td>CT</td><td>Shpaler ustunlari</td><td>CT-1 / CT-1A (4500 mm) · CT-2 / CT-2A (3500 mm) · B30</td></tr>
-                <tr><td>CB</td><td>Tayanch ustunlari</td><td>CB 110-3.5 · uzunlik 11 000 mm · B30 · ВЛ 0,4–35 kV</td></tr>
-                <tr><td>KC</td><td>Quduq halqalari</td><td>KC10-6 va KC10-9 · diametr 1 / 1,5 / 2 m · B15–B22,5</td></tr>
-              </tbody>
-            </table>
+          <!-- Jadval emas, kartochkalar: qatorlar taqqoslash uchun emas,
+               har turkum mustaqil. Jadvalda uzun oʻlchamlar qatorlarni
+               bir-biriga yopishtirib yuborardi. -->
+          <div class="cards cards--3">
+            <article class="card tcard">
+              <p class="tcard__kod">ПБ</p>
+              <h4 class="t-h4 tcard__nom">Koʻp boʻshliqli qavat plitalari</h4>
+              <p class="t-small tcard__marka">ПБ24.12 – ПБ89.12</p>
+              <p class="t-small tcard__olcham">Uzunlik 2360–8860 mm · eni 1195 mm · B30</p>
+            </article>
+            <article class="card tcard">
+              <p class="tcard__kod">2ПК</p>
+              <h4 class="t-h4 tcard__nom">Koʻp boʻshliqli qavat plitalari</h4>
+              <p class="t-small tcard__marka">1ПК29 – 1ПК71</p>
+              <p class="t-small tcard__olcham">Uzunlik 2860–7060 mm · eni 990 / 1190 mm · B15–B22,5</p>
+            </article>
+            <article class="card tcard">
+              <p class="tcard__kod">ЛИ</p>
+              <h4 class="t-h4 tcard__nom">Irrigatsion novlar</h4>
+              <p class="t-small tcard__marka">ЛИ 30.3.6/4 · ЛИ 60.3.6/4</p>
+              <p class="t-small tcard__olcham">Uzunlik 3000 / 6000 mm · B22,5</p>
+            </article>
+            <article class="card tcard">
+              <p class="tcard__kod">CT</p>
+              <h4 class="t-h4 tcard__nom">Shpaler ustunlari</h4>
+              <p class="t-small tcard__marka">CT-1 · CT-1A · CT-2 · CT-2A</p>
+              <p class="t-small tcard__olcham">Uzunlik 4500 / 3500 mm · B30</p>
+            </article>
+            <article class="card tcard">
+              <p class="tcard__kod">CB</p>
+              <h4 class="t-h4 tcard__nom">Tayanch ustunlari</h4>
+              <p class="t-small tcard__marka">CB 110-3.5</p>
+              <p class="t-small tcard__olcham">Uzunlik 11 000 mm · B30 · ВЛ 0,4–35 kV</p>
+            </article>
+            <article class="card tcard">
+              <p class="tcard__kod">KC</p>
+              <h4 class="t-h4 tcard__nom">Quduq halqalari</h4>
+              <p class="t-small tcard__marka">KC10-6 · KC10-9</p>
+              <p class="t-small tcard__olcham">Diametr 1 / 1,5 / 2 m · B15–B22,5</p>
+            </article>
           </div>
+        </div>
         </div>
       </div>
     </div>
@@ -379,6 +405,8 @@
 
 
   <!-- ═══ §5.17 · FORMA (to'q · 3-to'q) ═════════════════════════════════ -->
+  <!-- O'rovchi: qirra ostidagi bo'sh joy yuqoridagi bo'lim foni bilan bir xil -->
+  <div class="roof-bg">
   <section class="section section--lg section--dark roof-top" id="form">
     <div class="container">
       <div class="grid">

@@ -87,12 +87,21 @@
     <div class="phero__shape" aria-hidden="true"></div>
     <div class="container">
       <div class="grid">
-        <div class="phero__copy">
-          <nav class="crumbs t-caption" aria-label="Nonda yoʻl">
+        <div class="phero__nav t-caption">
+          <nav class="crumbs" aria-label="Nonda yoʻl">
             <a href="../">Bosh sahifa</a><span aria-hidden="true">/</span>
             <a href="../#mainproducts">Mahsulotlar</a><span aria-hidden="true">/</span>
             <span aria-current="page">Sement</span>
           </nav>
+          <!-- Mahsulot almashtirgichi: alohida qator emas, shu yerda -->
+          <ul class="pswitch__list" aria-label="Mahsulotlar">
+            <li><a href="../shifer/">Shifer</a></li>
+            <li><a href="./" aria-current="page">Sement</a></li>
+            <li><a href="../beton/">Tayyor beton</a></li>
+            <li><a href="../jbi/">Temir-beton (ЖБИ)</a></li>
+          </ul>
+        </div>
+        <div class="phero__copy">
           <h1 class="t-display">ENZO Sement</h1>
           <p class="t-body-l phero__lead measure">2019-yildan beri ishlab chiqariladi. GOST talablariga toʻliq mos, oʻz OTK nazoratimizdan oʻtadi.</p>
           <div class="phero__cta">
@@ -106,18 +115,6 @@
     </div>
   </section>
 
-  <!-- ═══ §6.2b · MAHSULOT ALMASHTIRGICHI ══════════════════════════════ -->
-  <!-- Doimiy navigatsiya: joriy mahsulot belgilangan, qolganlari havola. -->
-  <nav class="pswitch" aria-label="Mahsulotlar">
-    <div class="container">
-      <ul class="pswitch__list">
-        <li><a href="../shifer/">Shifer</a></li>
-        <li><a href="./" aria-current="page">Sement</a></li>
-        <li><a href="../beton/">Tayyor beton</a></li>
-        <li><a href="../jbi/">Temir-beton (ЖБИ)</a></li>
-      </ul>
-    </div>
-  </nav>
 
   <!-- ═══ §6.3 · MUAMMO → YECHIM ════════════════════════════════════════ -->
   <section class="section">
@@ -381,6 +378,8 @@
 
 
   <!-- ═══ §5.17 · FORMA (to'q · 3-to'q) ═════════════════════════════════ -->
+  <!-- O'rovchi: qirra ostidagi bo'sh joy yuqoridagi bo'lim foni bilan bir xil -->
+  <div class="roof-bg">
   <section class="section section--lg section--dark roof-top" id="form">
     <div class="container">
       <div class="grid">
