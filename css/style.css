@@ -783,6 +783,10 @@ body.is-locked { overflow:hidden; }
 .calc__controls { grid-column:1 / -1; margin-top:var(--s-32); }
 .calc__result   { grid-column:1 / -1; margin-top:var(--s-32); background:var(--white); border:1px solid var(--line); padding:var(--s-32); }
 
+/* Anchor havola bosilganda yopishqoq header boʻlim boshini bosib qolmasin.
+   768px da sarlavha header ostidan atigi 8px pastda qolardi. */
+section[id] { scroll-margin-top:var(--s-24); }
+
 .field { margin-bottom:var(--s-24); }
 .field > label { display:block; margin-bottom:var(--s-8); }
 .field select,

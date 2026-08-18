@@ -183,6 +183,16 @@
       $('o-ship').textContent = fmt(ship) + ' soʻm';
     };
 
+    /* Mahsulot kartochkasidagi «Narxni bilib oling» kalkulyatorga tushiradi va
+       o'sha mahsulotni oldindan tanlaydi (PROMPT.md §858). Foydalanuvchi shifer
+       haqida o'qib turib bosgan bo'lsa, kalkulyatorda betonni ko'rmasligi kerak. */
+    document.querySelectorAll('[data-calc]').forEach(function (a) {
+      a.addEventListener('click', function () {
+        var k = a.getAttribute('data-calc');
+        if (P[k]) { elProduct.value = k; update(); }
+      });
+    });
+
     elRegion.addEventListener('change', function () { fillDistricts(); update(); });
     calc.addEventListener('input', update);
     calc.addEventListener('change', update);
