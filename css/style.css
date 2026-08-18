@@ -670,14 +670,28 @@ body.is-locked { overflow:hidden; }
 /* Mobil: 4 ta to`liq skan ustma-ust ~3400px beradi — juda uzun.
    Kesib ko`rsatiladi: hujjatning yuqori qismi (organ nomi, hujjat turi,
    sana) baribir ko`rinadi, to`liq matn bosilganda ochiladi. */
+/* Hujjat TO'LIQ ko'rinadi (mijoz qarori 2026-08-18): oldin `cover` bilan
+   pastki qismi — imzo, muhr, QR — kesilib qolardi. Endi `contain`:
+   qog'oz butunligicha, o'z nisbatini saqlab, ramka ichiga sig'adi.
+   Nisbatlar har xil (0,58–0,70), shuning uchun yon tomonda ozgina bo'shliq
+   qoladi — u kulrang yuza bo'lib ko'rinadi, qog'oz esa oq: hujjat
+   yuzada yotgandek o'qiladi, kesilgandek emas. */
 .card .cert__scan {
-  aspect-ratio:4/3; margin-bottom:var(--s-24);
+  aspect-ratio:3/4; margin-bottom:var(--s-24);
   background:var(--surface); border:1px solid var(--line);
+  padding:var(--s-8);
 }
-@media (min-width:768px) { .card .cert__scan { aspect-ratio:3/4; } }
-/* object-position:top — sertifikatning yuqori qismida organ nomi, hujjat
-   turi va mahsulot yozilgan; pastdagi imzo qismi kesilsa ham ma'no yo'qolmaydi */
-.cert__scan img { object-position:top; }
+.cert__scan img { object-fit:contain; }
+
+/* Mobilda qat`iy nisbat kerak emas — bitta ustunda kartochkalar bir-biri
+   bilan tekislanmaydi. Ramka hujjatning o`z nisbatini oladi: qog`oz butun
+   kenglikni egallaydi, yon tomonda bo`sh kulrang maydon qolmaydi.
+   Desktopda esa nisbat qat`iy — aks holda to`rt sarlavha turli balandlikda
+   turib qolardi (hujjat nisbatlari 0,58 dan 0,70 gacha). */
+@media (max-width:767px) {
+  .card .cert__scan { aspect-ratio:auto; padding:0; border:0; background:none; }
+  .card .cert__scan img { height:auto; }
+}
 .cert__meta { margin-top:var(--s-8); color:var(--ink-40); }
 .cert__note { grid-column:1 / -1; margin-top:var(--s-24); color:var(--enzo-300); }
 
