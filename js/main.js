@@ -152,6 +152,11 @@
     fillDistricts();
 
     var elProduct = $('c-product'), elQty = $('c-qty');
+
+    /* Mahsulot sahifasida kalkulyator o'sha mahsulot bilan ochiladi
+       (PROMPT.md §6.1). /beton da 'Tayyor beton', /shifer da 'Shifer'. */
+    var boshlangich = calc.getAttribute('data-default');
+    if (boshlangich && P[boshlangich]) { elProduct.value = boshlangich; }
     var FIELDS = ['f-shifer', 'f-sement', 'f-marka', 'f-jbi'];
     var prevKey = null;
 

@@ -1,0 +1,471 @@
+<!DOCTYPE html>
+<html lang="uz" class="wire">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Temir-beton buyumlar — ПБ, 2ПК, ЛИ, CT, CB, KC | ENZO GROUP</title>
+<meta name="description" content="Koʻp boʻshliqli qavat plitalari ПБ va 2ПК, irrigatsion novlar ЛИ, shpaler va tayanch ustunlari, quduq halqalari. Kuniga 100 dona plita.">
+<link rel="preload" href="../assets/fonts/SFProDisplay-Bold.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="../assets/fonts/SFProDisplay-Regular.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="../css/style.css">
+<link rel="stylesheet" href="../css/wireframe.css" id="wireCss">
+</head>
+<body>
+
+<!-- SVG ikonka to'plami (assets/icons/ dan) -->
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <symbol id="i-phone" viewBox="0 0 24 24"><path fill="currentColor" d="M6.6 10.8a15.1 15.1 0 0 0 6.6 6.6l2.2-2.2a1 1 0 0 1 1-.25c1.1.37 2.3.57 3.5.57a1 1 0 0 1 1 1V20a1 1 0 0 1-1 1A17 17 0 0 1 3 4a1 1 0 0 1 1-1h3.5a1 1 0 0 1 1 1c0 1.2.2 2.4.57 3.5a1 1 0 0 1-.25 1l-2.22 2.3Z"/></symbol>
+  <symbol id="i-shield" viewBox="0 0 24 24"><path fill="currentColor" d="M12 2 4 5v6.5c0 4.6 3.4 8.9 8 10.5 4.6-1.6 8-5.9 8-10.5V5l-8-3Zm-1 14-4-4 1.4-1.4L11 13.2l4.6-4.6L17 10l-6 6Z"/></symbol>
+  <symbol id="i-chat" viewBox="0 0 24 24"><path fill="currentColor" d="M3 3h18v14H7l-4 4V3Z"/></symbol>
+  <symbol id="i-pin" viewBox="0 0 24 24"><path fill="currentColor" d="M12 2a7 7 0 0 0-7 7c0 5.2 7 13 7 13s7-7.8 7-13a7 7 0 0 0-7-7Zm0 9.5A2.5 2.5 0 1 1 12 6.5a2.5 2.5 0 0 1 0 5Z"/></symbol>
+  <!-- Mahsulot ikonkalari — ENZO uchun yangi chizildi.
+       Identity uslubi: 190×190 quti, koordinatalar 7.44px moduli karrali,
+       to'ldirilgan (solid), fill-rule evenodd. assets/icons/ da saqlangan. -->
+  <symbol id="i-shifer" viewBox="0 0 190 190"><path fill="currentColor" fill-rule="evenodd" clip-rule="evenodd" d="M29.76,111.6l22.32-22.32,22.32,22.32,22.32-22.32,22.32,22.32,22.32-22.32,22.32,22.32v22.32l-22.32-22.32-22.32,22.32-22.32-22.32-22.32,22.32-22.32-22.32-22.32,22.32v-22.32h0Z"/></symbol>
+  <symbol id="i-sement" viewBox="0 0 190 190"><path fill="currentColor" fill-rule="evenodd" clip-rule="evenodd" d="M52.08,44.64h89.28v14.88H52.08v-14.88h0ZM59.52,59.52h74.4v96.72H59.52V59.52h0ZM74.4,96.72h44.64v14.88h-44.64v-14.88h0Z"/></symbol>
+  <symbol id="i-beton" viewBox="0 0 190 190"><path fill="currentColor" fill-rule="evenodd" clip-rule="evenodd" d="M44.64,44.64h104.16l-37.2,59.52h-29.76L44.64,44.64h0ZM89.28,104.16h14.88v14.88h-14.88v-14.88h0ZM52.08,156.24l44.64-37.2,44.64,37.2H52.08Z"/></symbol>
+  <symbol id="i-plita" viewBox="0 0 190 190"><path fill="currentColor" fill-rule="evenodd" clip-rule="evenodd" d="M37.2,74.4h119.04v44.64H37.2v-44.64h0ZM59.52,89.28h14.88v14.88h-14.88v-14.88h0ZM89.28,89.28h14.88v14.88h-14.88v-14.88h0ZM119.04,89.28h14.88v14.88h-14.88v-14.88h0Z"/></symbol>
+  <symbol id="i-envelope" viewBox="0 0 190 190"><path fill="currentColor" fill-rule="evenodd" clip-rule="evenodd" d="M37.2,52.08h119.04v81.84H37.2V52.08h0ZM52.08,66.96l44.64,37.2,44.64-37.2H52.08Z"/></symbol>
+  <symbol id="i-play" viewBox="0 0 190 190"><path fill="currentColor" d="M66.96,44.64l74.4,50.36-74.4,50.36V44.64Z"/></symbol>
+  <symbol id="i-prev" viewBox="0 0 190 190"><path fill="currentColor" d="M123.04,44.64v100.72l-74.4-50.36,74.4-50.36Z"/></symbol>
+  <symbol id="i-next" viewBox="0 0 190 190"><path fill="currentColor" d="M66.96,44.64l74.4,50.36-74.4,50.36V44.64Z"/></symbol>
+  <!-- Zavod · laboratoriya · yetkazib berish — bento uchun yangi chizildi.
+       Xuddi mahsulot ikonkalari kabi: 190×190, 7.44px moduli, to'ldirilgan. -->
+  <symbol id="i-zavod" viewBox="0 0 190 190"><path fill="currentColor" d="M29.76,148.8v-52.08l29.76-14.88v14.88l29.76-14.88v14.88l29.76-14.88V44.64h37.2v104.16H29.76Z"/></symbol>
+  <symbol id="i-lab" viewBox="0 0 190 190"><path fill="currentColor" d="M74.4,37.2h37.2v14.88h-7.44v22.32l29.76,59.52v14.88H52.08v-14.88l29.76-59.52v-22.32h-7.44v-14.88Z"/></symbol>
+  <symbol id="i-truck" viewBox="0 0 190 190"><path fill="currentColor" d="M29.76,66.96h81.84v66.96H29.76v-66.96ZM119.04,89.28h14.88l22.32,29.76v14.88h-37.2v-44.64ZM44.64,133.92h22.32v14.88h-22.32v-14.88ZM111.6,133.92h22.32v14.88h-22.32v-14.88Z"/></symbol>
+  <symbol id="i-clock" viewBox="0 0 190 190"><path fill="currentColor" fill-rule="evenodd" clip-rule="evenodd" d="M44.64,44.64h104.16v104.16H44.64V44.64h0ZM59.52,59.52v74.4h74.4V59.52H59.52h0ZM89.28,74.4h7.44v14.88h22.32v7.44h-29.76v-22.32h0Z"/></symbol>
+</svg>
+
+<!-- ═══ HEADER ═════════════════════════════════════════════════════════ -->
+<header class="header" id="header">
+  <div class="container header__inner">
+
+    <a class="logo" href="../#home" aria-label="ENZO GROUP — bosh sahifa">
+      <span class="logo__mark" aria-hidden="true"><span></span><span></span><span></span></span>
+      <span class="logo__word">ENZO</span>
+    </a>
+
+    <nav class="nav" aria-label="Asosiy navigatsiya">
+      <a href="../#about-us">Biz haqimizda</a>
+      <a href="../#mainproducts">Mahsulotlar</a>
+      <a href="#calculator">Kalkulyator</a>
+      <a href="#form">Bogʻlanish</a>
+    </nav>
+
+    <div class="header__actions">
+      <a class="header__phone" href="tel:+998558107777"><svg aria-hidden="true"><use href="#i-phone"/></svg>+998 55 810 77 77</a>
+      <a class="header__phone-icon" href="tel:+998558107777" aria-label="Qoʻngʻiroq qilish">
+        <svg aria-hidden="true"><use href="#i-phone"/></svg>
+      </a>
+      <a class="btn btn--primary btn--sm header__cta" href="#calculator">Narxni bilib oling</a>
+      <button class="burger" id="burger" aria-label="Menyu" aria-expanded="false" aria-controls="menu">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+
+  </div>
+</header>
+
+<nav class="menu" id="menu" aria-label="Mobil navigatsiya">
+  <a class="menu__link" href="../#about-us">Biz haqimizda</a>
+  <a class="menu__link" href="../#mainproducts">Mahsulotlar</a>
+  <a class="menu__link" href="#calculator">Kalkulyator</a>
+  <a class="menu__link" href="#form">Bogʻlanish</a>
+  <div class="menu__foot">
+    <a class="btn btn--on-dark" href="#calculator">Narxni bilib oling</a>
+    <a class="menu__phone" href="tel:+998558107777">
+      <svg aria-hidden="true"><use href="#i-phone"/></svg> +998 55 810 77 77
+    </a>
+  </div>
+</nav>
+
+<main>
+
+  <!-- ═══ §6.2 · HERO ═══════════════════════════════════════════════════ -->
+  <section class="section section--dark roof-bottom phero">
+    <div class="container">
+      <div class="grid">
+        <div class="phero__copy">
+          <nav class="crumbs t-caption" aria-label="Nonda yoʻl">
+            <a href="../">Bosh sahifa</a><span aria-hidden="true">/</span>
+            <a href="../#mainproducts">Mahsulotlar</a><span aria-hidden="true">/</span>
+            <span aria-current="page">Temir-beton buyumlar</span>
+          </nav>
+          <h1 class="t-display">Temir-beton buyumlar (ЖБИ)</h1>
+          <p class="t-body-l phero__lead measure">Oʻz sementimizda ishlab chiqariladi. Olti turkum, har biri laboratoriya tekshiruvidan oʻtadi.</p>
+          <div class="phero__cta">
+            <a class="btn btn--on-dark" href="#calculator">Narxni bilib oling</a>
+          </div>
+        </div>
+        <figure class="ph phero__media" data-ph="Mahsulot rasmi · enzo jbi.png">
+          <img src="../assets/img/mahsulot-jbi.webp" alt="Temir-beton buyumlar (ЖБИ)" loading="eager" width="1400" height="781" fetchpriority="high">
+        </figure>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══ §6.3 · MUAMMO → YECHIM ════════════════════════════════════════ -->
+  <section class="section">
+    <div class="container">
+      <div class="grid">
+        <div class="head reveal">
+          <p class="overline">Muammo</p>
+          <h2 class="t-h2">Nima uchun bu muhim</h2>
+          <p class="t-body sub measure">Temir-beton buyumda kamchilik montajdan keyin bilinadi — plita oʻrnatilgandan soʻng uni almashtirish butun qavatni qayta koʻtarishni anglatadi.</p>
+        </div>
+        <div class="body-col reveal">
+          <p class="t-body-l measure">Har bir buyum oʻz sementimizda, standart boʻyicha armaturalanadi va zavod laboratoriyasida tekshiriladi. Har partiya bilan OTK xulosasi va texnik hujjatlar beriladi.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══ §6.4 · TEXNIK XARAKTERISTIKA ══════════════════════════════════ -->
+  <section class="section section--surface">
+    <div class="container">
+      <div class="grid">
+        <div class="head reveal">
+          <p class="overline">Xarakteristika</p>
+          <h2 class="t-h2">Texnik maʼlumot</h2>
+          <p class="t-body sub measure">Qiymatlar ENZO GROUP katalogidan. Toʻliq jadval va pozitsiyalar boʻyicha menejer bilan aniqlashtiriladi.</p>
+        </div>
+
+        <div class="body-col reveal">
+          <dl class="specs t-small">
+            <div><dt>Turkumlar</dt><dd>ПБ · 2ПК · ЛИ · CT · CB · KC</dd></div>
+            <div><dt>Seysmiklik</dt><dd>7, 8, 9 ball</dd></div>
+            <div><dt>Hisobiy yuklama</dt><dd>450 · 600 · 800 kgs/m²</dd></div>
+            <div><dt>Standartlar</dt><dd>Oʻz MSt 648:2025 · ГОСТ 9561-2025 · Oʻz MSt 703:2025 · Oʻz DSt 3315:2018</dd></div>
+            <div><dt>Nazorat</dt><dd>Har bir partiya — zavod laboratoriyasida</dd></div>
+          </dl>
+
+          <h3 class="t-h4 spec-table__cap">Olti turkum</h3>
+          <div class="spec-table__wrap">
+            <table class="spec-table t-small">
+              <thead><tr><th>Turkum</th><th>Nima</th><th>Asosiy oʻlchamlar</th></tr></thead>
+              <tbody>
+                <tr><td>ПБ</td><td>Koʻp boʻshliqli qavat plitalari</td><td>ПБ24.12 – ПБ89.12 · uzunlik 2360–8860 mm · eni 1195 mm · B30</td></tr>
+                <tr><td>2ПК</td><td>Koʻp boʻshliqli qavat plitalari</td><td>1ПК29 – 1ПК71 · uzunlik 2860–7060 mm · eni 990 / 1190 mm · B15–B22,5</td></tr>
+                <tr><td>ЛИ</td><td>Irrigatsion novlar</td><td>ЛИ 30.3.6/4 va ЛИ 60.3.6/4 · uzunlik 3000 / 6000 mm · B22,5</td></tr>
+                <tr><td>CT</td><td>Shpaler ustunlari</td><td>CT-1 / CT-1A (4500 mm) · CT-2 / CT-2A (3500 mm) · B30</td></tr>
+                <tr><td>CB</td><td>Tayanch ustunlari</td><td>CB 110-3.5 · uzunlik 11 000 mm · B30 · ВЛ 0,4–35 kV</td></tr>
+                <tr><td>KC</td><td>Quduq halqalari</td><td>KC10-6 va KC10-9 · diametr 1 / 1,5 / 2 m · B15–B22,5</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══ §6.5 · ISHLAB CHIQARISH QUVVATI ═══════════════════════════════ -->
+  <section class="section section--dark roof-top">
+    <div class="container">
+      <div class="grid">
+        <div class="capacity__head head reveal">
+          <p class="overline overline--on-dark">Quvvat</p>
+          <h2 class="t-h2">Temir-beton buyumlar boʻyicha quvvatimiz</h2>
+          <p class="t-body-l sub">Ishlab chiqarish 24 soat, yil davomida toʻxtamaydi.</p>
+          <div class="capacity__cta">
+            <p class="t-body capacity__cta-lead">Hajmingizni ayting — quvvatimiz yetadimi, darrov aytamiz.</p>
+            <a class="btn btn--on-dark" href="#calculator">Hajmni hisoblatish</a>
+          </div>
+        </div>
+        <div class="capacity__nums capacity__nums--3 reveal">
+          <div><div class="cap__num">100</div><div class="t-small cap__unit">dona temir-beton plita / kun</div></div>
+          <div><div class="cap__num">6</div><div class="t-small cap__unit">mahsulot turkumi</div></div>
+          <div><div class="cap__num">100%</div><div class="t-small cap__unit">laboratoriya nazorati</div></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══ §5.7 · LABORATORIYA ═══════════════════════════════════════════ -->
+  <section class="section">
+    <div class="container">
+      <div class="grid">
+        <div class="head reveal">
+          <p class="overline">Tekshiruvlar</p>
+          <h2 class="t-h2">Laboratoriya</h2>
+        </div>
+
+        <div class="body-col reveal">
+          <p class="t-body measure">Mahsulotning qanchalik mustahkamligini koʻz bilan aniqlash qiyin.</p>
+          <p class="t-body measure" style="margin-top:var(--s-24)">Shuning uchun biz har bir mahsulotni zavoddan chiqmasdan oldin laboratoriyada tekshiramiz. Sement, beton, temir-beton mahsulotlar hammasi. Mustahkamlik, namlikka chidamlilik, harorat barchasi oʻlchanadi va qayd etiladi.</p>
+
+          <div class="steps">
+            <div class="step"><div class="step__n">01</div><div><h3 class="t-h4">Mustahkamlik</h3></div></div>
+            <div class="step"><div class="step__n">02</div><div><h3 class="t-h4">Namlikka chidamlilik</h3></div></div>
+            <div class="step"><div class="step__n">03</div><div><h3 class="t-h4">Harorat</h3></div></div>
+          </div>
+
+          <div class="with-icon">
+            <svg aria-hidden="true"><use href="#i-shield"/></svg>
+            <p class="t-body measure">Sizga yetkazilgan mahsulot allaqachon tekshirilgan. Har bir partiya bilan birga OTK xulosasi va texnik hujjatlar beriladi.</p>
+          </div>
+        </div>
+
+        <div class="media-pair reveal">
+          <figure class="ph" data-ph="Laboratoriya · C1145"><img src="" alt="Laboratoriya press-mashinasi" loading="lazy"></figure>
+          <figure class="ph" data-ph="Laboratoriya · C1143"><img src="" alt="Sinov uskunasi" loading="lazy"></figure>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══ §5.13 · KALKULYATOR ═══════════════════════════════════════════ -->
+  <section class="section" id="calculator" style="background:var(--enzo-100)">
+    <div class="container">
+      <div class="grid">
+        <div class="head reveal" style="grid-column:1/-1">
+          <p class="overline">Kalkulyator</p>
+          <h2 class="t-h2">Narx qanday hisoblanadi?</h2>
+          <p class="t-body sub measure">Narx hamma buyurtmachilar uchun bir xil emas, chunki hajmlar har xil. Katta hajmda buyurtmalar uchun narx individual hisoblanadi. Doimiy hamkorlar uchun esa alohida shartlar kelishiladi.</p>
+        </div>
+
+        <form class="calc__controls reveal" id="calc" data-default="jbi">
+          <p class="t-body-l" style="margin-bottom:var(--s-24)">Mahsulot, oʻlchov va yetkazish manzilini kiriting — taxminiy narxni oling</p>
+
+          <div class="field">
+            <label class="t-caption" for="c-product">Mahsulot turini tanlang</label>
+            <select id="c-product">
+              <option value="shifer">Shifer</option>
+              <option value="sement">Sement</option>
+              <option value="beton">Tayyor beton</option>
+              <option value="jbi">Temir-beton buyumlar (ЖБИ)</option>
+            </select>
+          </div>
+
+          <!-- Har mahsulotning oʻz oʻlchov savoli — faqat tanlangani koʻrinadi -->
+          <!-- Shiferda bitta oʻlcham bor — tanlov emas, maʼlumot -->
+          <div class="field field--info" id="f-shifer" hidden>
+            <span class="t-caption">Shifer oʻlchami</span>
+            <p class="t-body" id="c-shifer">1750 × 1130 mm · 5,7 mm · 8 toʻlqin</p>
+          </div>
+
+          <div class="field" id="f-sement" hidden>
+            <label class="t-caption" for="c-sement">Sement turi va markasi</label>
+            <select id="c-sement">
+              <option value="optima-qop">ENZO Optima M450 · qopli (50 kg)</option>
+              <option value="extra-qop">ENZO EXTRA M550 · qopli (50 kg)</option>
+              <option value="optima-naval">ENZO Optima M450 · naval</option>
+              <option value="extra-naval">ENZO EXTRA M550 · naval</option>
+            </select>
+          </div>
+
+          <div class="field" id="f-marka" hidden>
+            <label class="t-caption" for="c-marka">Beton markasi</label>
+            <select id="c-marka">
+              <option>M100</option><option>M150</option><option>M250</option>
+              <option>M300</option><option>M350</option><option>M400</option>
+              <option>M450</option><option>M500</option>
+            </select>
+          </div>
+
+          <div class="field" id="f-jbi" hidden>
+            <label class="t-caption" for="c-jbi">Buyum turkumi</label>
+            <select id="c-jbi">
+              <option value="pb">Koʻp boʻshliqli plita ПБ (2,36–8,86 m)</option>
+              <option value="pk2">Koʻp boʻshliqli plita 2ПК (2,86–7,06 m)</option>
+              <option value="li60">Irrigatsion nov ЛИ 60.3.6/4 (6 m)</option>
+              <option value="li30">Irrigatsion nov ЛИ 30.3.6/4 (3 m)</option>
+              <option value="ct">Shpaler ustuni CT</option>
+            </select>
+          </div>
+
+          <div class="field">
+            <label class="t-caption" for="c-qty">Miqdori <span class="field__val" id="v-unit">dona</span></label>
+            <input type="number" id="c-qty" min="1" step="1" value="100" inputmode="numeric">
+            <p class="t-small calc__hint" id="c-hint"></p>
+          </div>
+
+          <div class="field2">
+            <div class="field">
+              <label class="t-caption" for="c-region">Yetkazish — viloyat</label>
+              <select id="c-region"></select>
+            </div>
+            <div class="field">
+              <label class="t-caption" for="c-district">Shahar / tuman</label>
+              <select id="c-district"></select>
+            </div>
+          </div>
+
+          <p class="t-small calc__note">Yetkazish zavoddan (Fargʻona viloyati, Quvasoy) hisoblanadi. Tayyor beton uchun 10 m³ sigʻimli mikser avtomobili hisobga olingan.</p>
+        </form>
+
+        <aside class="calc__result reveal">
+          <p class="t-small" style="color:var(--ink-60)">Sizning konfiguratsiyangiz uchun taxminiy narx</p>
+          <div class="t-stat calc__price" id="c-price" style="font-size:clamp(36px,4.5vw,64px)">— soʻm</div>
+
+          <ul class="calc__list t-small">
+            <li><span>Tanlangan mahsulot</span><span id="o-product">Shifer</span></li>
+            <li><span>Oʻlchov</span><span id="o-spec">—</span></li>
+            <li><span>Miqdori</span><span id="o-qty">—</span></li>
+            <li><span>Manzil</span><span id="o-addr">—</span></li>
+            <li><span>Yetkazib berish</span><span id="o-ship">—</span></li>
+          </ul>
+
+          <p class="t-small calc__note">Eʼtibor! Barcha hisob-kitoblar taxminiy. Narxlar xomashyo narxiga qarab oʻzgarishi mumkin.</p>
+          <a class="t-h4" href="tel:+998558107777" style="display:block;margin-top:var(--s-16);color:var(--enzo-800);font-weight:600">+998 55 810 77 77</a>
+          <a class="btn btn--primary" href="#form">Buyurtma berish</a>
+        </aside>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══ §6.8 · FAQ ════════════════════════════════════════════════════ -->
+  <section class="section section--surface">
+    <div class="container">
+      <div class="grid">
+        <div class="head faq__head reveal">
+          <p class="overline">FAQ</p>
+          <h2 class="t-h2">Koʻp soʻraladigan savollar</h2>
+          <p class="t-body sub">Koʻpchilik ikkilanuvchi savollarga javoblar</p>
+          <div class="faq__aside">
+            <p class="t-body faq__aside-lead">Javob topmadingizmi?</p>
+            <a class="faq__aside-tel" href="tel:+998558107777">
+              <svg aria-hidden="true"><use href="#i-phone"/></svg>
+              <span class="t-h2">+998 55 810 77 77</span>
+            </a>
+            <p class="t-small faq__aside-note">Dushanba – Shanba, 08:00 – 18:00</p>
+            <a class="btn btn--on-dark" href="#form">Ariza qoldirish</a>
+          </div>
+        </div>
+        <div class="body-col reveal">
+          <div class="faq">
+            <div class="faq__item">
+              <button class="faq__q" type="button">Narxlaringiz nega arzonroq?<span class="faq__sign">+</span></button>
+              <div class="faq__a"><div><p class="t-body measure">Mahsulotlar toʻgʻridan-toʻgʻri zavoddan, vositachilarsiz yetkazib beriladi. Shu sababli mijozlar ENZO mahsulotlarini 1-qoʻl narxda xarid qilish imkoniga ega boʻladi.</p></div></div>
+            </div>
+            <div class="faq__item">
+              <button class="faq__q" type="button">Kafolat berasizlar, lekin muammo boʻlsa javob berasizlarmi?<span class="faq__sign">+</span></button>
+              <div class="faq__a"><div><p class="t-body measure">Biz mahsulotlarimizga rasmiy kafolat beramiz va bu kafolat faqat soʻzda emas — hujjat bilan tasdiqlanadi. Agar mahsulotda biror muammo aniqlansa, uni qaytarib olib, hech qanday ortiqcha savollarsiz yangisiga almashtirib beramiz.</p></div></div>
+            </div>
+            <div class="faq__item">
+              <button class="faq__q" type="button">Oʻzbekiston boʻylab yetkazib bera olasizlarmi?<span class="faq__sign">+</span></button>
+              <div class="faq__a"><div><p class="t-body measure">Ha, mahsulotlarimizni Oʻzbekiston boʻylab yetkazib beramiz. Buyurtma hajmi va manziliga qarab yetkazib berish shartlari alohida kelishiladi.</p></div></div>
+            </div>
+            <div class="faq__item">
+              <button class="faq__q" type="button">Qishda ham ishlab chiqarasizlarmi?<span class="faq__sign">+</span></button>
+              <div class="faq__a"><div><p class="t-body measure">Ha, biz ishlab chiqarishni mavsumga bogʻlamaymiz — yil davomida, qishda ham uzluksiz ishlaymiz. Zavodimiz 24/7 formatda faoliyat yuritadi.</p></div></div>
+            </div>
+            <div class="faq__item">
+              <button class="faq__q" type="button">Sertifikat va hujjatlar bormi?<span class="faq__sign">+</span></button>
+              <div class="faq__a"><div><p class="t-body measure">Ha, barcha mahsulotlarimiz tegishli sertifikatlar va hujjatlar bilan tasdiqlangan. Ishlab chiqarish jarayoni amaldagi davlat standartlariga muvofiq olib boriladi va har bir mahsulot sifat nazoratidan oʻtkaziladi.</p></div></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══ §5.17 · FORMA (to'q · 3-to'q) ═════════════════════════════════ -->
+  <section class="section section--lg section--dark roof-top" id="form">
+    <div class="container">
+      <div class="grid">
+
+        <div class="form__copy reveal">
+          <h2 class="t-display">Aniq narxni oling</h2>
+          <p class="t-body-l sub measure" style="margin-top:var(--s-24)">Mahsulot turi, miqdor va yetkazish manzilini ayting — narxni va muddatni hisoblab beramiz.</p>
+
+          <ul class="contacts t-body">
+            <li><svg aria-hidden="true"><use href="#i-phone"/></svg> <a href="tel:+998558107777">+998 55 810 77 77</a></li>
+            <li><svg aria-hidden="true"><use href="#i-envelope"/></svg> <a href="mailto:enzogroupuz@gmail.com">enzogroupuz@gmail.com</a></li>
+            <li><svg aria-hidden="true"><use href="#i-clock"/></svg> Ish vaqti: Dushanba – Shanba, 08:00 – 18:00</li>
+          </ul>
+        </div>
+
+        <form class="form__box reveal">
+          <div class="field">
+            <label class="t-caption" for="f-name">Ism</label>
+            <input type="text" id="f-name" placeholder="Ismingiz" required>
+          </div>
+          <div class="field">
+            <label class="t-caption" for="f-tel">Telefon</label>
+            <input type="text" id="f-tel" placeholder="+998(__) ___-__-__" required>
+          </div>
+          <button class="btn btn--on-dark" type="submit">Yuborish</button>
+          <p class="t-caption form__legal">Yuborish tugmasini bosish orqali siz maʼlumotlaringiz qayta ishlanishiga rozilik bildirasiz.</p>
+        </form>
+
+      </div>
+    </div>
+  </section>
+
+  <footer class="footer">
+    <div class="container">
+      <div class="grid">
+
+        <div class="f-col f-col--brand">
+          <a class="logo" href="../#home">
+            <span class="logo__mark" aria-hidden="true"><span></span><span></span><span></span></span>
+            <span class="logo__word">ENZO</span>
+          </a>
+          <p class="t-body f-slogan">Bozorda yetkazuvchilar koʻp, lekin biz ishlab chiqaruvchi ishonchli brend</p>
+        </div>
+
+        <div class="f-col f-col--map">
+          <h3 class="t-h4">Sayt xaritasi</h3>
+          <ul class="t-body">
+            <li><a href="../#about-us">Biz haqimizda</a></li>
+            <li><a href="../#mainproducts">Mahsulotlar</a></li>
+            <li><a href="#calculator">Kalkulyator</a></li>
+            <li><a href="#form">Bogʻlanish</a></li>
+          </ul>
+        </div>
+
+        <div class="f-col f-col--prod">
+          <h3 class="t-h4">Mahsulotlar</h3>
+          <ul class="t-body">
+            <li><a href="../shifer/">Shifer</a></li>
+            <li><a href="../sement/">Sement</a></li>
+            <li><a href="../beton/">Tayyor beton</a></li>
+            <li><a href="../jbi/">Temir-beton (ЖБИ)</a></li>
+          </ul>
+        </div>
+
+        <div class="f-col f-col--cont">
+          <h3 class="t-h4">Aloqa</h3>
+          <ul class="t-body">
+            <li><a href="tel:+998558107777">+998 55 810 77 77</a></li>
+            <li><a href="mailto:enzogroupuz@gmail.com">enzogroupuz@gmail.com</a></li>
+            <li>Dushanba – Shanba, 08:00 – 18:00</li>
+            <li><a href="https://t.me/enzogroup_uz">Telegram @enzogroup_uz</a></li>
+            <li><a href="https://instagram.com/enzogroup_uz">Instagram @enzogroup_uz</a></li>
+          </ul>
+        </div>
+
+        <div class="maps">
+          <div class="map">
+            <figure class="ph" data-ph="Yandex xarita — zavod"><img src="" alt="" loading="lazy"></figure>
+            <h3 class="t-h4 map__title">Bizning zavod</h3>
+            <p class="t-small map__addr"><svg class="inline-icon" aria-hidden="true"><use href="#i-pin"/></svg>Fargʻona viloyati, Quvasoy, Doʻstlik MFY · +998 55 810 77 77</p>
+          </div>
+          <div class="map">
+            <figure class="ph" data-ph="Yandex xarita — showroom"><img src="" alt="" loading="lazy"></figure>
+            <h3 class="t-h4 map__title">Bizning showroom</h3>
+            <p class="t-small map__addr"><svg class="inline-icon" aria-hidden="true"><use href="#i-pin"/></svg>Fargʻona shahri, Maʼrifat MFY, Alisher Navoiy prospekti, 6 · +998 33 770 13 03</p>
+          </div>
+        </div>
+
+      </div>
+
+      <div class="f-bottom t-small">
+        <span>© 2026 ENZO GROUP</span>
+        <span>Fargʻona viloyati</span>
+      </div>
+    </div>
+  </footer>
+
+</main>
+
+<!-- Prototip boshqaruvi — yakuniy saytda oʻchiriladi -->
+<div class="proto-bar">
+  <button id="btnWire" class="is-active" type="button">Struktura</button>
+  <button id="btnFull" type="button">Rang bilan</button>
+</div>
+
+<script src="../js/main.js"></script>
+</body>
+</html>

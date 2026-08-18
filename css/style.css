@@ -547,7 +547,9 @@ body.is-locked { overflow:hidden; }
 /* --- §5.5 · Mahsulotlar ------------------------------------------------- */
 
 .product { padding-block:var(--s-56); }
-.product__media { grid-column:1 / -1; position:relative; aspect-ratio:1/1; background:var(--surface); }
+/* 16:9 — manba kadrning o'z nisbati (2752×1536 = 1,79). 1:1 da mikser
+   avtomobili va plita shtabeli yon tomonidan kesilib ketardi. */
+.product__media { grid-column:1 / -1; position:relative; aspect-ratio:16/9; background:var(--white); }
 .product__copy  { grid-column:1 / -1; margin-top:var(--s-32); align-self:center; }
 
 /* Mahsulot rasmi ustidagi plashka OLIB TASHLANDI (mijoz qarori, 2026-08-15).
@@ -699,6 +701,45 @@ body.is-locked { overflow:hidden; }
 .card--dark { background:var(--enzo-800); border-color:var(--enzo-800); color:var(--white); }
 .card--dark .card__title { color:var(--white); }
 .card--dark .card__text  { color:var(--enzo-300); }
+
+/* --- §6 · Mahsulot sahifasi --------------------------------------------- */
+
+/* Nonda yo'l. Bosh sahifada yo'q — u yerda qaytadigan joy ham yo'q. */
+.crumbs { display:flex; flex-wrap:wrap; gap:var(--s-8); color:var(--enzo-300); margin-bottom:var(--s-24); }
+.crumbs a { color:var(--enzo-300); }
+.crumbs a:hover { color:var(--white); }
+.crumbs [aria-current] { color:var(--white); }
+
+/* Mahsulot hero'si bosh sahifanikidan boshqacha: u yerda rasm butun ekranni
+   egallaydi va matn rasm ustida turadi, bu yerda esa ikkisi yonma-yon —
+   mahsulotning o'zi ko'rinishi kerak, kayfiyat emas. */
+.phero { padding-block:var(--s-72) var(--s-96); }
+.phero__copy  { grid-column:1 / -1; }
+.phero__lead  { margin-top:var(--s-24); color:var(--enzo-300); }
+.phero__cta   { margin-top:var(--s-40); }
+/* Mahsulot kadrining foni oq — to'q hero ustida u oq panel bo'lib turadi,
+   ya'ni mahsulot alohida ajratib ko'rsatilgan taxtachada yotadi. */
+.phero__media { grid-column:1 / -1; margin-top:var(--s-40); aspect-ratio:16/9; background:var(--white); }
+
+/* Jadval keng — o'z ichida gorizontal siljiydi, sahifa esa qimirlamaydi */
+.spec-table__cap  { margin-top:var(--s-40); margin-bottom:var(--s-16); color:var(--enzo-800); }
+.spec-table__wrap { overflow-x:auto; }
+.spec-table { width:100%; border-collapse:collapse; text-align:left; }
+.spec-table th, .spec-table td { padding:var(--s-12) var(--s-16); border-bottom:1px solid var(--line); vertical-align:top; }
+.spec-table th { color:var(--ink-60); font-weight:600; white-space:nowrap; }
+.spec-table td:first-child { font-weight:600; white-space:nowrap; }
+.spec-table tbody tr:last-child td { border-bottom:0; }
+
+@media (min-width:1024px) {
+  .phero__copy  { grid-column:1 / span 6; align-self:center; }
+  .phero__media { grid-column:7 / span 6; margin-top:0; }
+  /* Mahsulot sahifasida uchta raqam — bosh sahifadagi to'rttasi 2×2 bo'lib
+     turadi, bu yerda esa gorizontal qator (PROMPT.md §6.1). */
+  .capacity__nums--3 { grid-template-columns:repeat(3,minmax(0,1fr)); gap:var(--s-32) var(--gutter); }
+}
+
+/* Raqam emas, diapazon (M100–M500) — u yerda 72px juda katta */
+.cap__num--text { font-size:clamp(24px,2.6vw,40px); }
 
 /* --- §5.8b · Bosh direktor murojaati ------------------------------------ */
 
