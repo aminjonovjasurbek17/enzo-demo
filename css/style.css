@@ -547,9 +547,24 @@ body.is-locked { overflow:hidden; }
 /* --- §5.5 · Mahsulotlar ------------------------------------------------- */
 
 .product { padding-block:var(--s-56); }
-/* 16:9 — manba kadrning o'z nisbati (2752×1536 = 1,79). 1:1 da mikser
-   avtomobili va plita shtabeli yon tomonidan kesilib ketardi. */
-.product__media { grid-column:1 / -1; position:relative; aspect-ratio:16/9; background:var(--white); }
+/* Mahsulot kadri — brend qolipi: to'q ko'k maydon, pastida oq brend shakli,
+   mahsulot esa oq yuzada turadi (mijoz qarori, 2026-08-18).
+   Kesilgan PNG (shaffof fon) shuni talab qiladi: oq fonli kadrni ko'k ustiga
+   qo'yib bo'lmaydi, oq to'rtburchak bo'lib ko'rinardi. */
+.pshot {
+  position:relative; overflow:hidden;
+  background:var(--enzo-800);
+  display:flex; align-items:flex-end; justify-content:center;
+}
+/* Oq shakl — bosh sahifadagi tom qirrasi bilan bir xil yo'nalish:
+   eng past nuqta chap chetda, cho'qqi 86% da yuqorida (DESIGN.md §3.1). */
+.pshot::before {
+  content:''; position:absolute; inset:0; background:var(--white);
+  clip-path:polygon(0 80%, 86% 54%, 100% 57%, 100% 100%, 0 100%);
+}
+.pshot img { position:relative; z-index:1; width:80%; height:auto; display:block; margin-bottom:7%; }
+
+.product__media { grid-column:1 / -1; aspect-ratio:4/3; }
 .product__copy  { grid-column:1 / -1; margin-top:var(--s-32); align-self:center; }
 
 /* Mahsulot rasmi ustidagi plashka OLIB TASHLANDI (mijoz qarori, 2026-08-15).
@@ -717,11 +732,37 @@ body.is-locked { overflow:hidden; }
 .phero__copy  { grid-column:1 / -1; }
 .phero__lead  { margin-top:var(--s-24); color:var(--enzo-300); }
 .phero__cta   { margin-top:var(--s-40); }
-/* Mahsulot kadrining foni oq — to'q hero ustida u oq panel bo'lib turadi,
-   ya'ni mahsulot alohida ajratib ko'rsatilgan taxtachada yotadi. */
-.phero__media { grid-column:1 / -1; margin-top:var(--s-40); aspect-ratio:16/9; background:var(--white); }
+/* Hero — brend shakli butun bo'lim foni bo'lib yotadi (mijoz qarori,
+   2026-08-18). Avval mahsulot to'rtburchak quti ichida edi; endi ko'k fon,
+   pastida oq shakl, mahsulot esa oqning ustida turadi va qirradan oshadi.
+   Shakl alohida qatlam: bo'limning o'zi qirqilsa mahsulot ham kesilardi. */
+/* Oq shakl bo'lim PASTIGA qat'iy balandlikda biriktiriladi — bo'lim
+   balandligining foizi sifatida emas. Sabab: matn uzunligi sahifadan
+   sahifaga va kenglikdan kenglikka o'zgaradi; foiz bo'lganda qirra matn
+   ustiga chiqib, och-ko'k yozuv oq fonda o'qilmay qolardi.
+   Endi matnning pastki bo'shlig'i shakl balandligiga bog'langan —
+   qirra matnga hech qachon yetib bormaydi. */
+.phero { --wedge:clamp(90px, 13vw, 200px); position:relative; overflow:hidden;
+  padding-block:var(--s-56) calc(var(--s-32) + var(--wedge)); }
+.phero__shape {
+  position:absolute; left:0; right:0; bottom:0; height:var(--wedge);
+  background:var(--white);
+  /* Chap chetda oq maydon shaklning 55% i, 86% da cho'qqi (to'liq),
+     o'ngda 0,876 nisbatda tushadi — DESIGN.md §3.1 geometriyasi. */
+  clip-path:polygon(0 45%, 86% 0, 100% 6%, 100% 100%, 0 100%);
+}
+.phero > .container { position:relative; z-index:1; }
+.phero__media { grid-column:1 / -1; margin-top:var(--s-32); }
+.phero__media img { display:block; width:100%; height:auto; position:relative; z-index:1; }
 
 /* Jadval keng — o'z ichida gorizontal siljiydi, sahifa esa qimirlamaydi */
+.tech__specs { grid-column:1 / -1; margin-top:var(--s-32); }
+.tech__table { grid-column:1 / -1; margin-top:var(--s-40); }
+@media (min-width:1024px) {
+  .tech__specs { grid-column:1 / span 5; margin-top:var(--s-48); }
+  .tech__table { grid-column:6 / span 7; margin-top:var(--s-48); }
+  .tech__table .spec-table__cap { margin-top:0; }
+}
 .spec-table__cap  { margin-top:var(--s-40); margin-bottom:var(--s-16); color:var(--enzo-800); }
 .spec-table__wrap { overflow-x:auto; }
 .spec-table { width:100%; border-collapse:collapse; text-align:left; }
@@ -731,15 +772,37 @@ body.is-locked { overflow:hidden; }
 .spec-table tbody tr:last-child td { border-bottom:0; }
 
 @media (min-width:1024px) {
-  .phero__copy  { grid-column:1 / span 6; align-self:center; }
-  .phero__media { grid-column:7 / span 6; margin-top:0; }
+  /* Hero balandligi: mahsulot va matn ikkalasiga ham joy kerak, aks holda
+     mikser avtomobili header'ga tegib qoladi. */
+  .phero { min-height:580px; padding-block:var(--s-96) var(--s-24); display:flex; align-items:center; }
+  .phero > .container { width:100%; }
+  /* Matn tepaga tekislanadi — markazda bo`lsa u pastga tushib, oq shakl
+     qirrasi ostiga o`tib qolardi va och-ko`k matn oqda o`qilmasdi. */
+  .phero__copy  { grid-column:1 / span 6; align-self:start; }
+  /* Mahsulot pastga tekislanadi va oq shaklga tushadi — qirradan oshib
+     turgani uchun u 'yuzada turgan' bo'lib ko'rinadi, quti ichida emas. */
+  .phero__media { grid-column:7 / span 6; margin-top:0; align-self:end;
+    margin-bottom:calc(-1 * var(--wedge) * 0.62); }
   /* Mahsulot sahifasida uchta raqam — bosh sahifadagi to'rttasi 2×2 bo'lib
      turadi, bu yerda esa gorizontal qator (PROMPT.md §6.1). */
-  .capacity__nums--3 { grid-template-columns:repeat(3,minmax(0,1fr)); gap:var(--s-32) var(--gutter); }
+  /* Mahsulot sahifasida quvvat blokida tugma yo'q (u hero'dagi bilan bir
+     joyga olib borardi), shuning uchun raqamlar pastga emas, markazga
+     tekislanadi — aks holda blok ostida katta bo`sh maydon qolardi. */
+  .capacity__nums--3 { grid-template-columns:repeat(3,minmax(0,1fr)); gap:var(--s-32) var(--gutter); align-self:center; }
 }
 
 /* Raqam emas, diapazon (M100–M500) — u yerda 72px juda katta */
 .cap__num--text { font-size:clamp(24px,2.6vw,40px); }
+
+/* Qiymatlar o'lchami har xil (raqam katta, diapazon kichik) — izoh qatorlari
+   bir chiziqda turishi uchun katak ichida pastga tekislanadi. */
+.capacity__nums--3 > div { display:flex; flex-direction:column; justify-content:flex-end; }
+
+/* Havola-kartochka — butun kartochka bosiladi, ichida alohida tugma yo'q:
+   nishon katta, mo'ljal aniq (Fitts qonuni). */
+.xlink { display:block; text-decoration:none; }
+.xlink .card__title { transition:color 150ms var(--ease); }
+.xlink:hover .card__title { color:var(--enzo-500); }
 
 /* --- §5.8b · Bosh direktor murojaati ------------------------------------ */
 

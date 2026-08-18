@@ -83,7 +83,8 @@
 <main>
 
   <!-- ═══ §6.2 · HERO ═══════════════════════════════════════════════════ -->
-  <section class="section section--dark roof-bottom phero">
+  <section class="section section--dark phero">
+    <div class="phero__shape" aria-hidden="true"></div>
     <div class="container">
       <div class="grid">
         <div class="phero__copy">
@@ -92,13 +93,13 @@
             <a href="../#mainproducts">Mahsulotlar</a><span aria-hidden="true">/</span>
             <span aria-current="page">Temir-beton buyumlar</span>
           </nav>
-          <h1 class="t-display">Temir-beton buyumlar (ЖБИ)</h1>
+          <h1 class="t-display">Temir-beton (ЖБИ)</h1>
           <p class="t-body-l phero__lead measure">Oʻz sementimizda ishlab chiqariladi. Olti turkum, har biri laboratoriya tekshiruvidan oʻtadi.</p>
           <div class="phero__cta">
-            <a class="btn btn--on-dark" href="#calculator">Narxni bilib oling</a>
+            <a class="btn btn--primary" href="#calculator">Narxni bilib oling</a>
           </div>
         </div>
-        <figure class="ph phero__media" data-ph="Mahsulot rasmi · enzo jbi.png">
+        <figure class="phero__media">
           <img src="../assets/img/mahsulot-jbi.webp" alt="Temir-beton buyumlar (ЖБИ)" loading="eager" width="1400" height="781" fetchpriority="high">
         </figure>
       </div>
@@ -115,7 +116,8 @@
           <p class="t-body sub measure">Temir-beton buyumda kamchilik montajdan keyin bilinadi — plita oʻrnatilgandan soʻng uni almashtirish butun qavatni qayta koʻtarishni anglatadi.</p>
         </div>
         <div class="body-col reveal">
-          <p class="t-body-l measure">Har bir buyum oʻz sementimizda, standart boʻyicha armaturalanadi va zavod laboratoriyasida tekshiriladi. Har partiya bilan OTK xulosasi va texnik hujjatlar beriladi.</p>
+          <p class="overline">Yechim</p>
+          <p class="t-body-l measure" style="margin-top:var(--s-16)">Har bir buyum oʻz sementimizda, standart boʻyicha armaturalanadi va zavod laboratoriyasida tekshiriladi. Har partiya bilan OTK xulosasi va texnik hujjatlar beriladi.</p>
         </div>
       </div>
     </div>
@@ -125,21 +127,21 @@
   <section class="section section--surface">
     <div class="container">
       <div class="grid">
-        <div class="head reveal">
+        <div class="head reveal" style="grid-column:1/-1">
           <p class="overline">Xarakteristika</p>
           <h2 class="t-h2">Texnik maʼlumot</h2>
           <p class="t-body sub measure">Qiymatlar ENZO GROUP katalogidan. Toʻliq jadval va pozitsiyalar boʻyicha menejer bilan aniqlashtiriladi.</p>
         </div>
 
-        <div class="body-col reveal">
-          <dl class="specs t-small">
+        <dl class="specs t-small tech__specs reveal">
             <div><dt>Turkumlar</dt><dd>ПБ · 2ПК · ЛИ · CT · CB · KC</dd></div>
             <div><dt>Seysmiklik</dt><dd>7, 8, 9 ball</dd></div>
             <div><dt>Hisobiy yuklama</dt><dd>450 · 600 · 800 kgs/m²</dd></div>
             <div><dt>Standartlar</dt><dd>Oʻz MSt 648:2025 · ГОСТ 9561-2025 · Oʻz MSt 703:2025 · Oʻz DSt 3315:2018</dd></div>
             <div><dt>Nazorat</dt><dd>Har bir partiya — zavod laboratoriyasida</dd></div>
-          </dl>
+        </dl>
 
+        <div class="tech__table reveal">
           <h3 class="t-h4 spec-table__cap">Olti turkum</h3>
           <div class="spec-table__wrap">
             <table class="spec-table t-small">
@@ -160,17 +162,13 @@
   </section>
 
   <!-- ═══ §6.5 · ISHLAB CHIQARISH QUVVATI ═══════════════════════════════ -->
-  <section class="section section--dark roof-top">
+  <section class="section section--dark">
     <div class="container">
       <div class="grid">
         <div class="capacity__head head reveal">
           <p class="overline overline--on-dark">Quvvat</p>
           <h2 class="t-h2">Temir-beton buyumlar boʻyicha quvvatimiz</h2>
           <p class="t-body-l sub">Ishlab chiqarish 24 soat, yil davomida toʻxtamaydi.</p>
-          <div class="capacity__cta">
-            <p class="t-body capacity__cta-lead">Hajmingizni ayting — quvvatimiz yetadimi, darrov aytamiz.</p>
-            <a class="btn btn--on-dark" href="#calculator">Hajmni hisoblatish</a>
-          </div>
         </div>
         <div class="capacity__nums capacity__nums--3 reveal">
           <div><div class="cap__num">100</div><div class="t-small cap__unit">dona temir-beton plita / kun</div></div>
@@ -206,10 +204,6 @@
           </div>
         </div>
 
-        <div class="media-pair reveal">
-          <figure class="ph" data-ph="Laboratoriya · C1145"><img src="" alt="Laboratoriya press-mashinasi" loading="lazy"></figure>
-          <figure class="ph" data-ph="Laboratoriya · C1143"><img src="" alt="Sinov uskunasi" loading="lazy"></figure>
-        </div>
       </div>
     </div>
   </section>
@@ -335,6 +329,10 @@
         <div class="body-col reveal">
           <div class="faq">
             <div class="faq__item">
+              <button class="faq__q" type="button">Kerakli pozitsiyani qanday tanlayman?<span class="faq__sign">+</span></button>
+              <div class="faq__a"><div><p class="t-body measure">Pozitsiya oraliq uzunligi va hisobiy yuklamaga qarab tanlanadi. Loyihangizdagi oʻlchamlarni ayting — muhandisimiz mos markani (masalan ПБ48.12 yoki 2ПК60.10) va sonini aytib beradi.</p></div></div>
+            </div>
+            <div class="faq__item">
               <button class="faq__q" type="button">Narxlaringiz nega arzonroq?<span class="faq__sign">+</span></button>
               <div class="faq__a"><div><p class="t-body measure">Mahsulotlar toʻgʻridan-toʻgʻri zavoddan, vositachilarsiz yetkazib beriladi. Shu sababli mijozlar ENZO mahsulotlarini 1-qoʻl narxda xarid qilish imkoniga ega boʻladi.</p></div></div>
             </div>
@@ -354,6 +352,37 @@
               <button class="faq__q" type="button">Sertifikat va hujjatlar bormi?<span class="faq__sign">+</span></button>
               <div class="faq__a"><div><p class="t-body measure">Ha, barcha mahsulotlarimiz tegishli sertifikatlar va hujjatlar bilan tasdiqlangan. Ishlab chiqarish jarayoni amaldagi davlat standartlariga muvofiq olib boriladi va har bir mahsulot sifat nazoratidan oʻtkaziladi.</p></div></div>
             </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══ §6.9 · BOSHQA MAHSULOTLAR ═════════════════════════════════════ -->
+  <section class="section">
+    <div class="container">
+      <div class="grid">
+        <div class="head reveal" style="grid-column:1/-1">
+          <p class="overline">Yana</p>
+          <h2 class="t-h2">Boshqa mahsulotlar</h2>
+        </div>
+        <div class="body-col body-col--full reveal">
+          <div class="cards cards--3">
+            <a class="card xlink" href="../shifer/">
+              <div class="card__icon"><svg aria-hidden="true"><use href="#i-shifer"/></svg></div>
+              <h3 class="t-h4 card__title">Shifer</h3>
+              <p class="t-small card__text">Batafsil maʼlumot va narx hisobi</p>
+            </a>
+            <a class="card xlink" href="../sement/">
+              <div class="card__icon"><svg aria-hidden="true"><use href="#i-sement"/></svg></div>
+              <h3 class="t-h4 card__title">Sement</h3>
+              <p class="t-small card__text">Batafsil maʼlumot va narx hisobi</p>
+            </a>
+            <a class="card xlink" href="../beton/">
+              <div class="card__icon"><svg aria-hidden="true"><use href="#i-beton"/></svg></div>
+              <h3 class="t-h4 card__title">Tayyor beton</h3>
+              <p class="t-small card__text">Batafsil maʼlumot va narx hisobi</p>
+            </a>
           </div>
         </div>
       </div>

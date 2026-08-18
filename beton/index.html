@@ -83,7 +83,8 @@
 <main>
 
   <!-- ═══ §6.2 · HERO ═══════════════════════════════════════════════════ -->
-  <section class="section section--dark roof-bottom phero">
+  <section class="section section--dark phero">
+    <div class="phero__shape" aria-hidden="true"></div>
     <div class="container">
       <div class="grid">
         <div class="phero__copy">
@@ -95,10 +96,10 @@
           <h1 class="t-display">ENZO Tayyor beton</h1>
           <p class="t-body-l phero__lead measure">Kuniga 800 m³ dan ortiq. Mikser va beton nasoslar orqali toʻgʻridan-toʻgʻri qurilish maydoniga.</p>
           <div class="phero__cta">
-            <a class="btn btn--on-dark" href="#calculator">Narxni bilib oling</a>
+            <a class="btn btn--primary" href="#calculator">Narxni bilib oling</a>
           </div>
         </div>
-        <figure class="ph phero__media" data-ph="Mahsulot rasmi · enzo beton.png">
+        <figure class="phero__media">
           <img src="../assets/img/mahsulot-beton.webp" alt="ENZO Tayyor beton" loading="eager" width="1400" height="781" fetchpriority="high">
         </figure>
       </div>
@@ -115,7 +116,8 @@
           <p class="t-body sub measure">Beton yetkazib berishda eng muhim omil — vaqt. Aralashtirilgandan keyin u tezda quyilmasa, sifati va mustahkamligi pasayadi.</p>
         </div>
         <div class="body-col reveal">
-          <p class="t-body-l measure">ENZO har kuni 800 m³ dan ortiq beton ishlab chiqaradi va uni beton nasoslar orqali toʻgʻridan-toʻgʻri qurilish maydoniga yetkazadi. Qishda ham ishlab chiqarish toʻxtamaydi va beton harorati nazorat qilib boriladi.</p>
+          <p class="overline">Yechim</p>
+          <p class="t-body-l measure" style="margin-top:var(--s-16)">ENZO har kuni 800 m³ dan ortiq beton ishlab chiqaradi va uni beton nasoslar orqali toʻgʻridan-toʻgʻri qurilish maydoniga yetkazadi. Qishda ham ishlab chiqarish toʻxtamaydi va beton harorati nazorat qilib boriladi.</p>
         </div>
       </div>
     </div>
@@ -125,22 +127,22 @@
   <section class="section section--surface">
     <div class="container">
       <div class="grid">
-        <div class="head reveal">
+        <div class="head reveal" style="grid-column:1/-1">
           <p class="overline">Xarakteristika</p>
           <h2 class="t-h2">Texnik maʼlumot</h2>
           <p class="t-body sub measure">Qiymatlar ENZO GROUP katalogidan. Toʻliq jadval va pozitsiyalar boʻyicha menejer bilan aniqlashtiriladi.</p>
         </div>
 
-        <div class="body-col reveal">
-          <dl class="specs t-small">
+        <dl class="specs t-small tech__specs reveal">
             <div><dt>Markalar</dt><dd>M100 – M500</dd></div>
             <div><dt>Beton klassi</dt><dd>B7,5 – B40</dd></div>
             <div><dt>Qoʻllanilishi</dt><dd>Poydevor · qavat plitalari · kolonna va balka · yoʻl</dd></div>
             <div><dt>Yetkazish</dt><dd>Mikser (10 m³) + beton nasos</dd></div>
             <div><dt>Nazorat</dt><dd>Har bir partiya — zavod laboratoriyasida</dd></div>
             <div><dt>Xomashyo</dt><dd>Oʻz sementimiz — ENZO Optima M450 / EXTRA M550</dd></div>
-          </dl>
+        </dl>
 
+        <div class="tech__table reveal">
           <h3 class="t-h4 spec-table__cap">Klass va marka muvofiqligi</h3>
           <div class="spec-table__wrap">
             <table class="spec-table t-small">
@@ -164,17 +166,13 @@
   </section>
 
   <!-- ═══ §6.5 · ISHLAB CHIQARISH QUVVATI ═══════════════════════════════ -->
-  <section class="section section--dark roof-top">
+  <section class="section section--dark">
     <div class="container">
       <div class="grid">
         <div class="capacity__head head reveal">
           <p class="overline overline--on-dark">Quvvat</p>
           <h2 class="t-h2">Tayyor beton boʻyicha quvvatimiz</h2>
           <p class="t-body-l sub">Ishlab chiqarish 24 soat, yil davomida toʻxtamaydi.</p>
-          <div class="capacity__cta">
-            <p class="t-body capacity__cta-lead">Hajmingizni ayting — quvvatimiz yetadimi, darrov aytamiz.</p>
-            <a class="btn btn--on-dark" href="#calculator">Hajmni hisoblatish</a>
-          </div>
         </div>
         <div class="capacity__nums capacity__nums--3 reveal">
           <div><div class="cap__num">800</div><div class="t-small cap__unit">m³ tayyor beton / kun</div></div>
@@ -210,10 +208,6 @@
           </div>
         </div>
 
-        <div class="media-pair reveal">
-          <figure class="ph" data-ph="Laboratoriya · C1145"><img src="" alt="Laboratoriya press-mashinasi" loading="lazy"></figure>
-          <figure class="ph" data-ph="Laboratoriya · C1143"><img src="" alt="Sinov uskunasi" loading="lazy"></figure>
-        </div>
       </div>
     </div>
   </section>
@@ -339,6 +333,10 @@
         <div class="body-col reveal">
           <div class="faq">
             <div class="faq__item">
+              <button class="faq__q" type="button">Beton qancha vaqtda yetib keladi?<span class="faq__sign">+</span></button>
+              <div class="faq__a"><div><p class="t-body measure">Mikser zavoddan chiqqach beton oʻz xususiyatini bir necha soat saqlaydi, shuning uchun yetkazish vaqti oldindan rejalashtiriladi. Buyurtma berilganda manzil va hajmga qarab aniq vaqt kelishiladi — quyish jarayoni tayyor boʻlishi kerak.</p></div></div>
+            </div>
+            <div class="faq__item">
               <button class="faq__q" type="button">Narxlaringiz nega arzonroq?<span class="faq__sign">+</span></button>
               <div class="faq__a"><div><p class="t-body measure">Mahsulotlar toʻgʻridan-toʻgʻri zavoddan, vositachilarsiz yetkazib beriladi. Shu sababli mijozlar ENZO mahsulotlarini 1-qoʻl narxda xarid qilish imkoniga ega boʻladi.</p></div></div>
             </div>
@@ -358,6 +356,37 @@
               <button class="faq__q" type="button">Sertifikat va hujjatlar bormi?<span class="faq__sign">+</span></button>
               <div class="faq__a"><div><p class="t-body measure">Ha, barcha mahsulotlarimiz tegishli sertifikatlar va hujjatlar bilan tasdiqlangan. Ishlab chiqarish jarayoni amaldagi davlat standartlariga muvofiq olib boriladi va har bir mahsulot sifat nazoratidan oʻtkaziladi.</p></div></div>
             </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══ §6.9 · BOSHQA MAHSULOTLAR ═════════════════════════════════════ -->
+  <section class="section">
+    <div class="container">
+      <div class="grid">
+        <div class="head reveal" style="grid-column:1/-1">
+          <p class="overline">Yana</p>
+          <h2 class="t-h2">Boshqa mahsulotlar</h2>
+        </div>
+        <div class="body-col body-col--full reveal">
+          <div class="cards cards--3">
+            <a class="card xlink" href="../shifer/">
+              <div class="card__icon"><svg aria-hidden="true"><use href="#i-shifer"/></svg></div>
+              <h3 class="t-h4 card__title">Shifer</h3>
+              <p class="t-small card__text">Batafsil maʼlumot va narx hisobi</p>
+            </a>
+            <a class="card xlink" href="../sement/">
+              <div class="card__icon"><svg aria-hidden="true"><use href="#i-sement"/></svg></div>
+              <h3 class="t-h4 card__title">Sement</h3>
+              <p class="t-small card__text">Batafsil maʼlumot va narx hisobi</p>
+            </a>
+            <a class="card xlink" href="../jbi/">
+              <div class="card__icon"><svg aria-hidden="true"><use href="#i-plita"/></svg></div>
+              <h3 class="t-h4 card__title">Temir-beton (ЖБИ)</h3>
+              <p class="t-small card__text">Batafsil maʼlumot va narx hisobi</p>
+            </a>
           </div>
         </div>
       </div>

@@ -49,6 +49,16 @@
 /* Otziv posteri — yorliq pastga tushiriladi, play tugmasi markazda turadi */
 .wire .reel__poster::after { align-items:flex-end; }
 
+/* Mahsulot kadri — struktura rejimida brend ranglari va rasm o'chadi,
+   faqat quti qoladi (kadr o'lchami va joyi ko'rinib tursin) */
+.wire .pshot { background:#E0E0E0; }
+.wire .pshot::before { background:#F4F4F4; }
+.wire .pshot img { visibility:hidden; }
+
+/* Mahsulot sahifasi hero'si — shakl kulrang, mahsulot ko'rinmaydi */
+.wire .phero__shape { background:#F4F4F4; }
+.wire .phero__media img { visibility:hidden; }
+
 /* Logotiplar — struktura rejimida vektor ham yashiriladi, aks holda
    kulrang plitka ustida real logo qolib ketadi */
 .wire .logo-tile { background:#E0E0E0; }
