@@ -49,5 +49,7 @@
 /* Otziv posteri — yorliq pastga tushiriladi, play tugmasi markazda turadi */
 .wire .reel__poster::after { align-items:flex-end; }
 
-/* Logotiplar */
+/* Logotiplar — struktura rejimida vektor ham yashiriladi, aks holda
+   kulrang plitka ustida real logo qolib ketadi */
 .wire .logo-tile { background:#E0E0E0; }
+.wire .logo-tile img { visibility:hidden; }

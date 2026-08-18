@@ -638,6 +638,11 @@ body.is-locked { overflow:hidden; }
    ketadi (otzivlar blokida 18px chiqib ketgan edi). */
 @media (min-width:768px)  { .cards--3 { grid-template-columns:repeat(3,minmax(0,1fr)); } }
 @media (min-width:768px)  { .cards--2 { grid-template-columns:repeat(2,minmax(0,1fr)); } }
+@media (min-width:768px)  { .cards--4 { grid-template-columns:repeat(2,minmax(0,1fr)); } }
+@media (min-width:1024px) { .cards--4 { grid-template-columns:repeat(4,minmax(0,1fr)); } }
+/* Sertifikatlar yon ustunga sig`maydi: 4 ta skan bir qatorda turishi kerak,
+   aks holda 2×2 bo`lib bo`lim ikki baravar cho`ziladi va chap ustun bo`sh qoladi. */
+@media (min-width:768px) { .body-col--full { grid-column:1 / -1; margin-top:var(--s-40); } }
 
 .card {
   background:var(--white); border:1px solid var(--line);
@@ -657,6 +662,24 @@ body.is-locked { overflow:hidden; }
 .card__title { color:var(--enzo-800); }
 .card__text  { margin-top:var(--s-12); color:var(--ink-60); }
 .card .ph { aspect-ratio:3/4; margin-bottom:var(--s-24); }
+
+/* --- Sertifikat kartochkasi ------------------------------------------- */
+/* Kartochkaning o'zi havola: bosilganda hujjat to'liq holda ochiladi.
+   Eskiz WebP (~55 KB), to'liq hujjat SVG (~115 KB) faqat bosilganda yuklanadi. */
+.cert { display:block; text-decoration:none; }
+/* Mobil: 4 ta to`liq skan ustma-ust ~3400px beradi — juda uzun.
+   Kesib ko`rsatiladi: hujjatning yuqori qismi (organ nomi, hujjat turi,
+   sana) baribir ko`rinadi, to`liq matn bosilganda ochiladi. */
+.card .cert__scan {
+  aspect-ratio:4/3; margin-bottom:var(--s-24);
+  background:var(--surface); border:1px solid var(--line);
+}
+@media (min-width:768px) { .card .cert__scan { aspect-ratio:3/4; } }
+/* object-position:top — sertifikatning yuqori qismida organ nomi, hujjat
+   turi va mahsulot yozilgan; pastdagi imzo qismi kesilsa ham ma'no yo'qolmaydi */
+.cert__scan img { object-position:top; }
+.cert__meta { margin-top:var(--s-8); color:var(--ink-40); }
+.cert__note { grid-column:1 / -1; margin-top:var(--s-24); color:var(--enzo-300); }
 
 /* Dark variant */
 .card--dark { background:var(--enzo-800); border-color:var(--enzo-800); color:var(--white); }
@@ -736,7 +759,12 @@ body.is-locked { overflow:hidden; }
 /* --- §5.11 · Hamkorlar -------------------------------------------------- */
 
 .logos { grid-column:1 / -1; margin-top:var(--s-40); display:grid; grid-template-columns:repeat(2,1fr); gap:1px; background:var(--line); border:1px solid var(--line); }
-.logo-tile { background:var(--white); aspect-ratio:16/9; display:flex; align-items:center; justify-content:center; font-size:13px; color:var(--ink-40); letter-spacing:.04em; text-align:center; padding:var(--s-16); }
+.logo-tile { background:var(--white); aspect-ratio:16/9; display:flex; align-items:center; justify-content:center; padding:var(--s-24); }
+/* Logolar bitta neytral rangda (#5B6478 = --ink-60, fayl ichiga yozilgan).
+   Sakkiztasi sakkiz xil brend rangida bo'lsa qator alacha bo'lib ketadi.
+   Rang CSS dan emas, fayldan keladi: <img> ichidagi SVG ota-elementning
+   currentColor ini ko'rmaydi — u alohida hujjat. */
+.logo-tile img { max-width:100%; max-height:100%; width:auto; height:auto; object-fit:contain; }
 @media (min-width:768px)  { .logos { grid-template-columns:repeat(4,1fr); } }
 
 /* --- §5.12 · Mijozlar fikri · vertikal video tasmasi -------------------- */
