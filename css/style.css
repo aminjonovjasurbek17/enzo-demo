@@ -32,6 +32,7 @@
   --line:#E2E2E2;
   --line-2:#CCCCCC;
   --surface:#F6F7F9;
+  --shot-bg:#F0F0F0;        /* mahsulot kadri foni — och kulrang */
   --white:#FFFFFF;
 
   --error:#D92D20;
@@ -553,16 +554,23 @@ body.is-locked { overflow:hidden; }
    qo'yib bo'lmaydi, oq to'rtburchak bo'lib ko'rinardi. */
 .pshot {
   position:relative; overflow:hidden;
-  background:var(--enzo-800);
+  /* Och kulrang — oq emas (mijoz qarori): oq fonda kesilgan mahsulotning
+     chekkasi oqda ko'rinib qoladi, kulrangda esa yo'qoladi. */
+  background:var(--shot-bg);
   display:flex; align-items:flex-end; justify-content:center;
 }
-/* Oq shakl — bosh sahifadagi tom qirrasi bilan bir xil yo'nalish:
-   eng past nuqta chap chetda, cho'qqi 86% da yuqorida (DESIGN.md §3.1). */
+/* Ko'k brend shakli PASTDA — tom qirrasi yuqoriga qaragan, cho'qqi 86% da,
+   o'ng chekka 0,876 nisbatda pastroq (DESIGN.md §3.1). */
 .pshot::before {
-  content:''; position:absolute; inset:0; background:var(--white);
-  clip-path:polygon(0 80%, 86% 54%, 100% 57%, 100% 100%, 0 100%);
+  content:''; position:absolute; left:0; right:0; bottom:0; height:45%;
+  background:var(--enzo-800);
+  clip-path:polygon(0 18%, 86% 0, 100% 15.5%, 100% 100%, 0 100%);
 }
-.pshot img { position:relative; z-index:1; width:80%; height:auto; display:block; margin-bottom:7%; }
+/* Soya CSS dan beriladi: manba kadrdagi yumshoq oq soya kesib olingandan
+   keyin och nur bo`lib qolgan edi va ko`k ustida ko`rinib turardi.
+   drop-shadow alfa siluetiga ergashadi — istalgan fonda tabiiy chiqadi. */
+.pshot img { position:relative; z-index:1; width:88%; height:auto; display:block; margin-bottom:6%;
+  filter:drop-shadow(0 14px 18px rgba(10,15,28,.30)); }
 
 .product__media { grid-column:1 / -1; aspect-ratio:4/3; }
 .product__copy  { grid-column:1 / -1; margin-top:var(--s-32); align-self:center; }
@@ -736,26 +744,38 @@ body.is-locked { overflow:hidden; }
    2026-08-18). Avval mahsulot to'rtburchak quti ichida edi; endi ko'k fon,
    pastida oq shakl, mahsulot esa oqning ustida turadi va qirradan oshadi.
    Shakl alohida qatlam: bo'limning o'zi qirqilsa mahsulot ham kesilardi. */
-/* Oq shakl bo'lim PASTIGA qat'iy balandlikda biriktiriladi — bo'lim
-   balandligining foizi sifatida emas. Sabab: matn uzunligi sahifadan
-   sahifaga va kenglikdan kenglikka o'zgaradi; foiz bo'lganda qirra matn
-   ustiga chiqib, och-ko'k yozuv oq fonda o'qilmay qolardi.
-   Endi matnning pastki bo'shlig'i shakl balandligiga bog'langan —
-   qirra matnga hech qachon yetib bormaydi. */
-.phero { --wedge:clamp(90px, 13vw, 200px); position:relative; overflow:hidden;
-  padding-block:var(--s-56) calc(var(--s-32) + var(--wedge)); }
+/* Fon — to'q ko'k, o'ng-pastda och kulrang uchburchak. Qirra to'g'ri
+   diagonal: chap-past burchakdan o'ng chetning 51,5% igacha (referens
+   skrinshotdan o'lchandi). Mahsulot shu kulrang yuzada turadi.
+
+   Diagonal butun balandlik bo'ylab o'tgani uchun matn zonasi hisoblab
+   chiqiladi: matn ustuni x=45% gacha yetadi, u yerda kulrang 78% dan
+   boshlanadi — demak matn 78% dan yuqorida tugashi shart. Pastki
+   bo'shliq shuni ta'minlaydi va piksel testi bilan tekshiriladi. */
+.phero { position:relative; overflow:hidden; background:var(--enzo-800);
+  padding-block:var(--s-56) var(--s-48); }
 .phero__shape {
-  position:absolute; left:0; right:0; bottom:0; height:var(--wedge);
-  background:var(--white);
-  /* Chap chetda oq maydon shaklning 55% i, 86% da cho'qqi (to'liq),
-     o'ngda 0,876 nisbatda tushadi — DESIGN.md §3.1 geometriyasi. */
-  clip-path:polygon(0 45%, 86% 0, 100% 6%, 100% 100%, 0 100%);
+  position:absolute; inset:0; background:var(--shot-bg);
+  clip-path:polygon(0 100%, 100% 51.5%, 100% 100%);
 }
 .phero > .container { position:relative; z-index:1; }
 .phero__media { grid-column:1 / -1; margin-top:var(--s-32); }
-.phero__media img { display:block; width:100%; height:auto; position:relative; z-index:1; }
+.phero__media img { display:block; width:100%; height:auto; position:relative; z-index:1;
+  filter:drop-shadow(0 16px 22px rgba(10,15,28,.32)); }
 
 /* Jadval keng — o'z ichida gorizontal siljiydi, sahifa esa qimirlamaydi */
+/* Muammo va Yechim — ikki TENG ustun. Avval muammo `head` (sarlavhali),
+   yechim esa `body-col` (oddiy matn) edi: ikkisi bir xil vaznda
+   ko'rinmasdi va yechim ikkinchi darajali bo'lib qolgan edi. */
+.duo__col { grid-column:1 / -1; }
+.duo__col + .duo__col { margin-top:var(--s-40); }
+.duo__col h2 { margin-top:var(--s-16); }
+.duo__text { margin-top:var(--s-24); color:var(--ink-60); }
+@media (min-width:768px) {
+  .duo__col { grid-column:span 6; }
+  .duo__col + .duo__col { margin-top:0; }
+}
+
 .tech__specs { grid-column:1 / -1; margin-top:var(--s-32); }
 .tech__table { grid-column:1 / -1; margin-top:var(--s-40); }
 @media (min-width:1024px) {
@@ -774,15 +794,15 @@ body.is-locked { overflow:hidden; }
 @media (min-width:1024px) {
   /* Hero balandligi: mahsulot va matn ikkalasiga ham joy kerak, aks holda
      mikser avtomobili header'ga tegib qoladi. */
-  .phero { min-height:580px; padding-block:var(--s-96) var(--s-24); display:flex; align-items:center; }
+  /* Referens nisbati: balandlik ≈ kenglikning 0,31 i */
+  .phero { min-height:clamp(400px, 31vw, 540px); padding-block:var(--s-72) var(--s-40);
+    display:flex; align-items:center; }
   .phero > .container { width:100%; }
   /* Matn tepaga tekislanadi — markazda bo`lsa u pastga tushib, oq shakl
      qirrasi ostiga o`tib qolardi va och-ko`k matn oqda o`qilmasdi. */
   .phero__copy  { grid-column:1 / span 6; align-self:start; }
-  /* Mahsulot pastga tekislanadi va oq shaklga tushadi — qirradan oshib
-     turgani uchun u 'yuzada turgan' bo'lib ko'rinadi, quti ichida emas. */
-  .phero__media { grid-column:7 / span 6; margin-top:0; align-self:end;
-    margin-bottom:calc(-1 * var(--wedge) * 0.62); }
+  /* Mahsulot o'ng ustunda, pastga tekislanadi — kulrang yuzada turadi */
+  .phero__media { grid-column:7 / span 6; margin-top:0; align-self:end; }
   /* Mahsulot sahifasida uchta raqam — bosh sahifadagi to'rttasi 2×2 bo'lib
      turadi, bu yerda esa gorizontal qator (PROMPT.md §6.1). */
   /* Mahsulot sahifasida quvvat blokida tugma yo'q (u hero'dagi bilan bir
@@ -792,7 +812,10 @@ body.is-locked { overflow:hidden; }
 }
 
 /* Raqam emas, diapazon (M100–M500) — u yerda 72px juda katta */
-.cap__num--text { font-size:clamp(24px,2.6vw,40px); }
+/* Mahsulot sahifasida uchta raqam bir qatorda turadi va HAMMASI bir xil
+   o'lchamda bo'lishi kerak. Umumiy 72px da "M100–M500" ustunga sig'masdi,
+   shuning uchun bu yerda biroz kichikroq — lekin uchalasi ham teng. */
+.capacity__nums--3 .cap__num { font-size:clamp(34px,4.2vw,58px); }
 
 /* Qiymatlar o'lchami har xil (raqam katta, diapazon kichik) — izoh qatorlari
    bir chiziqda turishi uchun katak ichida pastga tekislanadi. */
