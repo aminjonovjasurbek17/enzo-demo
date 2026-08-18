@@ -639,7 +639,11 @@ body.is-locked { overflow:hidden; }
      tekislanadi, ya'ni oxirgi izoh qatori "Hajmni hisoblatish" tugmasining
      pastki chizig'ida turadi (mijoz qarori, 2026-08-16). */
   .capacity__nums { grid-column:7 / span 6; margin-top:0; gap:var(--s-56) var(--gutter); align-self:end; }
-  .capacity__cta  { margin-top:var(--s-72); }
+  /* Izoh va tugma yonma-yon — mijoz bergan andoza (2026-08-19). Avval
+     ustma-ust turardi va blok keraksiz cho'zilardi. */
+  .capacity__cta  { margin-top:var(--s-96); display:flex; align-items:center; gap:var(--s-32); }
+  .capacity__cta-lead { margin:0; flex:1 1 auto; max-width:34ch; }
+  .capacity__cta .btn { flex:0 0 auto; }
 }
 
 /* --- §5.7 · Laboratoriya · P4 raqamlangan ro'yxat ----------------------- */
@@ -711,10 +715,12 @@ body.is-locked { overflow:hidden; }
    Nisbatlar har xil (0,58–0,70), shuning uchun yon tomonda ozgina bo'shliq
    qoladi — u kulrang yuza bo'lib ko'rinadi, qog'oz esa oq: hujjat
    yuzada yotgandek o'qiladi, kesilgandek emas. */
+/* Skan ortidagi maydon ko'k (mijoz qarori 2026-08-19): kulrangda oq qog'oz
+   ajralmay qolardi, hujjat ko'zga tashlanmasdi. */
 .card .cert__scan {
   aspect-ratio:3/4; margin-bottom:var(--s-24);
-  background:var(--surface); border:1px solid var(--line);
-  padding:var(--s-8);
+  background:var(--enzo-800); border:0;
+  padding:var(--s-12);
 }
 .cert__scan img { object-fit:contain; }
 
@@ -748,7 +754,9 @@ body.is-locked { overflow:hidden; }
    mahsulotning o'zi ko'rinishi kerak, kayfiyat emas. */
 .phero { padding-block:var(--s-72) var(--s-96); }
 .phero__copy  { grid-column:1 / -1; }
-.phero__lead  { margin-top:var(--s-24); color:var(--enzo-300); }
+/* Kenglik cheklandi: 1920px da yetakchi matn bitta uzun qatorga cho'zilib
+   ketardi, boshqa sahifalarda esa ikki qator edi — bir xil bo'lishi kerak. */
+.phero__lead  { margin-top:var(--s-24); color:var(--enzo-300); max-width:34ch; }
 .phero__cta   { margin-top:var(--s-40); }
 /* Hero — brend shakli butun bo'lim foni bo'lib yotadi (mijoz qarori,
    2026-08-18). Avval mahsulot to'rtburchak quti ichida edi; endi ko'k fon,
@@ -843,7 +851,7 @@ body.is-locked { overflow:hidden; }
   /* Pastki bo'shliq matn blokini yuqoriroq ko'taradi. Kulrang uchburchak
      qirrasi butun balandlik bo'ylab o'tadi, matn esa uzunligiga qarab
      o'sadi — bu bo'shliq qirra bilan matn orasidagi zaxirani kafolatlaydi. */
-  .phero__copy  { grid-column:1 / span 6; align-self:center; padding-bottom:var(--s-72); }
+  .phero__copy  { grid-column:1 / span 6; align-self:center; padding-bottom:var(--s-160); }
   /* Mahsulot o'ng ustunda, pastga tekislanadi — kulrang yuzada turadi */
   .phero__media { grid-column:7 / span 6; margin-top:0; align-self:end; }
   /* Mahsulot sahifasida uchta raqam — bosh sahifadagi to'rttasi 2×2 bo'lib
@@ -950,8 +958,24 @@ body.is-locked { overflow:hidden; }
 
 /* --- §5.11 · Hamkorlar -------------------------------------------------- */
 
-.logos { grid-column:1 / -1; margin-top:var(--s-40); display:grid; grid-template-columns:repeat(2,1fr); gap:1px; background:var(--line); border:1px solid var(--line); }
-.logo-tile { background:var(--white); aspect-ratio:16/9; display:flex; align-items:center; justify-content:center; padding:var(--s-24); }
+/* Hamkorlar — cheksiz yuruvchi bitta qator (mijoz qarori 2026-08-19).
+   Avval 2×4 setka bo'lib bir joyda turardi va ko'p joy egallardi.
+   Ro'yxat ikki marta takrorlanadi: birinchi nusxa chapga chiqib
+   ketguncha ikkinchisi o'rniga keladi — uzilish ko'rinmaydi. */
+.logos { grid-column:1 / -1; margin-top:var(--s-40); overflow:hidden;
+  border-block:1px solid var(--line); position:relative; }
+.logos::before, .logos::after {
+  content:''; position:absolute; top:0; bottom:0; width:120px; z-index:1; pointer-events:none;
+}
+.logos::before { left:0;  background:linear-gradient(90deg, var(--surface), transparent); }
+.logos::after  { right:0; background:linear-gradient(270deg, var(--surface), transparent); }
+.logos__track { display:flex; width:max-content; animation:logo-yur 42s linear infinite; }
+@keyframes logo-yur { from { transform:translateX(0); } to { transform:translateX(-50%); } }
+.logos:hover .logos__track { animation-play-state:paused; }
+@media (prefers-reduced-motion: reduce) { .logos__track { animation:none; } }
+/* Plitka o'rniga ixcham katak: balandligi qat'iy, kengligi kontentga
+   qarab — qator bir tekis yuradi. */
+.logo-tile { flex:0 0 auto; height:84px; display:flex; align-items:center; justify-content:center; padding-inline:var(--s-40); }
 /* Logolar bitta neytral rangda (#5B6478 = --ink-60, fayl ichiga yozilgan).
    Sakkiztasi sakkiz xil brend rangida bo'lsa qator alacha bo'lib ketadi.
    Rang CSS dan emas, fayldan keladi: <img> ichidagi SVG ota-elementning
@@ -960,10 +984,9 @@ body.is-locked { overflow:hidden; }
    (mijoz qarori 2026-08-18). Ikkala o'lcham ham cheklanadi: keng yozuvli
    logolar (JBA GROUP) kenglikka, belgili logolar (Central Beton) esa
    balandlikka tayanadi — bittasini cheklash yetmaydi. */
-.logo-tile img { max-width:82%; max-height:66%; width:auto; height:auto; object-fit:contain; }
-/* Mobilda plitka ~175px — u yerda ham qisish logoni o'qib bo'lmaydigan qiladi */
-@media (min-width:768px) { .logo-tile img { max-width:66%; max-height:52%; } }
-@media (min-width:768px)  { .logos { grid-template-columns:repeat(4,1fr); } }
+.logo-tile img { height:100%; width:auto; max-width:none; max-height:38px; object-fit:contain; }
+@media (min-width:768px) { .logo-tile img { max-height:44px; } }
+@media (min-width:768px)  { .logo-tile { height:96px; padding-inline:var(--s-56); } }
 
 /* --- §5.12 · Mijozlar fikri · vertikal video tasmasi -------------------- */
 /* ✎ Qayta ishlangan (mijoz qarori, 2026-08-16). Avval to'q kvadrat
@@ -1021,6 +1044,15 @@ section[id] { scroll-margin-top:var(--s-24); }
   width:100%; height:56px; padding:0 var(--s-16);
   border:1px solid var(--line-2); background:var(--white); color:var(--ink);
   font:inherit; font-size:17px;
+}
+/* Brauzerning o'z o'qi ramka chetiga yopishib turardi. O'z belgimiz
+   qo'yiladi va u o'ng chetdan 20px ichkarida turadi. */
+.field select {
+  appearance:none; -webkit-appearance:none;
+  padding-right:var(--s-56);
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='14' height='9' viewBox='0 0 14 9'%3E%3Cpath fill='%230D3490' d='M1.4 0 7 5.6 12.6 0 14 1.4 7 8.4 0 1.4z'/%3E%3C/svg%3E");
+  background-repeat:no-repeat;
+  background-position:right var(--s-24) center;
 }
 .field select:focus, .field input:focus { outline:none; border-color:var(--enzo-500); border-width:2px; }
 
