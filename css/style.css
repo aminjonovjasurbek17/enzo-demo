@@ -571,6 +571,10 @@ body.is-locked { overflow:hidden; }
 /* Soya kadrning o'zida — mijoz kadrlarni soyasi bilan toza qilib berdi
    (2026-08-18), shuning uchun CSS soyasi olib tashlandi. */
 .pshot img { position:relative; z-index:1; width:88%; height:auto; display:block; margin-bottom:5%; }
+/* Sement va beton kadrda kichikroq koʻrinardi — mahsulotning oʻzi
+   ramkada kamroq joy egallaydi (mijoz qarori 2026-08-19). */
+.pshot img[src$="mahsulot-sement.webp"] { width:96%; }
+.pshot img[src$="mahsulot-beton.webp"]  { width:96%; }
 
 .product__media { grid-column:1 / -1; aspect-ratio:4/3; }
 @media (min-width:1024px) {
@@ -617,6 +621,8 @@ body.is-locked { overflow:hidden; }
 /* --- §5.6 · Ishlab chiqarish quvvati ------------------------------------ */
 
 .capacity__head { grid-column:1 / -1; }
+/* Izoh sarlavhaga yaqinroq — mijoz qarori 2026-08-19 */
+.capacity__head p.sub { margin-top:var(--s-8); }
 .capacity__nums { grid-column:1 / -1; margin-top:var(--s-40); display:grid; grid-template-columns:repeat(2,1fr); gap:var(--s-32) var(--gutter); }
 .cap__num { font-size:clamp(40px,5vw,72px); font-weight:700; letter-spacing:-0.04em; line-height:1; }
 .cap__unit { margin-top:var(--s-8); color:var(--enzo-300); }
@@ -641,7 +647,9 @@ body.is-locked { overflow:hidden; }
   .capacity__nums { grid-column:7 / span 6; margin-top:0; gap:var(--s-56) var(--gutter); align-self:end; }
   /* Izoh va tugma yonma-yon — mijoz bergan andoza (2026-08-19). Avval
      ustma-ust turardi va blok keraksiz cho'zilardi. */
-  .capacity__cta  { margin-top:var(--s-96); display:flex; align-items:center; gap:var(--s-32); }
+  /* Tugma chapda, izoh o'ngda (mijoz andozasi 2026-08-19) */
+  .capacity__cta  { margin-top:var(--s-96); display:flex; flex-direction:row-reverse;
+    justify-content:flex-end; align-items:center; gap:var(--s-32); }
   .capacity__cta-lead { margin:0; flex:1 1 auto; max-width:34ch; }
   .capacity__cta .btn { flex:0 0 auto; }
 }
@@ -851,9 +859,18 @@ body.is-locked { overflow:hidden; }
   /* Pastki bo'shliq matn blokini yuqoriroq ko'taradi. Kulrang uchburchak
      qirrasi butun balandlik bo'ylab o'tadi, matn esa uzunligiga qarab
      o'sadi — bu bo'shliq qirra bilan matn orasidagi zaxirani kafolatlaydi. */
+  /* Matn ustuni kengaydi va sarlavha kattalashdi — oʻrtada boʻsh havo
+     qolib ketgan edi (mijoz qarori 2026-08-19). */
   .phero__copy  { grid-column:1 / span 6; align-self:center; padding-bottom:var(--s-160); }
+  .phero__copy h1 { font-size:clamp(48px, 5.4vw, 86px); }
+  .phero__lead { max-width:40ch; font-size:20px; }
   /* Mahsulot o'ng ustunda, pastga tekislanadi — kulrang yuzada turadi */
-  .phero__media { grid-column:7 / span 6; margin-top:0; align-self:end; }
+  /* Mahsulot o'z ustunida qoladi (7–12), lekin o'ng tomonda konteyner
+     chetidan tashqariga chiqadi — kadr kattaroq bo'ladi va o'rtadagi
+     bo'sh maydon yo'qoladi. Ustunlar kesishmasligi shart: kesishsa
+     setka ularni ikki qatorga tushiradi va hero ikki baravar cho'ziladi. */
+  .phero__media { grid-column:7 / span 6; margin-top:0; align-self:end;
+    margin-right:calc(-1 * var(--edge)); }
   /* Mahsulot sahifasida uchta raqam — bosh sahifadagi to'rttasi 2×2 bo'lib
      turadi, bu yerda esa gorizontal qator (PROMPT.md §6.1). */
   /* Mahsulot sahifasida quvvat blokida tugma yo'q (u hero'dagi bilan bir
@@ -984,8 +1001,21 @@ body.is-locked { overflow:hidden; }
    (mijoz qarori 2026-08-18). Ikkala o'lcham ham cheklanadi: keng yozuvli
    logolar (JBA GROUP) kenglikka, belgili logolar (Central Beton) esa
    balandlikka tayanadi — bittasini cheklash yetmaydi. */
-.logo-tile img { height:100%; width:auto; max-width:none; max-height:38px; object-fit:contain; }
-@media (min-width:768px) { .logo-tile img { max-height:44px; } }
+/* Optik balans. Bir xil balandlik yetmaydi: keng yozuvli logo (JBA GROUP
+   nisbati 6,4:1) bir xil balandlikda ancha kattaroq koʻrinadi, chunki
+   koʻproq maydon egallaydi. Har logoning boʻyoq maydoni oʻlchandi va
+   maydonlar tenglashadigan balandlik hisoblandi (qisman tuzatish — 0,75
+   daraja, aks holda keng yozuvlar haddan tashqari kichrayadi). */
+.logo-tile img { width:auto; max-width:none; height:44px; object-fit:contain; }
+.logo-tile img[src$="beton-max.svg"] { height:35px; }
+.logo-tile img[src$="jba-group.svg"] { height:38px; }
+.logo-tile img[src$="central-beton.svg"] { height:47px; }
+.logo-tile img[src$="dilbar-tt-house.svg"] { height:53px; }
+.logo-tile img[src$="ecoizolit.svg"] { height:53px; }
+.logo-tile img[src$="dream-residence.svg"] { height:54px; }
+.logo-tile img[src$="megamix.svg"] { height:54px; }
+.logo-tile img[src$="quvasoy-chek-shifer.svg"] { height:55px; }
+@media (max-width:767px) { .logo-tile img { height:32px !important; } }
 @media (min-width:768px)  { .logo-tile { height:96px; padding-inline:var(--s-56); } }
 
 /* --- §5.12 · Mijozlar fikri · vertikal video tasmasi -------------------- */
