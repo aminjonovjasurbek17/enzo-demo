@@ -767,6 +767,25 @@ body.is-locked { overflow:hidden; }
 /* Muammo va Yechim — ikki TENG ustun. Avval muammo `head` (sarlavhali),
    yechim esa `body-col` (oddiy matn) edi: ikkisi bir xil vaznda
    ko'rinmasdi va yechim ikkinchi darajali bo'lib qolgan edi. */
+/* Mahsulot almashtirgichi — hero ostidagi ingichka qator.
+   Pastdagi kartochkalar bo'limi o'rniga: nishon yuqorida, foydalanuvchi
+   istalgan paytda boshqa mahsulotga o'tadi (mijoz tanlovi). */
+.pswitch { background:var(--white); border-bottom:1px solid var(--line); }
+.pswitch__list {
+  display:flex; gap:var(--s-32); list-style:none; margin:0; padding:0;
+  overflow-x:auto; -webkit-overflow-scrolling:touch;
+}
+.pswitch__list::-webkit-scrollbar { display:none; }
+.pswitch__list a {
+  display:block; padding:var(--s-20) 0; white-space:nowrap;
+  color:var(--ink-60); font-weight:500; text-decoration:none;
+  border-bottom:2px solid transparent; margin-bottom:-1px;
+  transition:color 150ms var(--ease), border-color 150ms var(--ease);
+}
+.pswitch__list a:hover { color:var(--enzo-800); }
+/* Joriy mahsulot — havola emas, joyni bildiruvchi belgi */
+.pswitch__list a[aria-current] { color:var(--enzo-800); font-weight:600; border-bottom-color:var(--enzo-500); }
+
 .duo__col { grid-column:1 / -1; }
 .duo__col + .duo__col { margin-top:var(--s-40); }
 .duo__col h2 { margin-top:var(--s-16); }
@@ -821,11 +840,6 @@ body.is-locked { overflow:hidden; }
    bir chiziqda turishi uchun katak ichida pastga tekislanadi. */
 .capacity__nums--3 > div { display:flex; flex-direction:column; justify-content:flex-end; }
 
-/* Havola-kartochka — butun kartochka bosiladi, ichida alohida tugma yo'q:
-   nishon katta, mo'ljal aniq (Fitts qonuni). */
-.xlink { display:block; text-decoration:none; }
-.xlink .card__title { transition:color 150ms var(--ease); }
-.xlink:hover .card__title { color:var(--enzo-500); }
 
 /* --- §5.8b · Bosh direktor murojaati ------------------------------------ */
 
