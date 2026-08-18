@@ -764,7 +764,13 @@ body.is-locked { overflow:hidden; }
    Sakkiztasi sakkiz xil brend rangida bo'lsa qator alacha bo'lib ketadi.
    Rang CSS dan emas, fayldan keladi: <img> ichidagi SVG ota-elementning
    currentColor ini ko'rmaydi — u alohida hujjat. */
-.logo-tile img { max-width:100%; max-height:100%; width:auto; height:auto; object-fit:contain; }
+/* Logo plitkaning butun kengligini egallamaydi — atrofida havo qoladi
+   (mijoz qarori 2026-08-18). Ikkala o'lcham ham cheklanadi: keng yozuvli
+   logolar (JBA GROUP) kenglikka, belgili logolar (Central Beton) esa
+   balandlikka tayanadi — bittasini cheklash yetmaydi. */
+.logo-tile img { max-width:82%; max-height:66%; width:auto; height:auto; object-fit:contain; }
+/* Mobilda plitka ~175px — u yerda ham qisish logoni o'qib bo'lmaydigan qiladi */
+@media (min-width:768px) { .logo-tile img { max-width:66%; max-height:52%; } }
 @media (min-width:768px)  { .logos { grid-template-columns:repeat(4,1fr); } }
 
 /* --- §5.12 · Mijozlar fikri · vertikal video tasmasi -------------------- */
