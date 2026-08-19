@@ -977,7 +977,7 @@
   /* CSS animatsiyasi tugagach tozalaymiz. `animationend` kelmasa ham
      (masalan animatsiya o'chirilgan bo'lsa) taymer ishlaydi. */
   el.addEventListener('animationend', finish);
-  setTimeout(finish, 3600);
+  setTimeout(finish, 2700);
 
   var skip = function () { el.style.animation = 'none'; finish(); };
   el.addEventListener('click', skip);

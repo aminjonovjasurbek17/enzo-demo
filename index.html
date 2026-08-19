@@ -33,8 +33,8 @@
        butunlay scroll qilinmaydigan bo'lib qolardi. Bu kirish
        animatsiyalarining klassik falokati.
 
-       3600 ms — parda 2700 + 500 ms da so'nadi, ustiga zaxira. */
-    setTimeout(function () { root.classList.remove('has-intro'); }, 3600);
+       2700 ms — parda 1900 + 450 ms da so'nadi, ustiga zaxira. */
+    setTimeout(function () { root.classList.remove('has-intro'); }, 2700);
   } catch (e) { /* sessionStorage yopiq bo'lsa — animatsiya shunchaki bo'lmaydi */ }
 })();
 </script>
@@ -54,7 +54,8 @@
      `object-fit:contain` da yon tomonlarda chegara ko'rinmaydi. -->
 <div class="intro" id="intro" aria-hidden="true">
   <video class="intro__v" src="assets/video/enzo-logo.mp4"
-         autoplay muted playsinline preload="auto"></video>
+         autoplay muted playsinline preload="auto"
+         onloadedmetadata="this.playbackRate=1.5"></video>
 </div>
 
 
@@ -68,7 +69,7 @@
        qilib chizilgandi; brendning o'z belgisi esa uchta QIYA plita —
        ustma-ust taxlangan shifer varaqlari. `currentColor`: sarhad hero
        ustida oq, scroll'dan keyin ko'k bo'ladi. -->
-  <symbol id="i-enzo" viewBox="0 0 380.20 114.06">
+  <symbol id="i-enzo" viewBox="-2 -2 384.20 118.06">
     <g fill="currentColor" transform="translate(-7690.23 -4876.67)">
     <polygon points="7753.04 4876.67 7690.23 4883.85 7690.23 4905.63 7707.27 4911.92 7770.07 4904.74 7770.07 4882.96 7753.04 4876.67 7753.04 4876.67"/>
     <polygon points="7753.04 4916.07 7690.23 4923.26 7690.23 4945.03 7707.27 4951.33 7770.07 4944.14 7770.07 4922.37 7753.04 4916.07 7753.04 4916.07"/>

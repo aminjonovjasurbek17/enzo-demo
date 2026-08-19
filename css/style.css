@@ -277,6 +277,11 @@ h1,h2,h3,h4 { text-wrap:balance; }
 .header.is-scrolled {
   background:var(--white); color:var(--ink); border-bottom-color:var(--line);
 }
+/* ✎ Logotip oq sarhadda brend ko'kida, qora emas (mijoz qarori, 2026-08-20).
+   Qolgan sarhad matni (menyu, telefon) --ink bo'lib qoladi: agar logotip
+   ham ular bilan bir xil qora bo'lsa, u navigatsiya elementiga o'xshab
+   qolardi. Rang farqi uni brend belgisi sifatida ajratib turadi. */
+.header.is-scrolled .logo { color:var(--enzo-800); }
 
 /* ✎ Gradient tasma (mijoz qarori, 2026-08-19).
    Sabab: hero kadrining tepasi quyosh botish osmoni — deyarli oq. Oq matn
@@ -313,7 +318,7 @@ h1,h2,h3,h4 { text-wrap:balance; }
    `aspect-ratio` majburiy: viewBox'li SVG'ga `width:auto` berilsa, brauzer
    uni 300px qilib oladi va logotip 300px kenglikdagi qutining o'rtasiga
    tushib, chap chetdan uzoqlashib ketadi (o'lchandi). */
-.logo .logo__svg { height:26px; width:auto; aspect-ratio:380.2 / 114.06; }
+.logo .logo__svg { height:26px; width:auto; aspect-ratio:384.2 / 118.06; }
 
 .nav { display:none; gap:var(--s-32); margin-inline:auto; }
 .nav a { font-size:17px; font-weight:500; opacity:.85; transition:opacity 150ms var(--ease); }
@@ -1797,10 +1802,11 @@ html.has-intro .intro {
   /* Videoning O'Z foni (o'lchandi: #354a92) — `contain` da yon tomonlarda
      chegara ko'rinmaydi. */
   background:#354a92;
-  /* 2700 ms — logotip ~2,0–2,4 s da to'liq shakllanadi (kadrma-kadr
-     o'lchandi), keyin qisqa nafas va so'nish. Videoning oxirigacha (5 s)
-     kutilmaydi: qolgani shunchaki ushlab turish. */
-  animation:intro-out 500ms var(--ease) 2700ms forwards;
+  /* ✎ 1,5× tezlashtirildi (mijoz qarori, 2026-08-20).
+     Logotip odatdagi tezlikda ~2,4 s da shakllanardi, 1,5× da esa ~1,6 s da.
+     Shunga qarab kechikish 2700 → 1900 ms: logotip to'liq ko'rinadi, keyin
+     qisqa nafas va so'nish. Jami parda ~2,35 s turadi. */
+  animation:intro-out 450ms var(--ease) 1900ms forwards;
 }
 .intro__v {
   width:100%; height:100%;
