@@ -153,6 +153,16 @@
 
     var elProduct = $('c-product'), elQty = $('c-qty');
 
+    /* Natija paneli — «Bilmayman» holatida ko'rinishi o'zgaradi.
+       Kalkulyator formasining yonidan olinadi: mahsulot sahifalarida ham
+       bitta juftlik bo'ladi, hujjatdagi birinchi mos elementga tayanmaymiz. */
+    var calcResult = calc.parentElement.querySelector('.calc__result') ||
+                     document.createElement('div');
+
+    /* Natija sarlavhasi. Kalkulyator besh sahifada takrorlanadi — biror
+       nusxada element yetishmasa, butun update() yiqilmasligi kerak. */
+    var elCap = $('c-cap') || document.createElement('p');
+
     /* Mahsulot sahifasida kalkulyator o'sha mahsulot bilan ochiladi
        (PROMPT.md §6.1). /beton da 'Tayyor beton', /shifer da 'Shifer'. */
     var boshlangich = calc.getAttribute('data-default');
@@ -173,18 +183,41 @@
       var qty = Math.max(1, Math.floor(+elQty.value || 1));
       var birlik = val(p.birlik);
       var zona = REGIONS[+elRegion.value][1];
-      var tovar = val(p.narx) * qty;
-      var ship  = Math.ceil(qty / val(p.reys)) * SHIP_BASE * ZONA[zona];
       var sel = $(p.sel);
 
+      /* «Bilmayman» — o'lchov savoliga javob berolmagan xaridor.
+         Ilgari bunday xaridor to'siqqa urilardi: beton markasini bilmasa,
+         kalkulyatordan chiqib ketardi. Endi hisob to'xtaydi, lekin ariza
+         yo'li ochiq qoladi — miqdor va manzil menejerga baribir yetib boradi.
+
+         Bu yerda taxminiy raqam KO'RSATILMAYDI. Marka narxni 1,48 barobargacha
+         o'zgartiradi (M100 → M500), sementda esa o'lchov birligi ham boshqa
+         (qop ↔ tonna) — «taxminan» deb yozilgan raqam yo'l qo'yarli emas. */
+      var noaniq = !p.text && sel.value === '?';
+
       $('v-unit').textContent = birlik;
-      $('c-hint').textContent = p.izoh(qty);
-      $('c-price').textContent = fmt(tovar + ship) + ' soʻm';
+      calcResult.classList.toggle('is-noaniq', noaniq);
 
       $('o-product').textContent = p.nom;
-      $('o-spec').textContent = p.text ? sel.textContent : sel.options[sel.selectedIndex].textContent;
       $('o-qty').textContent  = fmt(qty) + ' ' + birlik;
       $('o-addr').textContent = elDistrict.value + ', ' + REGIONS[+elRegion.value][0];
+
+      if (noaniq) {
+        $('c-hint').textContent = 'Muammo emas — miqdor va manzilni qoldiring, menejer mos turini tanlab, aniq narxni beradi.';
+        elCap.textContent = 'Bu tanlov uchun narx tanlangan turga bogʻliq';
+        $('c-price').textContent = 'Menejer hisoblab beradi';
+        $('o-spec').textContent = 'Menejer bilan aniqlanadi';
+        $('o-ship').textContent = '—';
+        return;
+      }
+
+      var tovar = val(p.narx) * qty;
+      var ship  = Math.ceil(qty / val(p.reys)) * SHIP_BASE * ZONA[zona];
+
+      $('c-hint').textContent = p.izoh(qty);
+      elCap.textContent = 'Sizning konfiguratsiyangiz uchun taxminiy narx';
+      $('c-price').textContent = fmt(tovar + ship) + ' soʻm';
+      $('o-spec').textContent = p.text ? sel.textContent : sel.options[sel.selectedIndex].textContent;
       $('o-ship').textContent = fmt(ship) + ' soʻm';
     };
 
@@ -203,20 +236,6 @@
     calc.addEventListener('change', update);
     update();
   }
-
-  /* 5 · Prototip: struktura ↔ rang rejimi */
-  var wireCss = document.getElementById('wireCss');
-  var btnWire = document.getElementById('btnWire');
-  var btnFull = document.getElementById('btnFull');
-
-  var setMode = function (wire) {
-    document.documentElement.classList.toggle('wire', wire);
-    wireCss.disabled = !wire;
-    btnWire.classList.toggle('is-active', wire);
-    btnFull.classList.toggle('is-active', !wire);
-  };
-  btnWire.addEventListener('click', function () { setMode(true); });
-  btnFull.addEventListener('click', function () { setMode(false); });
 
   /* 6 · Paydo bo'lish (DESIGN.md §8) */
   var reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
@@ -297,9 +316,9 @@
     el.className = 'deck__card';
 
     /* `ph` klassi ichki elementda — kartochkaning o'zida emas.
-       Sabab: `wireframe.css` dagi `.wire .ph { position:relative }` qoidasi
-       spetsifikligi yuqoriroq bo'lib, kartochkaning `position:absolute` ini
-       bosib ketardi va butun to'plam oddiy oqimga tushib qolardi. */
+       Sabab: `.ph` ga tegishli umumiy qoidalar kartochkaning
+       `position:absolute` ini bosib ketardi. Ajratilgan holda barqaror.
+    */
     var box = document.createElement('span');
     box.className = 'ph deck__ph';
     box.setAttribute('data-ph', s.ph);
@@ -327,7 +346,15 @@
       var hidden = far > VISIBLE;
 
       el.style.zIndex = String(shots.length - far);
-      el.style.opacity = hidden ? '0' : String(1 - far * 0.34);
+
+      /* ✎ Yon kadr SHAFFOF emas, oq parda bilan xiralashadi (2026-08-19).
+         Avval `opacity` butun elementga qo'yilardi. To'ldirgichlar bo'sh
+         kulrang bo'lgani uchun bu bilinmagan; real fotolar qo'yilgach yon
+         kadrlar bir-biridan ko'rinib, ikki ekspozitsiyaga o'xshab qoldi.
+         Endi element to'liq noshaffof — yaqin kadr uzoqni toza yopadi,
+         uzoqlik esa `--veil` (::after dagi oq qatlam) bilan beriladi. */
+      el.style.opacity = hidden ? '0' : '1';
+      el.style.setProperty('--veil', String(far * 0.34));
       el.style.pointerEvents = hidden || far === 0 ? 'none' : 'auto';
       el.style.transform =
         'translateX(-50%) translateX(' + (pos * 46) + '%)' +
@@ -544,4 +571,342 @@
     if (cache && typeof WeakMap === 'function') cache = new WeakMap();  // o'lchamlar o'zgardi
     target = Math.min(limit(), target);
   }, { passive: true });
+})();
+
+
+/* 8 · Matn ochilishi — sarlavhalar so'zma-so'z, qolgani bir butun
+   ---------------------------------------------------------------------------
+   Ikki sinf:
+     `.t-words` — sarlavha. So'zlarga bo'linadi, har so'z `<span class="w">`
+                  ichiga olinadi va `--i` tartib raqamini oladi.
+     `.t-rise`  — oddiy matn bloki. Bo'linmaydi, bir butun ko'tariladi.
+                  Kechikish `--d` orqali HTML'da beriladi.
+   Qolganini CSS qiladi (`style.css` §13).
+
+   Nega `textContent` bilan emas, tugunlar bo'ylab yuriladi: hero sarlavhasida
+   qatorlarni ajratuvchi `<span>` lar bor. Matnni tekis olib qayta yozsak,
+   o'sha qatorlar yo'qoladi va sarlavha bir uzun satrga aylanadi.
+
+   Progressiv yaxshilanish: bu blok umuman ishlamasa ham matn manba HTML'da
+   o'z holicha turadi — `.w` bo'lmasa CSS ham hech narsani yashirmaydi. */
+(function () {
+  'use strict';
+
+  var heads = Array.prototype.slice.call(document.querySelectorAll('.t-words'));
+  var rises = Array.prototype.slice.call(document.querySelectorAll('.t-rise'));
+  var all   = heads.concat(rises);
+  if (!all.length) return;
+
+  var reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  /* Bitta sarlavhani so'zlarga bo'ladi. `n` — hozirgi tartib raqami,
+     qaytariladigan qiymat — keyingi so'z uchun raqam. */
+  function split(el, n) {
+    var kids = Array.prototype.slice.call(el.childNodes);
+
+    kids.forEach(function (node) {
+      if (node.nodeType === 1) {            // element — ichiga kiramiz
+        n = split(node, n);
+        return;
+      }
+      if (node.nodeType !== 3) return;      // matn tuguni emas
+
+      var text = node.nodeValue;
+      if (!text.trim()) return;
+
+      /* Bo'shliqlarni saqlab bo'lamiz: bo'linmalarning toq indekslari —
+         so'zlar, juftlari — oradagi bo'shliq. Bo'shliq matn tugun bo'lib
+         qoladi, aks holda so'zlar bir-biriga yopishadi. */
+      var frag  = document.createDocumentFragment();
+      var parts = text.split(/(\s+)/);
+
+      parts.forEach(function (part) {
+        if (!part) return;
+        if (/^\s+$/.test(part)) {
+          frag.appendChild(document.createTextNode(part));
+          return;
+        }
+        var span = document.createElement('span');
+        span.className = 'w';
+        span.style.setProperty('--i', n++);
+        span.textContent = part;
+        frag.appendChild(span);
+      });
+
+      node.parentNode.replaceChild(frag, node);
+    });
+
+    return n;
+  }
+
+  /* ⚠️ Faqat sarlavhalar bo'linadi. `.t-rise` bloklariga tegilmaydi —
+     ular ichida tugma, SVG va band matn bor. */
+  heads.forEach(function (el) { split(el, 0); });
+
+  if (reduced) {
+    all.forEach(function (el) { el.classList.add('is-in'); });
+    return;
+  }
+
+  /* Animatsiya tugagach `will-change` olib tashlanadi. Eng uzun yo'l:
+     butun sarlavhaning kechikishi + so'zlar soni × qadam + davomiylik.
+     Qiymatlar CSS'dan o'qiladi — ikki joyda takrorlanmasin. */
+  function done(el) {
+    var cs   = getComputedStyle(el);
+    var ms   = function (name, fallback) {
+      var v = parseFloat(cs.getPropertyValue(name));
+      return isNaN(v) ? fallback : v;
+    };
+    var wait = ms('--lag', 0) + el.querySelectorAll('.w').length * ms('--step', 60)
+             + ms('--dur', 640) + 80;
+    setTimeout(function () { el.classList.add('is-done'); }, wait);
+  }
+
+  function show(el) { el.classList.add('is-in'); done(el); }
+
+  if (!('IntersectionObserver' in window)) {
+    all.forEach(show);
+    return;
+  }
+
+  var io = new IntersectionObserver(function (entries) {
+    entries.forEach(function (entry) {
+      if (!entry.isIntersecting) return;
+      show(entry.target);
+      io.unobserve(entry.target);
+    });
+  }, { threshold: 0.2, rootMargin: '0px 0px -10% 0px' });
+
+  all.forEach(function (el) {
+    /* Ekran tepasidagi matn (hero) kuzatuvni kutmaydi — sahifa ochilishi
+       bilan chiqadi. Aks holda hero ketma-ketligi ishga tushmay qolardi:
+       u allaqachon ko'rinib turibdi, "kesib o'tish" hodisasi bo'lmaydi. */
+    if (el.getBoundingClientRect().top < window.innerHeight) show(el);
+    else io.observe(el);
+  });
+})();
+
+
+/* 9 · Hero — kadr parallaksi
+   ---------------------------------------------------------------------------
+   Parallaks butun qatlamga (`.hero__frame`) qo'yiladi — rasmga emas.
+   Qatlam balandligi 108% va tepasi -8% (CSS) — siljish uchun zaxira.
+
+   ✎ Kadr izohlarini joylashtiruvchi kod olib tashlandi (mijoz qarori,
+   2026-08-19): izohlarning o'zi hero'dan chiqarildi. */
+(function () {
+  'use strict';
+
+  var frame = document.getElementById('heroFrame');
+  if (!frame) return;
+
+  if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+    frame.style.animation = 'none';
+    return;
+  }
+
+  /* Parallaks — hero ko'rinib turganda, faqat pastga.
+     0,07 koeffitsiyenti: eng ko'p siljish 0,07 × qatlam balandligi, tepadagi
+     8% zaxiradan kichik. Ko'proq bo'lsa kadrning tepa cheti ochilib qolardi. */
+  var ticking = false;
+  var onScroll = function () {
+    if (ticking) return;
+    ticking = true;
+    requestAnimationFrame(function () {
+      /* Faqat 1024px dan keng ekranda — pastroqda qatlamda zaxira yo'q (CSS) */
+      if (window.innerWidth < 1024) { frame.style.translate = ''; ticking = false; return; }
+      var h = frame.clientHeight;
+      var y = Math.min(window.scrollY, h);
+      frame.style.translate = '0 ' + (y * 0.07).toFixed(1) + 'px';
+      ticking = false;
+    });
+  };
+  onScroll();
+  window.addEventListener('scroll', onScroll, { passive: true });
+})();
+
+
+/* 10 · Scroll indikatori — o'ng chetdagi progress chizig'i
+   ---------------------------------------------------------------------------
+   ✎ Qayta qurildi (mijoz qarori, 2026-08-19). Avval o'rtada suzib turgan
+   qisqa chiziq va ikkita raqam («02 … 16») bor edi — mijoz rad etdi.
+   Endi ekranning o'ng chetiga yopishgan yupqa to'liq balandlikdagi yo'l,
+   ustidan brend rangidagi to'ldirgich yuradi. Raqam yo'q: sahifada nechta
+   bo'lim borligi foydalanuvchining savoli emas.
+
+   Balandlikni CSS `--p` o'zgaruvchisi orqali beramiz — layout hisoblanmaydi,
+   faqat kompozitsiya qatlami yangilanadi. */
+(function () {
+  'use strict';
+
+  var bar = document.getElementById('snavBar');
+  if (!bar) return;
+
+  var ticking = false;
+
+  var update = function () {
+    var doc = document.documentElement.scrollHeight;
+    var vh  = window.innerHeight;
+    var max = doc - vh;
+    var pct = max > 0 ? Math.min(1, Math.max(0, window.scrollY / max)) : 0;
+
+    /* Yuguruvchining uzunligi — ekran sahifaning qancha qismini ko'rsatayotgani.
+       Eng kamida 8%: uzun sahifada aniq nisbat 2–3px bo'lib, ko'rinmay qolardi. */
+    var h = Math.max(8, (vh / doc) * 100);
+    bar.style.setProperty('--h', h.toFixed(2) + '%');
+    bar.style.setProperty('--y', (pct * (100 - h)).toFixed(2) + '%');
+  };
+
+  var onScroll = function () {
+    if (ticking) return;
+    ticking = true;
+    requestAnimationFrame(function () { update(); ticking = false; });
+  };
+
+  update();
+  window.addEventListener('scroll', onScroll, { passive: true });
+  window.addEventListener('resize', onScroll, { passive: true });
+})();
+
+
+/* 11 · Ijtimoiy tarmoqlar — suzuvchi tugma
+   ---------------------------------------------------------------------------
+   Yig'ilgan holatda bitta tugma. Sabab: uchta rangli kvadrat doim ekranda
+   tursa, kalkulyator va forma ustida ular birinchi darajali element bo'lib
+   qolardi. Ochilish holati faqat shu blokda — sahifaning boshqa qismiga
+   ta'sir qilmaydi. */
+(function () {
+  'use strict';
+
+  var soc = document.getElementById('soc');
+  if (!soc) return;
+
+  var btn = document.getElementById('socToggle');
+
+  var setOpen = function (on) {
+    soc.classList.toggle('is-open', on);
+    btn.setAttribute('aria-expanded', on ? 'true' : 'false');
+  };
+
+  btn.addEventListener('click', function () {
+    setOpen(!soc.classList.contains('is-open'));
+  });
+
+  /* Tashqariga bosilsa yopiladi — ochiq qolgan panel scroll paytida
+     kontentni to'sib turardi. */
+  document.addEventListener('click', function (e) {
+    if (!soc.contains(e.target)) setOpen(false);
+  });
+
+  document.addEventListener('keydown', function (e) {
+    if (e.key === 'Escape') setOpen(false);
+  });
+})();
+
+
+/* 12 · Statistika — raqamlar 0 dan sanaladi
+   ---------------------------------------------------------------------------
+   Raqam ekranga kirganda 0 dan o'z qiymatigacha tez sanaladi. Bir marta —
+   qayta scroll qilinganda takrorlanmaydi: har o'tganda qaytadan sanalsa,
+   ko'rsatkich "hisoblagich" bo'lib, dalil bo'lmay qolardi.
+
+   Matn tugunining O'ZI yangilanadi, `textContent` emas: raqamdan keyin
+   `<span class="unit">` turadi (+, yil) va u o'chib ketardi. */
+(function () {
+  'use strict';
+
+  var nums = document.querySelectorAll('.stat__num');
+  if (!nums.length) return;
+
+  if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+  if (!('IntersectionObserver' in window)) return;
+
+  var DUR = 900;   // ms — tez. Uzunroq bo'lsa raqam "og'ir" bo'lib qoladi
+                   // va o'quvchi natijani kutib turadi.
+
+  var run = function (el) {
+    var node = el.firstChild;                       // raqam matni
+    if (!node || node.nodeType !== 3) return;
+    var target = parseInt(node.textContent, 10);
+    if (isNaN(target)) return;
+
+    var t0 = null;
+    var step = function (t) {
+      if (t0 === null) t0 = t;
+      var p = Math.min(1, (t - t0) / DUR);
+      /* easeOutExpo — boshida keskin, oxirida to'xtaydi. Chiziqli sanoq
+         mexanik ko'rinadi, bu esa "yetib keldi" degan tuyg'u beradi. */
+      var e = p === 1 ? 1 : 1 - Math.pow(2, -10 * p);
+      node.textContent = String(Math.round(target * e));
+      if (p < 1) requestAnimationFrame(step);
+      else node.textContent = String(target);
+    };
+    node.textContent = '0';
+    requestAnimationFrame(step);
+  };
+
+  var io = new IntersectionObserver(function (entries) {
+    entries.forEach(function (en) {
+      if (!en.isIntersecting) return;
+      io.unobserve(en.target);
+      run(en.target);
+    });
+  }, { threshold: 0.6 });
+
+  Array.prototype.forEach.call(nums, function (n) { io.observe(n); });
+})();
+
+
+/* 13 · Zavod videosi — YouTube «facade»
+   ---------------------------------------------------------------------------
+   Sahifa ochilganda YouTube'ga so'rov ketmaydi: poster va tugma oddiy
+   HTML. Foydalanuvchi bosgandagina iframe quriladi va `autoplay=1` bilan
+   darrov ijro boshlanadi — ya'ni bosish ikki marta talab qilinmaydi.
+
+   `youtube-nocookie.com` — kuki qo'ymaydigan domen. `rel=0` tugagandan
+   keyin begona kanallarning videolarini ko'rsatmaydi. */
+(function () {
+  'use strict';
+
+  var btns = document.querySelectorAll('.vplay');
+  if (!btns.length) return;
+
+  Array.prototype.forEach.call(btns, function (btn) {
+    var id = btn.getAttribute('data-yt');
+
+    /* ID hali ulanmagan — blok oddiy rasm bo'lib qoladi. Bosilmaydigan
+       tugma qo'yilsa, u ishlamaydigan sayt taassurotini berardi. */
+    if (!id || id === 'VIDEO_ID') {
+      btn.classList.add('is-empty');
+      btn.setAttribute('tabindex', '-1');
+      btn.setAttribute('aria-hidden', 'true');
+      return;
+    }
+
+    /* `file://` dan ochilganda iframe ISHLAMAYDI: sahifaning manbasi
+       (origin) bo'lmagani uchun YouTube «Ошибка 153» beradi — bu himoya
+       cheklovi, kod xatosi emas. Serverdan (GitHub Pages, hosting yoki
+       lokal server) ochilganda muammo yo'q.
+
+       Shu holat uchun zaxira yo'l: video yangi oynada YouTube'da ochiladi.
+       Aks holda mahalliy ko'rish paytida sayt buzuq ko'rinardi. */
+    var local = location.protocol === 'file:';
+    if (local) {
+      btn.setAttribute('aria-label', btn.getAttribute('aria-label') + ' (YouTube\'da ochiladi)');
+    }
+
+    btn.addEventListener('click', function () {
+      if (local) {
+        window.open('https://www.youtube.com/watch?v=' + id, '_blank', 'noopener');
+        return;
+      }
+      var fr = document.createElement('iframe');
+      fr.src = 'https://www.youtube-nocookie.com/embed/' + id +
+               '?autoplay=1&rel=0&modestbranding=1&playsinline=1';
+      fr.title = 'ENZO Kompaniyasi — video';
+      fr.allow = 'accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture';
+      fr.setAttribute('allowfullscreen', '');
+      btn.replaceWith(fr);
+    });
+  });
 })();

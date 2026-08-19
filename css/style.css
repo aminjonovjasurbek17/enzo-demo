@@ -55,6 +55,9 @@
   --edge:max(var(--pad), calc((100% - var(--content-max)) / 2 + var(--pad)));
 
   --ease:cubic-bezier(0.4, 0, 0.2, 1);
+  /* Chiqish egri chizig'i — tez boshlanib, yumshoq to'xtaydi.
+     Sarlavha so'zlarining ochilishi uchun (2026-08-19). */
+  --ease-out:cubic-bezier(0.22, 1, 0.36, 1);
 }
 
 /* 3 · RESET -------------------------------------------------------------- */
@@ -115,6 +118,24 @@ h1,h2,h3,h4 { text-wrap:balance; }
 .t-body    { font-size:clamp(16px, 1.2vw, 17px); font-weight:400; line-height:1.6; }
 .t-small   { font-size:clamp(14px, 1.1vw, 15px); font-weight:400; line-height:1.5; }
 .t-caption { font-size:13px; font-weight:500; letter-spacing:0.02em; line-height:1.4; }
+
+/* ✎ Katta sarlavhalar oq fonda brend ko'kida (mijoz qarori, 2026-08-19).
+   Faqat uch daraja: display, h1, h2. `t-h3` va undan kichigi — kartochka
+   sarlavhalari, ular `--ink` da qoladi, aks holda sahifada ierarxiya
+   yo'qoladi va hamma narsa ko'k bo'lib ketadi.
+   Tana matni, izohlar, ro'yxatlar — o'zgarmaydi. */
+.t-display, .t-h1, .t-h2 { color:var(--enzo-800); }
+
+/* To'q fonda sarlavha bo'limning o'z rangini oladi (oq) — ko'k ko'k ustida
+   qolib ketmasligi uchun. Hero, to'q bo'limlar, footer. */
+.hero .t-display, .hero .t-h1, .hero .t-h2,
+.phero .t-display, .phero .t-h1,
+.section--dark .t-display, .section--dark .t-h1, .section--dark .t-h2,
+/* 🐛 `.faq__aside` — och bo'lim ICHIDAGI to'q quti; ro'yxatga kirmagani uchun
+   telefon raqami (`t-h2`) ko'k fonda ko'k bo'lib, butunlay ko'rinmay qolgandi.
+   Topildi 2026-08-20. */
+.faq__aside .t-h2,
+.footer .t-display, .footer .t-h1, .footer .t-h2 { color:inherit; }
 .t-stat    { font-size:clamp(48px, 6.4vw, 88px); font-weight:700; letter-spacing:-0.04em; line-height:1; }
 
 /* Bo'lim yorlig'i.
@@ -162,6 +183,11 @@ h1,h2,h3,h4 { text-wrap:balance; }
 .btn--on-dark:hover { background:var(--enzo-100); }
 
 .btn--secondary       { background:transparent; color:var(--enzo-800); border-color:var(--line-2); }
+/* To'q kadr ustida ikkinchi darajali tugma. Fon shaffof — kadr ko'rinib
+   turadi, kontur oq: ikkita to'ldirilgan tugma yonma-yon turganda ikkalasi
+   ham birinchi darajaday o'qilardi. */
+.btn--ghost-dark       { background:transparent; color:var(--white); border-color:rgba(255,255,255,.55); }
+.btn--ghost-dark:hover { background:rgba(255,255,255,.12); border-color:var(--white); }
 .btn--secondary:hover { border-color:var(--enzo-500); color:var(--enzo-500); }
 
 .btn--sm { height:48px; padding:0 var(--s-24); font-size:16px; }
@@ -211,18 +237,14 @@ h1,h2,h3,h4 { text-wrap:balance; }
 
 /* Tom shakli blok ichidagi joyni yeydi — kontent uchun qo'shimcha bo'shliq */
 .section.roof-top { padding-top:calc(var(--s-72) + var(--roof-h)); }
-/* ✎ Hero'da cho'qqi balandroq (mijoz qarori, 2026-08-16) — ~1.35×.
-   Faqat hero'da: `roof-top` bo'limlari (quvvat, forma) asl balandlikda qoladi.
-   Nisbatlar (--roof-peak, --roof-r) o'zgarmaydi, faqat balandlik. */
-.hero.roof-bottom { --roof-h:clamp(38px, 8.6vw, 156px); }
 
-/* Pastki bo'shliq — sarlavha blokini tom shaklidan yuqoriroq ko'taradi.
-   Tom shaklining o'zi joyida qoladi (u bo'lim chegarasida). */
-.hero.roof-bottom { padding-bottom:calc(var(--s-56) + var(--roof-h)); }
+/* ✎ Hero'dan tom kesimi OLIB TASHLANDI (mijoz qarori, 2026-08-19).
+   Sabab: kadr ustidagi katta oq xanjar rasmni ikkiga bo'lib, umumiy vizualni
+   buzardi. Firma shakli qolgan `roof-top` bo'limlarida saqlanadi — u yerda
+   kesim tekis fonni kesadi, fotoni emas. */
 
 @media (min-width:1024px) {
   .section.roof-top { padding-top:calc(var(--s-128) + var(--roof-h)); }
-  .hero.roof-bottom { padding-bottom:calc(var(--s-72) + var(--roof-h)); }
 }
 
 /* 8 · BO'LIM RITMI ------------------------------------------------------- */
@@ -256,13 +278,42 @@ h1,h2,h3,h4 { text-wrap:balance; }
   background:var(--white); color:var(--ink); border-bottom-color:var(--line);
 }
 
+/* ✎ Gradient tasma (mijoz qarori, 2026-08-19).
+   Sabab: hero kadrining tepasi quyosh botish osmoni — deyarli oq. Oq matn
+   o'lchanganda telefon 1,78:1, nofaol til kodi 1,71:1 bergan (AA = 4,5:1).
+   Tasma header ostidagi kontentsiz zonani to'qlashtiradi, kadrning o'ziga
+   tegmaydi (DESIGN.md §10.7 kadr overlayiga tegishli, header foniga emas).
+   Scroll'da header oqarganda tasma o'chadi. O'lchov: 6,32 / 5,46. */
+.header::before {
+  content:''; position:absolute; inset:0 0 auto 0; height:190px; z-index:-1;
+  background:linear-gradient(180deg,
+    rgba(8,18,32,.72) 0%,
+    rgba(8,18,32,.40) 42%,
+    rgba(8,18,32,0)  100%);
+  pointer-events:none;
+  transition:opacity 200ms var(--ease);
+}
+.header.is-scrolled::before { opacity:0; }
+
+/* Tasma ustida shaffoflik bilan zaiflashtirishning hojati yo'q */
+.header:not(.is-scrolled) .nav a          { opacity:1; }
+.header:not(.is-scrolled) .lang__opt      { opacity:.82; }
+.header:not(.is-scrolled) .lang__opt.is-active { opacity:1; }
+
 .logo { display:flex; align-items:center; gap:var(--s-12); flex:none; }
 .logo svg { height:24px; width:auto; }
-.logo__mark { display:flex; flex-direction:column; gap:4px; }
-.logo__mark span { display:block; width:26px; height:3px; background:currentColor; }
-.logo__mark span:nth-child(2) { width:20px; }
-.logo__mark span:nth-child(3) { width:14px; }
-.logo__word { font-size:22px; font-weight:700; letter-spacing:-0.03em; }
+/* ✎ Logotip endi haqiqiy vektor (mijoz qarori, 2026-08-20).
+   Avvalgi CSS varianti belgini uchta tekis, kengligi turlicha chiziq qilib
+   chizardi. Brendning o'z belgisi boshqacha: uchta QIYA plita, ustma-ust
+   taxlangan shifer varaqlari — ya'ni kompaniya nima ishlab chiqarishini
+   aytadigan shakl. Yozuv ham SF Pro emas, kontur qilingan o'z harflari.
+   `currentColor` — sarhad hero ustida oq, scroll'dan keyin ko'k. */
+/* `.logo svg` qoidasi kuchliroq (0,1,1) — shuning uchun bu yerda ham
+   `.logo` bilan yoziladi, aks holda balandlik 24px da qolib ketardi.
+   `aspect-ratio` majburiy: viewBox'li SVG'ga `width:auto` berilsa, brauzer
+   uni 300px qilib oladi va logotip 300px kenglikdagi qutining o'rtasiga
+   tushib, chap chetdan uzoqlashib ketadi (o'lchandi). */
+.logo .logo__svg { height:26px; width:auto; aspect-ratio:380.2 / 114.06; }
 
 .nav { display:none; gap:var(--s-32); margin-inline:auto; }
 .nav a { font-size:17px; font-weight:500; opacity:.85; transition:opacity 150ms var(--ease); }
@@ -312,84 +363,156 @@ body.is-locked { overflow:hidden; }
 /* Optiloom usuli: to'liq ekranli rasm, matn rasmning O'Z to'q qismida.
    Gradient / overlay / qorayish YO'Q (DESIGN.md §7 va §10.7). */
 
-/* Balandlik — aynan bitta ekran. Shunda tom shakli TO'LIQ ko'rinadi:
-   sahifa tepasida turganda kesilib qolmaydi. */
-/* Balandlik bir ekrandan pastroq — matn ham, tom shakli ham yuqoriga ko'tariladi.
-   Pastda keyingi bo'limning boshi ko'rinib turadi: bu pastga siljishga chaqiradi. */
+/* ✎ Balandlik to'liq bitta ekran (mijoz qarori, 2026-08-19).
+   Avval 88svh edi — pastda statistika raqamlarining tepasi ko'rinib turardi,
+   bu "pastga siljit" degan ishora bo'lishi kutilgandi. Amalda raqamlar yarmi
+   kesilib, kadr tugamagandek ko'rinardi. Endi hero to'liq ekranni egallaydi,
+   raqamlar birinchi scroll'dan keyin butun holda chiqadi.
+
+   svh (small viewport height) ishlatiladi, vh emas: mobil brauzerda manzil
+   paneli ochiq turganda 100vh ekrandan baland bo'lib, matnni pastga surib
+   yuboradi. */
 .hero {
   position:relative; isolation:isolate;
-  min-height:88svh;
+  min-height:100svh;
   display:flex; align-items:flex-end;
   padding-top:calc(64px + var(--s-40));
-  padding-bottom:var(--s-24);
+  padding-bottom:var(--s-56);
   background:var(--enzo-800); color:var(--white);
   overflow:hidden;
 }
 
 /* Rasm butun blokni to'ldiradi */
-.hero__img {
-  position:absolute; inset:0; z-index:-1;
-  width:100%; height:100%; object-fit:cover;
+/* Kadr qatlami. Balandligi 112% va tepasi -6% — parallaks uchun ataylab
+   qoldirilgan zaxira. Busiz siljitilgan rasmning cheti ochilib qolardi. */
+/* Mobilda kadr aynan avvalgidek — qatlam hero'ni to'liq to'ldiradi,
+   harakat yo'q. Uch sabab: (1) mobilda kadr 2:1 bo'lgani uchun allaqachon
+   kuchli qirqilgan, qo'shimcha vertikal siljish kompozitsiyani yana
+   o'zgartiradi; (2) mobil hero alohida bosqichda qayta quriladi
+   (WORKLOG 10-blok) — hozir unga qatlam qo'shish erta; (3) uzluksiz
+   masshtab telefonda batareyani yeydi, foydasi esa kam. */
+.hero__frame {
+  position:absolute; z-index:-1; inset:0;
+  overflow:hidden;
 }
+
+@media (min-width:1024px) {
+  .hero__frame {
+    /* Zaxira faqat TEPADA — pastki chet hero cheti bilan tekis turadi,
+       ya'ni matn ostidagi to'q beton maydon joyida qoladi. Parallaks
+       pastga siljitadi, aynan shu zaxirani yeydi.
+       8% — vazmin chegara: kadr sezilarli siljiydi, lekin sarlavha
+       ostidagi to'qlik buzilmaydi (o'lchandi, quyida). */
+    top:-8%; height:108%; bottom:auto;
+    /* `scale` va `translate` alohida xossalar — bittasi animatsiyada,
+       ikkinchisi JS'da bo'lsa ham bir-birini bekor qilmaydi. Bitta
+       `transform` da bo'lganda ikkinchisi birinchisini o'chirib yuborardi. */
+    animation:hero-breath 26s ease-in-out infinite alternate;
+    will-change:scale, translate;
+  }
+}
+
+/* Sekin nafas: 26 soniyada 5,5%. Chegarani ataylab past oldik — tezroq
+   yoki kattaroq bo'lsa "slayd-shou" ta'mi paydo bo'ladi. */
+@keyframes hero-breath {
+  from { scale:1; }
+  to   { scale:1.055; }
+}
+
+.hero__img {
+  position:absolute; inset:0;
+  width:100%; height:100%; object-fit:cover;
+  /* Kadr 2:1 — tor ekranda kuchli qirqiladi. Markazdan olinsa matn mikser
+     kabinalari ustiga tushadi (o'lchandi: 360px da 1,62:1). Kadr chapga
+     surilsa matn ostida bo'sh beton maydon qoladi va 360–768px da o'tadi.
+     Yakuniy mobil ishlov alohida bosqichda. */
+  object-position:14% 50%;
+}
+@media (min-width:1024px) { .hero__img { object-position:50% 50%; } }
 
 .hero__grid { width:100%; }
 .hero__copy { grid-column:1 / -1; }
 
 .hero h1 span { display:block; }
-.hero h1 .accent { color:var(--enzo-300); }
-/* text-wrap:pretty — qatorlar tekisroq bo'linadi, oxirida yolg'iz so'z qolmaydi.
-   Matnda `1‑qo'l` non-breaking defis (U+2011) bilan yozilgan — aks holda
-   qator "1-" bilan tugab, yolg'iz chiziqcha xunuk osilib qolardi. */
-.hero__lead { margin-top:var(--s-24); color:var(--enzo-300); text-wrap:pretty; }
-.hero__cta { margin-top:var(--s-32); }
+
+/* Sarlavha butunlay OQ — aksent rangi olib tashlandi (mijoz qarori, 2026-08-19).
+   `--enzo-300` fotoda hech qanday pardozda 4.5:1 bermasdi (o'lchandi: 1,65–3,51). */
+
+/* ✎ Sarlavha kattalashtirildi 48px → 76px (mijoz qarori, 2026-08-19).
+   Eski 48px cheklovi tom kesimi bor paytdagi kalta soya zonasidan kelib
+   chiqqan edi. Kesim olingandan keyin matn ustuni qayta o'lchandi:
+   y=380–780 oralig'ida oq matn kontrasti 4,5–9,6 — ya'ni ~400px erkin joy.
+   Zaif tasma faqat y=280–380 (3,4–4,6), matn bloki u yerga yetib bormaydi. */
+.hero h1 { font-size:clamp(40px, 5vw, 76px); line-height:1.02; letter-spacing:-0.035em; }
+
+/* Mahsulot qatori — sarlavhaning birinchi darajasi, yorliq emas.
+   31px / 600: sarlavhadan kichik, izohdan ancha katta. Katta harf va
+   ochilgan trekking ISHLATILMAYDI (DESIGN.md §10, taqiq 15). */
+.hero__kinds {
+  margin:0 0 var(--s-16);
+  display:flex; flex-wrap:wrap; align-items:center; gap:var(--s-16);
+  font-size:clamp(22px, 2.1vw, 31px); font-weight:600;
+  letter-spacing:-0.02em; color:var(--white);
+}
+/* Ajratgich — alohida element qo'shmasdan, nuqta */
+.hero__kinds span + span { position:relative; padding-left:var(--s-16); }
+.hero__kinds span + span::before {
+  content:''; position:absolute; left:0; top:50%; transform:translateY(-50%);
+  /* Kvadrat — saytdagi radius taqig'i (style.css:88) sababli */
+  width:5px; height:5px; background:rgba(255,255,255,.55);
+}
+
+/* Sarlavha → izoh → tugmalar: bitta vertikal ustun (mijoz qarori 2026-08-19).
+   Avval tugma va izoh yonma-yon turardi — ko'z sarlavhadan tugmaga sakrab,
+   izohni chetlab o'tardi. */
+/* ✎ Kattalashtirildi (mijoz qarori, 2026-08-20): .t-body 17px hero'ning
+   76px sarlavhasi va 31px mahsulot qatori yonida juda mayda qolardi —
+   ikki qatorli izoh tugmalarga qo'shilib ketardi. 23px uni sarlavha bilan
+   tugma orasida mustaqil pog'ona qilib qo'yadi (kinds 31 > note 23 > btn 17).
+   Ochligi ham oshirildi: .86 -> .92, katta keglda matn yengilroq ko'rinadi. */
+.hero__note {
+  margin:var(--s-24) 0 0; max-width:46ch;
+  font-size:clamp(18px, 1.6vw, 23px); line-height:1.5;
+  color:rgba(255,255,255,.92);
+}
+/* Tor ekranda qo'lda qo'yilgan uzilish kerak emas — u yerda matn baribir
+   o'z kengligi bo'yicha bo'linadi va majburiy uzilish qator o'rtasida
+   g'alati bo'shliq qoldirardi. */
+@media (max-width:519px) { .hero__note br { display:none; } }
+.hero__cta  { margin-top:var(--s-32); display:grid; gap:var(--s-12); }
 .hero__cta .btn { width:100%; }
 
 @media (min-width:1024px) {
-  .hero {
-    padding-top:calc(var(--header-h) + var(--s-128));
-    padding-bottom:var(--s-128);
+  .hero { padding-top:calc(var(--header-h) + var(--s-56)); padding-bottom:var(--s-72); }
+  .hero__copy { grid-column:1 / span 7; }
+  .hero__note { margin-top:var(--s-32); }
+  .hero__cta {
+    margin-top:var(--s-40);
+    grid-auto-flow:column; justify-content:start;
+    gap:var(--s-16);
   }
-  .hero__copy { grid-column:1 / span 6; }
-  .hero__lead { margin-top:var(--s-32); }
-  .hero__cta  { margin-top:var(--s-40); }
   .hero__cta .btn { width:auto; }
-}
-
-/* To'ldirgich rejimi — faqat prototipda (PROMPT.md §9).
-   Generatsiya kadri kelganda `is-placeholder` klassi olib tashlanadi. */
-.hero.is-placeholder .hero__img { display:none; }
-
-.hero__zone {
-  position:absolute; z-index:-1;
-  left:var(--edge); right:var(--edge);
-  top:calc(64px + var(--s-16)); bottom:var(--s-24);
-  border:1px dashed rgba(255,255,255,.28);
-  padding:var(--s-12);
-  font-size:12px; letter-spacing:0;
-  color:rgba(255,255,255,.45);
-  pointer-events:none;
-}
-.hero:not(.is-placeholder) .hero__zone { display:none; }
-
-@media (min-width:1024px) {
-  .hero__zone {
-    right:auto;
-    /* 6 ustun + 5 gutter — konteyner kengligidan hisoblanadi */
-    width:calc((min(100%, var(--content-max)) - var(--pad)*2 - 11*var(--gutter)) / 2 + 5*var(--gutter));
-    top:calc(var(--header-h) + var(--s-24));
-    bottom:var(--s-32);
-  }
 }
 
 /* 11 · STATISTIKA (PROMPT.md §5.2) --------------------------------------- */
 
+/* ✎ Ko'k fon bekor qilindi, oq fonga qaytarildi (mijoz qarori, 2026-08-20).
+   Ko'k maydon hero bilan bitta blokka qo'shilib ketardi. */
 .stats { background:var(--white); padding-block:var(--s-56); }
 .stats__grid { row-gap:var(--s-32); }
 .stat { grid-column:span 6; }
 .stat + .stat { position:relative; }
-.stat__num { color:var(--ink); }
-.stat__num .unit { font-size:.34em; font-weight:500; letter-spacing:-0.01em; color:var(--ink-40); margin-left:.15em; }
+.stat__num { color:var(--enzo-800); }
+/* ✎ Birlik (`+`, `yil`) ham ko'k (mijoz qarori, 2026-08-20). Kulrang
+   bo'lganda u raqamdan ajralib, "ilova qilingan izoh"day ko'rinardi;
+   aslida u raqamning bir qismi. Faqat kegli va og'irligi bilan farq qiladi. */
+.stat__num .unit { font-size:.34em; font-weight:500; letter-spacing:-0.01em; color:var(--enzo-500); margin-left:.15em; }
 .stat__label { margin-top:var(--s-8); color:var(--ink-60); }
+
+/* Sanash animatsiyasi paytida ustun kengligi sakramasin: raqamlar bir xil
+   kenglikdagi (tabular) shaklga o'tadi — aks holda 7 dan 1 ga o'tganda
+   butun qator chapga-o'ngga tebranardi. */
+.stat__num { font-variant-numeric:tabular-nums; }
 
 /* Tekis qator + vertikal ajratuvchi chiziq.
    ✎ 2026-08-16: qisqa vaqt diagonal pog'ona sinab ko'rildi, mijoz eski
@@ -438,10 +561,70 @@ body.is-locked { overflow:hidden; }
   transition:opacity 400ms var(--ease), transform 400ms var(--ease);
 }
 
+/* Sarlavha — so'zma-so'z ochilish (2026-08-19).
+   Har bir so'z pastdan ko'tarilib, o'zining pastki qirrasi atrofida
+   ag'dariladi. `perspective` ota-elementda: busiz `rotateX` yassi
+   ko'rinadi va harakat shunchaki "siljish" bo'lib qoladi.
+
+   So'zlarni JS bo'ladi (`js/main.js` §8). JS ishlamasa `.w` umuman
+   yaratilmaydi va sarlavha oddiy holicha chiqadi — matn hech qachon
+   yo'qolmaydi. */
+/* ✎ Sekinlashtirildi va yumshatildi (mijoz qarori, 2026-08-19).
+   Avval: 500ms · 50ms qadam · rotateX(90°) — hamma sarlavhada bir xil.
+   Uch muammo bor edi:
+     1. 90° to'liq ag'darish — so'z yassi holatdan chiqadi, keskin uriladi;
+     2. 500ms qisqa — harakat "chertilgandek" tugaydi;
+     3. bir xil tezlik — 76px sarlavha 40px sarlavha bilan bir vaqtda
+        harakatlansa, kattasi shoshayotgandek ko'rinadi. Katta jism
+        sekinroq harakatlanishi kerak — bu fizika, ko'z shuni kutadi.
+   Endi: 72°, davomiylik sarlavha darajasiga qarab, qadam 60ms. */
+.t-words {
+  perspective:1000px;
+  --dur:640ms;      /* asosiy davomiylik — daraja bo'yicha bekor qilinadi */
+  --step:60ms;      /* so'zlar orasidagi qadam */
+  --lag:0ms;        /* butun sarlavhaning kechikishi (hero ketma-ketligi) */
+}
+.t-display.t-words { --dur:860ms; --step:72ms; }
+.t-h1.t-words      { --dur:780ms; --step:66ms; }
+.t-h2.t-words      { --dur:680ms; --step:60ms; }
+
+.t-words .w {
+  display:inline-block;
+  opacity:0;
+  transform:translateY(18px) rotateX(72deg);
+  transform-origin:50% 100%;
+  will-change:transform, opacity;
+}
+.t-words.is-in .w {
+  opacity:1;
+  transform:none;
+  /* Shaffoflik harakatdan qisqaroq: so'z avval ko'rinadi, keyin joyiga
+     o'tirib boradi. Teng bo'lsa oxirida "miltillash" seziladi. */
+  transition:opacity calc(var(--dur) * 0.6) var(--ease-out),
+             transform var(--dur) var(--ease-out);
+  transition-delay:calc(var(--lag) + var(--i, 0) * var(--step));
+}
+/* Animatsiya tugagach `will-change` ni ushlab turishning hojati yo'q */
+.t-words.is-done .w { will-change:auto; }
+
+/* Sarlavha bo'lmagan matnlar — bir butun holda ko'tariladi.
+   `--d` kechikishni HTML yoki JS beradi. */
+.t-rise { opacity:0; transform:translateY(18px); }
+.t-rise.is-in {
+  opacity:1; transform:none;
+  transition:opacity 620ms var(--ease-out), transform 620ms var(--ease-out);
+  transition-delay:var(--d, 0ms);
+}
+
 @media (prefers-reduced-motion:reduce) {
   html { scroll-behavior:auto; }
   *,*::before,*::after { animation:none !important; transition:none !important; }
   .reveal { opacity:1; transform:none; }
+  .t-rise { opacity:1; transform:none; }
+  /* Muhim: `.w` boshlang'ich holati opacity:0. Yuqoridagi qoida barcha
+     o'tishlarni o'chirgani uchun, buni qaytarmasak sarlavha butunlay
+     ko'rinmay qoladi. */
+  .t-words .w { opacity:1; transform:none; }
 }
 
 /* 14 · YORDAMCHI ---------------------------------------------------------- */
@@ -563,10 +746,16 @@ body.is-locked { overflow:hidden; }
 /* Och kulrang brend shakli PASTDA — mahsulot shu yuzada turadi.
    Tom qirrasi yuqoriga qaragan, cho'qqi 86% da, o'ng chekka 0,876
    nisbatda pastroq (DESIGN.md §3.1). */
+/* ✎ clip-path o'rniga SVG (mijoz ko'rsatdi, 2026-08-20).
+   Sabab: clip-path qirrasi kulrangni SHAFFOFLIK bilan aralashtiradi;
+   yarim-shaffof kulrang to'q ko'k ustiga tushganda qirra bo'ylab ochroq
+   ko'k soch chizig'i paydo bo'lardi — «ko'k shtrix» shundan. SVG ichida esa
+   qirra kulrang bilan KO'K orasida aralashadi, ya'ni to'g'ri rangda. */
 .pshot::before {
   content:''; position:absolute; left:0; right:0; bottom:0; height:45%;
-  background:var(--shot-bg);
-  clip-path:polygon(0 18%, 86% 0, 100% 15.5%, 100% 100%, 0 100%);
+  background-color:var(--enzo-800);
+  background-image:url("data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22 preserveAspectRatio=%22none%22%3E%3Cpolygon points=%220,18 86,0 100,15.5 100,100 0,100%22 fill=%22%23F0F0F0%22/%3E%3C/svg%3E");
+  background-size:100% 100%; background-repeat:no-repeat;
 }
 /* Soya kadrning o'zida — mijoz kadrlarni soyasi bilan toza qilib berdi
    (2026-08-18), shuning uchun CSS soyasi olib tashlandi. */
@@ -723,12 +912,15 @@ body.is-locked { overflow:hidden; }
    Nisbatlar har xil (0,58–0,70), shuning uchun yon tomonda ozgina bo'shliq
    qoladi — u kulrang yuza bo'lib ko'rinadi, qog'oz esa oq: hujjat
    yuzada yotgandek o'qiladi, kesilgandek emas. */
-/* Skan ortidagi maydon ko'k (mijoz qarori 2026-08-19): kulrangda oq qog'oz
-   ajralmay qolardi, hujjat ko'zga tashlanmasdi. */
+/* ✎ Skan ortidagi ko'k maydon bekor qilindi, kulrang yuzaga qaytarildi
+   (mijoz qarori, 2026-08-20). Bo'limning O'ZI ko'k bo'lgani uchun skan ortidagi
+   ko'k ikkinchi ko'k qatlam bo'lib qolgandi — qog'oz ko'kdan ko'kka o'tayotgan
+   oyna ichida turgandek ko'rinardi. Kulrang yuza qog'ozni ko'k fondan ajratadi
+   va uni «yuzada yotgan hujjat» qilib qoldiradi. */
 .card .cert__scan {
   aspect-ratio:3/4; margin-bottom:var(--s-24);
-  background:var(--enzo-800); border:0;
-  padding:var(--s-12);
+  background:var(--surface); border:1px solid var(--line);
+  padding:var(--s-8);
 }
 .cert__scan img { object-fit:contain; }
 
@@ -980,7 +1172,7 @@ body.is-locked { overflow:hidden; }
    Ro'yxat ikki marta takrorlanadi: birinchi nusxa chapga chiqib
    ketguncha ikkinchisi o'rniga keladi — uzilish ko'rinmaydi. */
 .logos { grid-column:1 / -1; margin-top:var(--s-40); overflow:hidden;
-  border-block:1px solid var(--line); position:relative; }
+  position:relative; }
 .logos::before, .logos::after {
   content:''; position:absolute; top:0; bottom:0; width:120px; z-index:1; pointer-events:none;
 }
@@ -1226,6 +1418,15 @@ section[id] { scroll-margin-top:var(--s-24); }
 .deck__card img { width:100%; height:100%; object-fit:cover; }
 .deck__card.is-center { cursor:default; border-color:var(--enzo-500); }
 
+/* Uzoqlashtiruvchi oq parda. `--veil` ni JS beradi (0 · 0,34 · 0,68).
+   Nega element `opacity` si emas: shaffof kadr orqali ortidagi kadr
+   ko'rinib, ikkitasi ustma-ust tushardi. */
+.deck__card::after {
+  content:''; position:absolute; inset:0; pointer-events:none;
+  background:var(--white); opacity:var(--veil, 0);
+  transition:opacity 500ms var(--ease);
+}
+
 .deck__cap {
   margin-top:var(--s-24); color:var(--ink-60);
   min-height:1.4em;                       /* almashganda sakramasin */
@@ -1303,15 +1504,275 @@ section[id] { scroll-margin-top:var(--s-24); }
   .f-col--cont  { grid-column:10 / span 3; }
 }
 
-/* --- Prototip boshqaruv paneli (yakuniy saytda o'chiriladi) ------------- */
+/* 15 · TIL ALMASHTIRGICH (2026-08-19) ------------------------------------ */
+/* Uch til: o'zbek lotin, o'zbek kirill, rus. Headerning o'ng chetida.
+   Ikki harfli kod — trekking 0, ya'ni DESIGN.md §4.2 taqig'iga tegmaydi
+   (taqiq katta harf + OCHILGAN trekking birikmasiga tegishli). */
+.lang { display:none; align-items:center; flex:none; }
+.lang__opt {
+  appearance:none; background:none; border:0; cursor:pointer;
+  padding:6px 10px;
+  font-family:inherit; font-size:15px; font-weight:500; letter-spacing:0;
+  color:currentColor; opacity:.6;
+  transition:opacity 150ms var(--ease);
+}
+.lang__opt:hover { opacity:1; }
+.lang__opt.is-active { opacity:1; font-weight:600; }
+/* Ajratuvchi — chegara bilan, alohida element qo'shmasdan */
+.lang__opt + .lang__opt { border-left:1px solid currentColor; border-color:color-mix(in srgb, currentColor 28%, transparent); }
+.lang__opt:focus-visible { outline:2px solid var(--enzo-500); outline-offset:2px; }
 
-.proto-bar {
-  position:fixed; z-index:200; right:16px; bottom:16px;
-  display:flex; gap:8px;
-  background:#1C1C1C; color:#fff; padding:8px;
+@media (min-width:1024px) { .lang { display:flex; } }
+
+/* Mobil menyu ichida — pastda, to'liq kenglikda */
+.menu__lang { display:flex; justify-content:center; margin-top:var(--s-24); }
+.menu__lang .lang__opt { font-size:17px; padding:10px 16px; }
+@media (min-width:1024px) { .menu__lang { display:none; } }
+
+/* 16 · TAQQOSLASH — zavod ↔ vositachi (§5.10, 2026-08-19) ---------------- */
+/* Ikki ustun. Chap ustun to'q — u yerda javob turadi, ko'z birinchi shunga
+   tushishi kerak. O'ng ustun tekis oq: raqib ustuni bo'yalsa, sahifa
+   "kimnidir ayblayotgan"dek ko'rinadi. Bu yerda maqsad — farqni ko'rsatish. */
+.vs {
+  grid-column:1 / -1; margin-top:var(--s-40);
+  display:grid; grid-template-columns:1fr; gap:var(--gutter);
 }
-.proto-bar button {
-  padding:8px 14px; font-size:13px; font-weight:600;
-  border:1px solid rgba(255,255,255,.3); color:#fff;
+@media (min-width:768px) { .vs { grid-template-columns:1fr 1fr; } }
+
+.vs__col { padding:var(--s-32); border:1px solid var(--line); }
+.vs__col--own {
+  background:var(--enzo-800); color:var(--white); border-color:transparent;
 }
-.proto-bar button.is-active { background:#fff; color:#1C1C1C; }
+.vs__col--other { background:var(--white); }
+
+/* Sarlavha rangi: to'q ustunda oq, oqida ko'k — §5 dagi umumiy qoidaga mos */
+.vs__title { margin-bottom:var(--s-24); }
+.vs__col--own   .vs__title { color:var(--white); }
+.vs__col--other .vs__title { color:var(--ink); }
+
+.vs__list { list-style:none; margin:0; padding:0; display:grid; gap:var(--s-16); }
+.vs__list li {
+  display:grid; grid-template-columns:20px 1fr; gap:var(--s-12);
+  align-items:start;
+  font-size:clamp(16px, 1.2vw, 17px); line-height:1.5;
+}
+.vs__list svg { width:20px; height:20px; margin-top:2px; }
+
+/* Belgi rangi: to'q fonda och ko'k — oq matn bilan bir xil og'irlikda
+   bo'lib qolmasligi uchun. Oq fonda kulrang: krest qizil bo'lsa, bo'lim
+   ogohlantirishga o'xshab qoladi. */
+.vs__col--own   .vs__list li { color:rgba(255,255,255,.92); }
+.vs__col--own   .vs__list svg { color:var(--enzo-300); }
+.vs__col--other .vs__list li { color:var(--ink-60); }
+.vs__col--other .vs__list svg { color:var(--ink-40); }
+
+/* «Bilmayman» holati (§5.13). Raqam o'rniga jumla turadi — 64px da u
+   sarlavhaga o'xshab, kalkulyator natija bergandek ko'rinardi. */
+.calc__result.is-noaniq .calc__price {
+  font-size:clamp(22px, 2vw, 26px) !important;
+  font-weight:600; letter-spacing:-0.02em; line-height:1.25;
+  color:var(--ink-60);
+}
+
+/* 17 · SCROLL INDIKATORI (✎ qayta qurildi 2026-08-19) ------------------- */
+/* O'ng chetga yopishgan yupqa yo'l, ustidan brend rangidagi to'ldirgich.
+   Avval o'rtada suzib turgan qisqa chiziq va ikkita raqam bor edi — mijoz
+   rad etdi: raqamlar sahifa chetida mustaqil ma'no talab qiladigan yangi
+   element bo'lib qolgandi.
+
+   Tor ekranda ko'rsatilmaydi: barmoq bilan scroll qilinganda brauzerning
+   o'z indikatori bor. */
+.snav { display:none; }
+
+@media (min-width:1024px) {
+  .snav {
+    display:block; position:fixed; z-index:90;
+    right:0; top:0; width:4px; height:100vh;
+    background:rgba(10,42,115,.10);
+    pointer-events:none;
+  }
+  /* Yuguruvchi — sahifa balandligiga nisbatan uzunligi (`--h`) va
+     joyi (`--y`) JS'dan keladi (main.js §10). Ya'ni bu brauzer
+     scrollbar'ining brend registridagi ko'rinishi: uzunligi qancha
+     kontent qolganini aytadi. Tepadan to'ldiruvchi chiziq sinab ko'rildi —
+     sahifa uzun bo'lgani uchun u deyarli doim bo'sh ko'rinardi. */
+  .snav i {
+    position:absolute; left:0; width:100%;
+    height:var(--h, 12%); top:var(--y, 0%);
+    background:linear-gradient(180deg, var(--enzo-300), var(--enzo-500));
+  }
+}
+
+/* 18 · IJTIMOIY TARMOQLAR — o'ng pastda suzuvchi tugma (§ 2026-08-19) ---- */
+/* Kvadrat, doira emas: radius butun sayt bo'ylab nolga tenglangan
+   (DESIGN.md §6.1). Referensdagi doiralar ko'chirilsa, ular saytdagi
+   yagona yumaloq shakl bo'lib ajralib turardi.
+
+   Yig'ilgan holat: bitta tugma. Ochilganda uchtasi tepaga chiqadi — doimiy
+   uchta rangli dog' kalkulyator va forma ustida turmasin uchun. */
+.soc {
+  position:fixed; z-index:95;
+  right:var(--s-24); bottom:var(--s-24);
+  display:flex; flex-direction:column; align-items:center; gap:var(--s-8);
+}
+@media (min-width:1024px) { .soc { right:calc(var(--s-24) + 3px); } }
+
+.soc__list {
+  display:flex; flex-direction:column; gap:var(--s-8);
+  opacity:0; visibility:hidden;
+  translate:0 var(--s-12);
+  transition:opacity 220ms var(--ease), translate 260ms var(--ease-out), visibility 0s 260ms;
+}
+.soc.is-open .soc__list {
+  opacity:1; visibility:visible; translate:0 0;
+  transition-delay:0s, 0s, 0s;
+}
+
+.soc__link, .soc__toggle {
+  width:48px; height:48px; flex:none;
+  display:flex; align-items:center; justify-content:center;
+  border:0; cursor:pointer; color:var(--white);
+  transition:background 180ms var(--ease), translate 180ms var(--ease);
+}
+.soc__link svg, .soc__toggle svg { width:24px; height:24px; }
+.soc__link:hover { translate:0 -2px; }
+
+/* Har bir tarmoqning o'z rangi emas — hammasi brend ko'kida, faqat
+   to'qligi bilan farq qiladi. Sabab: YouTube qizili va Instagram gradienti
+   saytdagi yagona begona ranglar bo'lib qolardi (DESIGN.md §6.1). */
+.soc__link--yt { background:var(--enzo-900); }
+.soc__link--ig { background:var(--enzo-700); }
+.soc__link--tg { background:var(--enzo-600); }
+.soc__link:hover { background:var(--enzo-500); }
+
+.soc__toggle { background:var(--enzo-500); }
+.soc__toggle:hover { background:var(--enzo-700); }
+.soc__ico-close { display:none; }
+.soc.is-open .soc__ico-open  { display:none; }
+.soc.is-open .soc__ico-close { display:block; }
+
+@media (prefers-reduced-motion: reduce) {
+  .soc__list, .soc__link { transition:none; }
+}
+
+/* 19 · HAMKORLAR LENTASI — alohida past bo'lim (§5.11b) ------------------ */
+/* Bo'lim ataylab past: logolar isbot, kontent emas. Yuqoridagi video
+   bo'limi bilan bitta bloknni ulashmaydi — u yerda ikkita harakat
+   bir-biri bilan raqobatlashardi. */
+/* ✎ Ingichkalashtirildi (mijoz qarori, 2026-08-20): plitka balandligi katta
+   bo'lgani uchun logolar keng bo'sh maydon ichida kichkina bo'lib turardi.
+   Endi lenta logoning o'z balandligiga yaqin. */
+.partners { padding-block:var(--s-32); }
+.partners .head--sm h2 { color:var(--ink-60); font-weight:500; }
+.partners .logos { margin-top:var(--s-16); }
+/* Bo'lim foni oq — chetlardagi so'nish maskasi ham oq bo'lishi kerak,
+   aks holda lenta chetida kulrang tasma paydo bo'lardi. */
+.partners .logos::before { background:linear-gradient(90deg, var(--white), transparent); }
+.partners .logos::after  { background:linear-gradient(270deg, var(--white), transparent); }
+.partners .logo-tile { height:48px; padding-inline:var(--s-32); }
+.partners .logo-tile img { height:30px; }
+.partners .logo-tile img[src$="beton-max.svg"] { height:24px; }
+.partners .logo-tile img[src$="jba-group.svg"] { height:26px; }
+.partners .logo-tile img[src$="central-beton.svg"] { height:32px; }
+.partners .logo-tile img[src$="dilbar-tt-house.svg"] { height:36px; }
+.partners .logo-tile img[src$="ecoizolit.svg"] { height:36px; }
+.partners .logo-tile img[src$="dream-residence.svg"] { height:37px; }
+.partners .logo-tile img[src$="megamix.svg"] { height:37px; }
+.partners .logo-tile img[src$="quvasoy-chek-shifer.svg"] { height:38px; }
+@media (min-width:768px) { .partners .logo-tile { height:56px; padding-inline:var(--s-40); } }
+
+/* 20 · YANGI BO'LIMLAR (§5.5c, §5.9b, §5.16 — 2026-08-20) ---------------- */
+
+/* --- §5.5c · Arzon tanlovning haqiqiy narxi ----------------------------- */
+/* Yakuniy jumla — bo'limning javobi. Kartochkalardan uzoqroq turadi va
+   chapdan brend chizig'i bilan belgilanadi: bu ro'yxatning beshinchi bandi
+   emas, undan chiqadigan xulosa. */
+.cost__close {
+  margin-top:var(--s-40);
+  padding-left:var(--s-24);
+  border-left:2px solid var(--enzo-500);
+  color:var(--ink);
+}
+.cost__close a {
+  color:var(--enzo-700);
+  text-decoration:underline; text-underline-offset:3px;
+  text-decoration-thickness:1px;
+}
+.cost__close a:hover { color:var(--enzo-500); }
+
+/* Ikkita kadr yonma-yon — bo'lim ikki mahsulot haqida (shifer va beton),
+   bitta kadr faqat bittasini ko'rsatardi. Nisbat 3:2: yonma-yon turganda
+   21:9 tasma juda past bo'lib, ikkalasi ham o'qilmay qolardi. */
+.cost__shots {
+  grid-column:1 / -1; margin-top:var(--s-40);
+  display:grid; gap:var(--gutter);
+}
+@media (min-width:768px) { .cost__shots { grid-template-columns:repeat(2,minmax(0,1fr)); } }
+.cost__shot { margin:0; }
+.cost__shot img {
+  display:block; width:100%; height:auto;
+  aspect-ratio:3/2; object-fit:cover; object-position:50% 58%;
+}
+/* Izoh majburiy: kadrda ENZO mahsuloti emas, begona eskirgan tom.
+   Izohsiz u "ENZO shiferi shunday bo'ladi" deb o'qilishi mumkin edi. */
+.cost__cap { margin-top:var(--s-12); color:var(--ink-60); max-width:60ch; }
+
+/* --- §5.9b · Kim uchun -------------------------------------------------- */
+/* Kartochka ichidagi havola pastga yopishadi (`margin-top:auto`), shunda
+   uch kartochkadagi matn uzunligi har xil bo'lsa ham havolalar bitta
+   chiziqda turadi. Buning uchun kartochka flex ustunga aylantiriladi. */
+.cards--3 .card:has(.card__link),
+.cards--4 .card:has(.card__link) { display:flex; flex-direction:column; }
+.card__link {
+  margin-top:auto; padding-top:var(--s-24);
+  display:inline-flex; align-items:center; gap:var(--s-8);
+  font-weight:500; color:var(--enzo-700);
+}
+/* Strelka — alohida element emas, shrift belgisi: ikonka qo'yilsa u
+   kartochka ikonkasi bilan bir qatorda ikkinchi grafik bo'lib qolardi. */
+.card__link::after { content:'→'; transition:translate 160ms var(--ease); }
+.card:hover .card__link::after { translate:3px 0; }
+.card__link:hover { color:var(--enzo-500); }
+
+/* 21 · ZAVOD VIDEOSI — §5.3 (2026-08-20) --------------------------------- */
+/* «Facade»: poster + tugma. Iframe faqat bosilgandan keyin quriladi
+   (main.js §13). Nisbat 16/9 — iframe ham, poster ham shu qutida turadi,
+   shunda almashganda sahifa sakramaydi. */
+.about__video { margin:0; }
+.vplay {
+  position:relative; display:block; width:100%;
+  padding:0; border:0; background:var(--surface);
+  aspect-ratio:16/9; cursor:pointer; overflow:hidden;
+}
+.vplay img { width:100%; height:100%; object-fit:cover; display:block; }
+
+/* Tugma — kvadrat, radius yo'q (DESIGN.md §6.1). Oq maydon to'q kadrda ham,
+   och kadrda ham o'qiladi; hover'da brend ko'kiga o'tadi. */
+.vplay__btn {
+  position:absolute; left:50%; top:50%; translate:-50% -50%;
+  width:88px; height:88px;
+  display:flex; align-items:center; justify-content:center;
+  background:var(--white); color:var(--enzo-800);
+  transition:background 180ms var(--ease), color 180ms var(--ease), scale 220ms var(--ease-out);
+}
+.vplay__btn svg { width:30px; height:30px; margin-left:4px; }
+.vplay:hover .vplay__btn { background:var(--enzo-500); color:var(--white); scale:1.06; }
+/* Klaviatura bilan yurganda tugma ko'rinib turishi kerak — fokus halqasi
+   kadr ustida yo'qolmasligi uchun oq, ichkaridan. */
+.vplay:focus-visible { outline:3px solid var(--white); outline-offset:-6px; }
+@media (max-width:767px) {
+  .vplay__btn { width:64px; height:64px; }
+  .vplay__btn svg { width:22px; height:22px; }
+}
+
+/* Iframe poster o'rniga keladi — o'sha qutini to'ldiradi */
+.about__video iframe {
+  display:block; width:100%; aspect-ratio:16/9; border:0;
+}
+
+.about__vcap { margin-top:var(--s-12); color:var(--ink-60); }
+
+/* ID hali ulanmagan bo'lsa (main.js §13 shu sinfni qo'yadi): blok oddiy
+   rasm bo'lib qoladi — bosilmaydigan tugma ko'rsatilmaydi. */
+.vplay.is-empty { cursor:default; }
+.vplay.is-empty .vplay__btn { display:none; }

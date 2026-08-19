@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="uz" class="wire">
+<html lang="uz">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -8,15 +8,34 @@
 <link rel="preload" href="assets/fonts/SFProDisplay-Bold.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="preload" href="assets/fonts/SFProDisplay-Regular.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="stylesheet" href="css/style.css">
-<link rel="stylesheet" href="css/wireframe.css" id="wireCss">
 </head>
 <body>
 
 <!-- SVG ikonka to'plami (assets/icons/ dan) -->
 <svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <!-- ENZO logotipi — identity/enzo.svg dan olingan haqiqiy vektor
+       (mijoz qarori, 2026-08-20). Avval belgi CSS bilan uchta tekis chiziq
+       qilib chizilgandi; brendning o'z belgisi esa uchta QIYA plita —
+       ustma-ust taxlangan shifer varaqlari. `currentColor`: sarhad hero
+       ustida oq, scroll'dan keyin ko'k bo'ladi. -->
+  <symbol id="i-enzo" viewBox="0 0 380.20 114.06">
+    <g fill="currentColor" transform="translate(-7690.23 -4876.67)">
+    <polygon points="7753.04 4876.67 7690.23 4883.85 7690.23 4905.63 7707.27 4911.92 7770.07 4904.74 7770.07 4882.96 7753.04 4876.67 7753.04 4876.67"/>
+    <polygon points="7753.04 4916.07 7690.23 4923.26 7690.23 4945.03 7707.27 4951.33 7770.07 4944.14 7770.07 4922.37 7753.04 4916.07 7753.04 4916.07"/>
+    <polygon points="7753.04 4955.48 7690.23 4962.66 7690.23 4984.44 7707.27 4990.73 7770.07 4983.55 7770.07 4961.77 7753.04 4955.48 7753.04 4955.48"/>
+    <polygon points="7817.28 4967.8 7817.28 4899.6 7867.66 4899.6 7867.66 4913.63 7834.14 4913.63 7834.14 4926.78 7865.51 4926.78 7865.51 4940.23 7834.14 4940.23 7834.14 4953.77 7867.66 4953.77 7867.66 4967.8 7817.28 4967.8 7817.28 4967.8"/>
+    <polygon points="7879.54 4967.8 7879.54 4899.6 7894.43 4899.6 7919.4 4938.87 7919.4 4899.6 7935.96 4899.6 7935.96 4967.8 7921.1 4967.8 7896.11 4929.9 7896.11 4967.8 7879.54 4967.8 7879.54 4967.8"/>
+    <polygon points="7946.48 4967.8 7946.48 4954.11 7979.32 4914.12 7947.36 4914.12 7947.36 4899.6 8001.44 4899.7 8001.44 4913.21 7969.67 4953.09 8002.61 4953.09 8002.61 4967.8 7946.48 4967.8 7946.48 4967.8"/>
+    <path d="M8040.22,4968.78c-5.98,0-11.17-.97-15.59-2.92-4.42-1.95-7.86-4.89-10.33-8.82-2.47-3.93-3.83-8.85-4.09-14.76-.07-2.79-.1-5.6-.1-8.43s.03-5.63.1-8.43c.26-5.84,1.64-10.77,4.14-14.76,2.5-4,5.97-7,10.43-9.01,4.45-2.01,9.6-3.02,15.44-3.02s11.08,1.01,15.49,3.02c4.42,2.01,7.89,5.02,10.43,9.01,2.53,4,3.9,8.92,4.09,14.76.13,2.79.19,5.6.19,8.43s-.07,5.64-.19,8.43c-.19,5.91-1.54,10.83-4.04,14.76-2.5,3.93-5.96,6.87-10.38,8.82-4.42,1.95-9.61,2.92-15.59,2.92h0ZM8040.22,4954.75c3.44,0,6.25-1.04,8.43-3.12,2.18-2.08,3.33-5.39,3.46-9.94.13-2.86.19-5.55.19-8.09s-.06-5.16-.19-7.89c-.13-3.05-.7-5.54-1.7-7.45-1.01-1.92-2.39-3.33-4.14-4.24-1.75-.91-3.77-1.36-6.04-1.36s-4.19.45-5.94,1.36c-1.75.91-3.15,2.32-4.19,4.24s-1.62,4.4-1.75,7.45c-.07,2.73-.1,5.36-.1,7.89s.03,5.23.1,8.09c.19,4.55,1.38,7.86,3.56,9.94,2.18,2.08,4.95,3.12,8.33,3.12h0Z"/>
+  </g>
+  </symbol>
   <symbol id="i-phone" viewBox="0 0 24 24"><path fill="currentColor" d="M6.6 10.8a15.1 15.1 0 0 0 6.6 6.6l2.2-2.2a1 1 0 0 1 1-.25c1.1.37 2.3.57 3.5.57a1 1 0 0 1 1 1V20a1 1 0 0 1-1 1A17 17 0 0 1 3 4a1 1 0 0 1 1-1h3.5a1 1 0 0 1 1 1c0 1.2.2 2.4.57 3.5a1 1 0 0 1-.25 1l-2.22 2.3Z"/></symbol>
   <symbol id="i-shield" viewBox="0 0 24 24"><path fill="currentColor" d="M12 2 4 5v6.5c0 4.6 3.4 8.9 8 10.5 4.6-1.6 8-5.9 8-10.5V5l-8-3Zm-1 14-4-4 1.4-1.4L11 13.2l4.6-4.6L17 10l-6 6Z"/></symbol>
   <symbol id="i-chat" viewBox="0 0 24 24"><path fill="currentColor" d="M3 3h18v14H7l-4 4V3Z"/></symbol>
+  <!-- Taqqoslash jadvali uchun (§5.10). Chiziqli — to'ldirilgan belgi
+       yonidagi matndan og'irroq chiqib, ro'yxatni "shovqinli" qilardi. -->
+  <symbol id="i-check" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" d="m5 12.5 4.5 4.5L19 7"/></symbol>
+  <symbol id="i-cross" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" d="M6 6l12 12M18 6 6 18"/></symbol>
   <symbol id="i-pin" viewBox="0 0 24 24"><path fill="currentColor" d="M12 2a7 7 0 0 0-7 7c0 5.2 7 13 7 13s7-7.8 7-13a7 7 0 0 0-7-7Zm0 9.5A2.5 2.5 0 1 1 12 6.5a2.5 2.5 0 0 1 0 5Z"/></symbol>
   <!-- Mahsulot ikonkalari — ENZO uchun yangi chizildi.
        Identity uslubi: 190×190 quti, koordinatalar 7.44px moduli karrali,
@@ -35,6 +54,11 @@
   <symbol id="i-lab" viewBox="0 0 190 190"><path fill="currentColor" d="M74.4,37.2h37.2v14.88h-7.44v22.32l29.76,59.52v14.88H52.08v-14.88l29.76-59.52v-22.32h-7.44v-14.88Z"/></symbol>
   <symbol id="i-truck" viewBox="0 0 190 190"><path fill="currentColor" d="M29.76,66.96h81.84v66.96H29.76v-66.96ZM119.04,89.28h14.88l22.32,29.76v14.88h-37.2v-44.64ZM44.64,133.92h22.32v14.88h-22.32v-14.88ZM111.6,133.92h22.32v14.88h-22.32v-14.88Z"/></symbol>
   <symbol id="i-clock" viewBox="0 0 190 190"><path fill="currentColor" fill-rule="evenodd" clip-rule="evenodd" d="M44.64,44.64h104.16v104.16H44.64V44.64h0ZM59.52,59.52v74.4h74.4V59.52H59.52h0ZM89.28,74.4h7.44v14.88h22.32v7.44h-29.76v-22.32h0Z"/></symbol>
+  <!-- Ogohlantirish, hujjat, uy, bino — assets/icons/ dan (§5.5c, §5.9b) -->
+  <symbol id="i-warning" viewBox="6995.00 9328.00 190.00 190.00" fill-rule="evenodd" clip-rule="evenodd"><path fill="currentColor" d="M7149.19,9484.71h-119.04v-22.32l52.08-89.28h14.88l52.08,89.28v22.32h0ZM7082.23,9402.87h14.88v37.2h-14.88v-37.2h0ZM7082.23,9454.95h14.88v14.88h-14.88v-14.88h0Z"/></symbol>
+  <symbol id="i-document" viewBox="0 0 190 190" fill-rule="evenodd" clip-rule="evenodd"><path fill="currentColor" d="M52.08,37.2h66.96l22.32,22.32v96.72H52.08V37.2h0ZM119.04,44.64v14.88h14.88l-14.88-14.88h0ZM66.96,81.84h59.52v7.44h-59.52v-7.44h0ZM66.96,96.72h59.52v7.44h-59.52v-7.44h0ZM66.96,111.6h37.2v7.44h-37.2v-7.44h0Z"/></symbol>
+  <symbol id="i-house" viewBox="6718.00 9328.00 190.00 190.00" fill-rule="evenodd" clip-rule="evenodd"><path fill="currentColor" d="M6813.86,9373.11l-59.52,44.64v14.88h7.44v52.08h22.32v-37.2h22.32v37.2h59.52v-52.08h7.44v-14.88l-14.88-11.16v-26.04h-22.32v9.3l-22.32-16.74h0ZM6821.3,9447.51h22.32v22.32h-22.32v-22.32h0Z"/></symbol>
+  <symbol id="i-building" viewBox="7543.00 9652.00 190.00 190.00" fill-rule="evenodd" clip-rule="evenodd"><path fill="currentColor" d="M7653,9693.42h-74.4v104.16h14.88v-29.76h14.88v29.76h74.4v-44.64h-29.76v-59.52h0ZM7608.36,9708.3h-14.88v14.88h14.88v-14.88h0ZM7638.12,9708.3h-14.88v14.88h14.88v-14.88h0ZM7623.24,9738.06h14.88v14.88h-14.88v-14.88h0ZM7653,9767.82h14.88v14.88h-14.88v-14.88h0Z"/></symbol>
 </svg>
 
 <!-- ═══ §5.0 · HEADER ═══════════════════════════════════════════════════ -->
@@ -42,8 +66,7 @@
   <div class="container header__inner">
 
     <a class="logo" href="#home" aria-label="ENZO GROUP — bosh sahifa">
-      <span class="logo__mark" aria-hidden="true"><span></span><span></span><span></span></span>
-      <span class="logo__word">ENZO</span>
+      <svg class="logo__svg" aria-hidden="true"><use href="#i-enzo"/></svg>
     </a>
 
     <nav class="nav" aria-label="Asosiy navigatsiya">
@@ -54,6 +77,13 @@
     </nav>
 
     <div class="header__actions">
+      <!-- Til almashtirgich. Tarjimalar hali yo'q — hamma bo'lim tasdiqlangandan
+           keyin qilinadi, shuning uchun tugmalar hozircha faqat holatni ko'rsatadi. -->
+      <div class="lang" role="group" aria-label="Sayt tili">
+        <button type="button" class="lang__opt is-active" data-lang="uz" aria-current="true">UZ</button>
+        <button type="button" class="lang__opt" data-lang="uz-cyrl">ЎЗ</button>
+        <button type="button" class="lang__opt" data-lang="ru">RU</button>
+      </div>
       <a class="header__phone" href="tel:+998558107777"><svg aria-hidden="true"><use href="#i-phone"/></svg>+998 55 810 77 77</a>
       <a class="header__phone-icon" href="tel:+998558107777" aria-label="Qoʻngʻiroq qilish">
         <svg aria-hidden="true"><use href="#i-phone"/></svg>
@@ -77,30 +107,58 @@
     <a class="menu__phone" href="tel:+998558107777">
       <svg aria-hidden="true"><use href="#i-phone"/></svg> +998 55 810 77 77
     </a>
+    <div class="lang menu__lang" role="group" aria-label="Sayt tili">
+      <button type="button" class="lang__opt is-active" data-lang="uz" aria-current="true">UZ</button>
+      <button type="button" class="lang__opt" data-lang="uz-cyrl">ЎЗ</button>
+      <button type="button" class="lang__opt" data-lang="ru">RU</button>
+    </div>
   </div>
 </nav>
 
 <main>
 
-  <!-- ═══ §5.1 · HERO — to'liq ekranli rasm, matn rasmning to'q qismida ══ -->
-  <section class="hero roof-bottom is-placeholder" id="home">
-    <img class="hero__img" src="assets/img/hero-placeholder.png" alt="ENZO GROUP zavodi"
-         width="1448" height="1086" fetchpriority="high">
-    <div class="hero__zone">Matn zonasi — kadrda toʻq boʻlishi shart</div>
+  <!-- ═══ §5.1 · HERO — to'liq ekranli kadr, matn pastki chapda ═════════ -->
+  <!-- Kadrga gradient yoki overlay QO'YILMAYDI (DESIGN.md §10.7).
+       Matn kadrning o'zidagi soyada turgan beton maydonga tushadi. -->
+  <section class="hero" id="home">
+    <!-- Kadr alohida qatlamda. Sabab: sekin masshtab («nafas») va scroll
+         parallaksi shu qatlamga qo'yiladi.
+         ✎ Kadr izohlari (Sement silosi / Beton uzeli / Mikser parki) olib
+         tashlandi — mijoz qarori 2026-08-19: kadr ustidagi mayda yozuvlar
+         diqqatni matn ustunidan tortib olardi. -->
+    <div class="hero__frame" id="heroFrame">
+      <img class="hero__img" src="assets/img/hero-u2-mijoz.jpg"
+           alt="ENZO zavodi: sement silosi, beton uzeli va mikser parki"
+           width="2400" height="1197" fetchpriority="high">
+    </div>
 
     <div class="container">
       <div class="grid hero__grid">
         <div class="hero__copy">
-          <h1 class="t-display">
-            <span>Shifer, sement, beton —</span>
-            <span class="accent">zavoddan toʻgʻri qurilish maydonigacha</span>
-          </h1>
-          <p class="t-body-l hero__lead measure-52">
-            2009-yildan beri Fargʻonada oʻzimiz ishlab chiqaramiz. Vositachi yoʻq —
-            1&#8209;qoʻl narx, hujjat bilan kafolat, kelishilgan muddatda yetkazib berish.
+          <!-- Tartib (mijoz qarori, 2026-08-19): mahsulot qatori → sarlavha →
+               qisqa izoh → harakatga undovchi tugmalar. O'qish bitta yo'nalishda
+               ketadi, izoh tugmadan oldin turadi. -->
+          <p class="hero__kinds t-rise" style="--d:60ms">
+            <span>Shifer</span><span>Sement</span><span>Beton</span>
           </p>
-          <div class="hero__cta">
+          <h1 class="t-display t-words" style="--lag:260ms">
+            <span>Zavoddan toʻgʻri</span>
+            <span>qurilish maydonigacha</span>
+          </h1>
+          <!-- Izoh ikki qatorda (mijoz qarori, 2026-08-20). Uzilish joyi
+               qo'lda belgilangan: `max-width` ga tashlab qo'yilsa, u ekran
+               kengligiga qarab ba'zan 2, ba'zan 3 qatorga bo'linib, tugmalar
+               tepasidagi bo'shliq har xil bo'lib qolardi. -->
+          <p class="t-body hero__note t-rise" style="--d:900ms">
+            Har partiyada hujjat, kelishilgan muddat<br>
+            va vositachisiz zavod narxi.
+          </p>
+          <div class="hero__cta t-rise" style="--d:1040ms">
             <a class="btn btn--on-dark" href="#form"><svg aria-hidden="true"><use href="#i-chat"/></svg>Bepul konsultatsiya olish</a>
+            <!-- ✎ Kalkulyator o'rniga mahsulotlar (mijoz qarori, 2026-08-20):
+                 hero'dagi birinchi qadam narx emas, «nima sotasizlar» degan savol.
+                 Kalkulyatorga yo'l sarhaddagi tugmada ham, menyuda ham bor. -->
+            <a class="btn btn--ghost-dark" href="#mainproducts">Mahsulotlarni koʻrish</a>
           </div>
         </div>
       </div>
@@ -128,7 +186,7 @@
 
         <div class="head reveal">
           <p class="overline">ENZO haqida</p>
-          <h2 class="t-h2">Biz haqimizda</h2>
+          <h2 class="t-h2 t-words">Biz haqimizda</h2>
         </div>
 
         <div class="body-col reveal">
@@ -137,9 +195,29 @@
           <p class="t-body-l about__closing measure" style="margin-top:var(--s-24)">Bugun ENZO GROUP – bu faqat ishlab chiqarish emas, balki qurilish uchun ishonchli va mustahkam tizim.</p>
         </div>
 
-        <figure class="ph reveal" data-ph="Zavod — aeros‘yomka · zavod dron.png"
-                style="grid-column:1/-1; margin-top:var(--s-56); aspect-ratio:16/9">
-          <img src="assets/img/zavod-dron.png" alt="ENZO GROUP zavodi — umumiy koʻrinish" loading="lazy">
+        <!-- Zavod videosi — «facade» usuli (mijoz qarori, 2026-08-20).
+             Sahifa ochilganda YouTube'ga HECH QANDAY so'rov ketmaydi: faqat
+             poster va tugma turadi. Iframe bosilgandan keyin quriladi.
+
+             Uch sabab: (1) YouTube iframe'i o'zi bilan ~1,3 MB skript va
+             o'nlab so'rov olib keladi — bu bo'lim sahifaning boshida turadi;
+             (2) kuki va treker foydalanuvchi rozi bo'lmaguncha qo'yilmaydi;
+             (3) poster bizning kadrimiz, YouTube'ning past sifatli
+             avtomatik stopkadri emas.
+
+             `youtube-nocookie.com` — YouTube'ning kuki qo'ymaydigan domeni.
+
+             `data-yt` — video ID si. Video: «ENZO Kompaniyasi»,
+             ENZO GROUP kanali (@enzo_group). ID boʻsh boʻlsa blok oddiy
+             rasmga aylanadi (main.js §13) — buzilgan tugma koʻrsatilmaydi. -->
+        <figure class="about__video reveal" style="grid-column:1/-1; margin-top:var(--s-56)">
+          <button class="vplay" type="button" data-yt="P0kx0A4uUVI"
+                  aria-label="«ENZO Kompaniyasi» videosini ochish">
+            <img src="assets/img/zavod-dron.png" alt="ENZO GROUP zavodi — umumiy koʻrinish"
+                 loading="lazy" width="1672" height="941">
+            <span class="vplay__btn" aria-hidden="true"><svg><use href="#i-play"/></svg></span>
+          </button>
+          <figcaption class="t-small about__vcap">«ENZO Kompaniyasi» — zavod ichidan olingan kadrlar: liniyalar, uskunalar va kunlik ish jarayoni.</figcaption>
         </figure>
 
       </div>
@@ -154,7 +232,7 @@
       <div class="grid">
         <div class="head reveal">
           <p class="overline">Tarix</p>
-          <h2 class="t-h2">Bizning tariximiz</h2>
+          <h2 class="t-h2 t-words">Bizning tariximiz</h2>
         </div>
 
         <div class="timeline">
@@ -177,7 +255,7 @@
       <div class="grid">
         <div class="head reveal">
           <p class="overline">Mahsulotlar</p>
-          <h2 class="t-h2">Asosiy mahsulotlar</h2>
+          <h2 class="t-h2 t-words">Asosiy mahsulotlar</h2>
         </div>
       </div>
     </div>
@@ -290,13 +368,98 @@
     </div>
   </section>
 
+
+  <!-- ═══ §5.5c · ARZON TANLOVNING HAQIQIY NARXI 🆕 ═════════════════════ -->
+  <!-- Sayt shu paytgacha faqat O'ZI haqida gapirardi: bizda hujjat bor,
+       laboratoriya bor, marka to'g'ri. Bu bo'lim savolni teskari qo'yadi —
+       hujjatsiz olishning narxi qancha? Xaridor "arzonroq" bilan
+       taqqoslaganda, taqqoslash bazasi to'liq bo'lishi kerak.
+
+       ⚠️ Matn yangi — mijoz tasdig'i kerak. Hech qanday raqam yozilmagan
+       («2 baravar», «300 ming so'm»): bunday raqam bizda yo'q va to'qib
+       chiqarilmaydi. Har bir kartochka faqat XARAJAT TURINI nomlaydi. -->
+  <section class="section section--surface">
+    <div class="container">
+      <div class="grid">
+        <div class="head reveal" style="grid-column:1/-1">
+          <p class="overline">Tanlov narxi</p>
+          <h2 class="t-h2 t-words">Arzon tanlovning haqiqiy narxi</h2>
+          <p class="t-body-l sub measure">Material narxi — chekning birinchi qatori, oxirgisi emas. Qolgan qatorlar keyinroq, boshqa joyda toʻlanadi.</p>
+        </div>
+
+        <!-- ✎ Ikkita kadr (mijoz koʻrsatdi, 2026-08-20). Avval faqat tom
+             kadri turardi va boʻlim shifer haqidaymi degan taassurot
+             tugʻdirardi — holbuki toʻrtta kartochkadan ikkitasi beton va
+             hujjat haqida. Endi ikkinchi kadr betonni koʻrsatadi: kovakli
+             quyma, sovuq chok, zanglagan armatura.
+
+             ⚠️ Ikkalasi ham AI generatsiya (Magnific, 2026-08-20), zavod
+             fotosi EMAS va ENZO mahsuloti emas. Izoh shu sababli majburiy. -->
+        <div class="cost__shots reveal">
+          <figure class="cost__shot">
+            <img src="assets/img/shifer-eski.webp"
+                 alt="Eskirgan shifer tomi: yoriqlar, moʻyna va singan chekka"
+                 loading="lazy" width="1800" height="1013">
+            <figcaption class="t-small cost__cap">Arzon varaq shunday tugaydi: yoriq, moʻyna, singan chekka. Bu tom qaytadan yopiladi.</figcaption>
+          </figure>
+          <figure class="cost__shot">
+            <img src="assets/img/beton-yomon.webp"
+                 alt="Sifatsiz beton: kovaklar, sovuq chok va yoriq"
+                 loading="lazy" width="1800" height="1013">
+            <figcaption class="t-small cost__cap">Marka past chiqqan beton: kovaklar, sovuq chok, yoriq. Buni faqat quyilgandan keyin koʻrasiz.</figcaption>
+          </figure>
+        </div>
+
+        <div class="body-col body-col--full reveal">
+          <div class="cards cards--4" data-stagger>
+
+            <article class="card reveal">
+              <div class="card__icon"><svg aria-hidden="true"><use href="#i-shifer"/></svg></div>
+              <h3 class="t-h4 card__title">Tomni ikki marta yopasiz</h3>
+              <p class="t-small card__text">Arzon shifer 2–3 yilda suv oʻtkaza boshlaydi. Ikkinchi safar faqat varaq emas: eski tomni yechish, chiqindini olib chiqish va usta haqi ham qaytadan toʻlanadi.</p>
+            </article>
+
+            <article class="card reveal">
+              <div class="card__icon"><svg aria-hidden="true"><use href="#i-clock"/></svg></div>
+              <h3 class="t-h4 card__title">Brigada bekor turadi</h3>
+              <p class="t-small card__text">Material kech kelsa yoki partiya rad etilsa, obyektdagi ish toʻxtaydi. Bekor turgan kun uchun ham ish haqi toʻlanadi — bu material narxida koʻrinmaydi.</p>
+            </article>
+
+            <article class="card reveal">
+              <div class="card__icon"><svg aria-hidden="true"><use href="#i-document"/></svg></div>
+              <h3 class="t-h4 card__title">Hujjat topshirishda soʻraladi</h3>
+              <p class="t-small card__text">Obyektni topshirishda materialning sertifikati talab qilinadi. Hujjatsiz kelgan partiya hisobga oʻtmaydi — oʻsha material ikkinchi marta sotib olinadi.</p>
+            </article>
+
+            <article class="card reveal">
+              <div class="card__icon"><svg aria-hidden="true"><use href="#i-warning"/></svg></div>
+              <h3 class="t-h4 card__title">Marka faqat keyin maʼlum boʻladi</h3>
+              <p class="t-small card__text">Betonning haqiqiy markasini laboratoriyasiz aniqlab boʻlmaydi. Agar u aytilganidan past chiqsa, buni konstruksiya quyilgandan keyin bilasiz.</p>
+            </article>
+
+          </div>
+
+          <!-- Bo'lim ayblov bilan tugamaydi — javob bilan tugaydi, va javob
+               allaqachon saytda bor bo'limlarga olib boradi. -->
+          <p class="t-body cost__close measure">
+            Shuning uchun ENZOʻda har partiya <a href="#lab">laboratoriyadan oʻtadi</a> va <a href="#certs">hujjat bilan chiqadi</a>. Bu narxni oshirmaydi — ikkinchi toʻlovni yoʻq qiladi.
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
   <!-- ═══ §5.6 · ISHLAB CHIQARISH QUVVATI (to'q · 2-to'q) ════════════════ -->
+  <!-- `roof-bg` — tom kesimi ortidagi bo'shliq. Usiz u yerda sahifaning oq
+       foni ko'rinardi, yuqoridagi §5.5c esa kulrang: qirra ustida rang
+       sakrardi (mijoz koʻrsatdi, 2026-08-20). -->
+  <div class="roof-bg">
   <section class="section section--dark roof-top">
     <div class="container">
       <div class="grid">
         <div class="capacity__head head reveal">
           <p class="overline overline--on-dark">Quvvat</p>
-          <h2 class="t-h2">Ishlab chiqarish quvvati</h2>
+          <h2 class="t-h2 t-words">Ishlab chiqarish quvvati</h2>
           <p class="t-body-l sub">Ishlab chiqarish 24 soat, yil davomida toʻxtamaydi.</p>
 
           <!-- Bitta harakat — tugma (DESIGN.md §1.4). Telefon bu yerda takrorlanmaydi:
@@ -317,6 +480,8 @@
     </div>
   </section>
 
+  </div>
+
   <!-- ═══ §5.6b · GALEREYA ══════════════════════════════════════════════ -->
   <section class="section">
     <div class="container">
@@ -326,7 +491,7 @@
         <div class="head deck__head reveal" style="grid-column:1/-1">
           <div>
             <p class="overline">Zavod</p>
-            <h2 class="t-h2">Galereya</h2>
+            <h2 class="t-h2 t-words">Galereya</h2>
             <p class="t-body sub measure">Hech qanday sahnalashtirish yoʻq — oddiy ish kunidagi kadrlar.</p>
           </div>
 
@@ -353,40 +518,40 @@
              oddiy setka boʻlib qoladi — JS ishlamasa ham hammasi koʻrinadi. -->
         <div class="mosaic" id="deckSource" data-stagger>
           <figure class="shot reveal">
-            <span class="ph" data-ph="C1098"><img src="" alt="Plitalar maydoni, kran" loading="lazy"></span>
+            <span class="ph"><img src="assets/img/gallery/C1098.webp" alt="Plitalar maydoni, kran" width="1280" height="720" loading="lazy" decoding="async"></span>
             <figcaption class="t-caption shot__cap">Plitalar maydoni — kran bilan yuklash</figcaption>
           </figure>
           <figure class="shot reveal">
-            <span class="ph" data-ph="C1116"><img src="" alt="Shifer liniyasi" loading="lazy"></span>
+            <span class="ph"><img src="assets/img/gallery/C1116.webp" alt="Shifer liniyasi" width="1280" height="720" loading="lazy" decoding="async"></span>
             <figcaption class="t-caption shot__cap">Shifer liniyasi</figcaption>
           </figure>
           <figure class="shot reveal">
-            <span class="ph" data-ph="C1133"><img src="" alt="Mikser beton tugunida" loading="lazy"></span>
+            <span class="ph"><img src="assets/img/gallery/C1133.webp" alt="Mikser beton tugunida" width="1280" height="720" loading="lazy" decoding="async"></span>
             <figcaption class="t-caption shot__cap">Mikser beton tugunida</figcaption>
           </figure>
           <figure class="shot reveal">
-            <span class="ph" data-ph="C1124"><img src="" alt="Shifer toʻlqini, yaqindan" loading="lazy"></span>
+            <span class="ph"><img src="assets/img/gallery/C1124.webp" alt="Shifer toʻlqini, yaqindan" width="1280" height="720" loading="lazy" decoding="async"></span>
             <figcaption class="t-caption shot__cap">Shifer toʻlqini — 40 mm, yaqindan</figcaption>
           </figure>
           <figure class="shot reveal">
-            <span class="ph" data-ph="C1137"><img src="" alt="Sement silosi" loading="lazy"></span>
+            <span class="ph"><img src="assets/img/gallery/C1137.webp" alt="Sement silosi" width="1280" height="720" loading="lazy" decoding="async"></span>
             <figcaption class="t-caption shot__cap">Sement silosi</figcaption>
           </figure>
           <figure class="shot reveal">
-            <span class="ph" data-ph="C1074"><img src="" alt="Xodim mahsulot bilan" loading="lazy"></span>
-            <figcaption class="t-caption shot__cap">Tayyor mahsulotni tashish</figcaption>
+            <span class="ph"><img src="assets/img/gallery/C1123.webp" alt="Xodim liniya boshqaruv panelida" width="1280" height="720" loading="lazy" decoding="async"></span>
+            <figcaption class="t-caption shot__cap">Liniya boshqaruv paneli</figcaption>
           </figure>
           <figure class="shot reveal">
-            <span class="ph" data-ph="C1091"><img src="" alt="Beton quyish jarayoni" loading="lazy"></span>
+            <span class="ph"><img src="assets/img/gallery/C1091.webp" alt="Beton quyish jarayoni" width="1280" height="720" loading="lazy" decoding="async"></span>
             <figcaption class="t-caption shot__cap">Beton quyish jarayoni</figcaption>
           </figure>
           <figure class="shot reveal">
-            <span class="ph" data-ph="C1128"><img src="" alt="Kran bilan shifer paketini koʻtarish" loading="lazy"></span>
+            <span class="ph"><img src="assets/img/gallery/C1128.webp" alt="Kran bilan shifer paketini koʻtarish" width="1280" height="720" loading="lazy" decoding="async"></span>
             <figcaption class="t-caption shot__cap">Shifer paketini koʻtarish</figcaption>
           </figure>
           <figure class="shot reveal">
-            <span class="ph" data-ph="C1072"><img src="" alt="Plitalar qatori, ishchilar" loading="lazy"></span>
-            <figcaption class="t-caption shot__cap">Plitalar qatori — omborda</figcaption>
+            <span class="ph"><img src="assets/img/gallery/C1071.webp" alt="Koʻp boʻshliqli plita kesimi" width="1280" height="720" loading="lazy" decoding="async"></span>
+            <figcaption class="t-caption shot__cap">Koʻp boʻshliqli plita — kesim</figcaption>
           </figure>
         </div>
       </div>
@@ -394,12 +559,13 @@
   </section>
 
   <!-- ═══ §5.7 · LABORATORIYA ═══════════════════════════════════════════ -->
-  <section class="section">
+  <!-- id — §5.5c dagi yakuniy jumla shu bo'limga havola qiladi -->
+  <section class="section" id="lab">
     <div class="container">
       <div class="grid">
         <div class="head reveal">
           <p class="overline">Tekshiruvlar</p>
-          <h2 class="t-h2">Laboratoriya</h2>
+          <h2 class="t-h2 t-words">Laboratoriya</h2>
         </div>
 
         <div class="body-col reveal">
@@ -426,15 +592,17 @@
     </div>
   </section>
 
-  <!-- ═══ §5.8 · SERTIFIKATLAR 🆕 ═══════════════════════════════════════ -->
-  <!-- To'q ko'k fon (mijoz qarori, 2026-08-16). Qo'shni bo'limlar oq —
-       DESIGN.md §10 qoida 8 (ketma-ket ikkita to'q bo'lim) buzilmaydi. -->
-  <section class="section section--dark">
+  <!-- ═══ §5.8 · SERTIFIKATLAR ═══════════════════════════════════════ -->
+  <!-- To'q ko'k fon (mijoz qarori, 2026-08-20 da tasdiqlangan). Aniqlashtirildi:
+       o'zgarishi kerak bo'lgani — bo'lim foni emas, SKAN ORTIDAGI maydon
+       (`css/style.css` §.cert__scan). Qo'shni bo'limlar oq — DESIGN.md §10
+       qoida 8 (ketma-ket ikkita to'q bo'lim) buzilmaydi. -->
+  <section class="section section--dark" id="certs">
     <div class="container">
       <div class="grid">
         <div class="head reveal" style="grid-column:1/-1">
           <p class="overline overline--on-dark">Hujjatlar</p>
-          <h2 class="t-h2">Sertifikat va standartlar</h2>
+          <h2 class="t-h2 t-words">Sertifikat va standartlar</h2>
           <p class="t-body sub">Ishlab chiqarish jarayoni amaldagi davlat standartlariga muvofiq olib boriladi va har bir mahsulot sifat nazoratidan oʻtkaziladi.</p>
         </div>
 
@@ -490,7 +658,7 @@
 
         <div class="boss__copy reveal">
           <p class="overline">Murojaat</p>
-          <h2 class="t-h2">Bosh direktor soʻzi</h2>
+          <h2 class="t-h2 t-words">Bosh direktor soʻzi</h2>
 
           <blockquote class="boss__quote">
             <p class="t-body-l measure">Qurilishda vaqt — bu pul. Materiallar qanchalik tez yetkazilsa, ishlar shunchalik tez bajariladi. Bekor turish esa doim ortiqcha xarajat — shuning uchun ishonchli hamkor tanlash muhim.</p>
@@ -514,7 +682,7 @@
       <div class="grid">
         <div class="head reveal" style="grid-column:1/-1">
           <p class="overline">Nima uchun ENZO</p>
-          <h2 class="t-h2">Nima uchun ENZO GROUP?</h2>
+          <h2 class="t-h2 t-words">Nima uchun ENZO GROUP?</h2>
           <p class="t-body-l sub sub--lead">Bozorda yetkazuvchilar koʻp, lekin biz ishlab chiqaruvchimiz.</p>
           <p class="t-body measure" style="margin-top:var(--s-24)">2009-yildan beri shifer, beton va sementni bir tizimda ishlab chiqarib kelamiz. Vositasiz ishlaganimiz uchun ortiqcha ustama yoʻq, narxlar sunʼiy oshmaydi va har bir mahsulot OTK tekshiruvidan oʻtadi.</p>
         </div>
@@ -559,37 +727,110 @@
     </div>
   </section>
 
-  <!-- ═══ §5.11 · MIJOZLAR VA HAMKORLAR ═════════════════════════════════ -->
+
+  <!-- ═══ §5.9b · KIM UCHUN 🆕 ══════════════════════════════════════════ -->
+  <!-- Sayt uch xil xaridorga bir xil gapirardi. Ular esa butunlay boshqa
+       narsa so'raydi: kompaniya — grafik va hujjat, prorab — mikser qachon
+       chiqishi, uy quruvchi — qancha kerakligi va narx. Bu bo'lim har biriga
+       o'z jumlasini beradi va o'z tugmasiga uzatadi.
+
+       ⚠️ Matn yangi — mijoz tasdig'i kerak. Ayniqsa: kichik hajm qabul
+       qilinadimi va oylik grafik shartnomasi bormi. -->
+  <section class="section">
+    <div class="container">
+      <div class="grid">
+        <div class="head reveal" style="grid-column:1/-1">
+          <p class="overline">Kim uchun</p>
+          <h2 class="t-h2 t-words">Har kimning savoli boshqa</h2>
+          <p class="t-body-l sub measure">Bir xil beton uch xil odamga keladi. Quyida — har biri odatda birinchi boʻlib soʻraydigan narsa.</p>
+        </div>
+
+        <div class="body-col body-col--full reveal">
+          <div class="cards cards--3" data-stagger>
+
+            <article class="card reveal">
+              <div class="card__icon"><svg aria-hidden="true"><use href="#i-building"/></svg></div>
+              <h3 class="t-h4 card__title">Quruvchi kompaniyalarga</h3>
+              <p class="t-small card__text">Grafik boʻyicha yetkazish, har partiyada sertifikat va bitta menejer orqali toʻrtta mahsulot. Hajm oshgani sayin shartlar alohida kelishiladi.</p>
+              <a class="card__link t-small" href="#form">Shartlarni muhokama qilish</a>
+            </article>
+
+            <article class="card reveal">
+              <div class="card__icon"><svg aria-hidden="true"><use href="#i-truck"/></svg></div>
+              <h3 class="t-h4 card__title">Prorab va brigadalarga</h3>
+              <p class="t-small card__text">Mikser qachon chiqishini oldindan bilasiz. Obyektga oʻzimiz yetkazamiz — mashina qidirish va navbat kutish sizning ishingiz emas.</p>
+              <a class="card__link t-small" href="#form">Yetkazishni kelishish</a>
+            </article>
+
+            <article class="card reveal">
+              <div class="card__icon"><svg aria-hidden="true"><use href="#i-house"/></svg></div>
+              <h3 class="t-h4 card__title">Oʻz uyini quruvchilarga</h3>
+              <p class="t-small card__text">Qancha material kerakligini oʻzingiz hisoblab olasiz, keyin telefonda tekshirib beramiz. Kichik hajmda ham narx zavod narxi boʻlib qoladi.</p>
+              <a class="card__link t-small" href="#calculator">Hajmni hisoblash</a>
+            </article>
+
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══ §5.10 · ZAVOD ↔ VOSITACHI TAQQOSLASH 🆕 ═══════════════════════ -->
+  <!-- Sayt boshidan beri "zavoddan to'g'ri, vositachisiz" deb turadi, lekin
+       buni KO'RSATADIGAN joy yo'q edi — faqat aytilardi. Bu bo'lim FAQ'ning
+       birinchi savoliga ("Narxlaringiz nega arzonroq?") vizual javob beradi.
+       O'ng ustun raqobatchi haqida emas, XARID KANALI haqida. -->
+  <section class="section">
+    <div class="container">
+      <div class="grid">
+        <div class="head reveal" style="grid-column:1/-1">
+          <p class="overline">Farqi nimada</p>
+          <h2 class="t-h2 t-words">Zavoddan olish va vositachidan olish</h2>
+          <p class="t-body-l sub measure">Bir xil koʻrinadigan mahsulot ikki xil yoʻl bilan keladi. Farq narxda emas — hujjatda, markada va javobgarlikda.</p>
+        </div>
+
+        <div class="vs" data-stagger>
+          <div class="vs__col vs__col--own reveal">
+            <h3 class="t-h3 vs__title">Zavoddan toʻgʻridan-toʻgʻri</h3>
+            <ul class="vs__list">
+              <li><svg aria-hidden="true"><use href="#i-check"/></svg>1-qoʻl narx — ustama yoʻq</li>
+              <li><svg aria-hidden="true"><use href="#i-check"/></svg>Har partiyada hujjat va sertifikat</li>
+              <li><svg aria-hidden="true"><use href="#i-check"/></svg>Marka hujjatda koʻrsatilganidek</li>
+              <li><svg aria-hidden="true"><use href="#i-check"/></svg>Har partiya laboratoriyadan oʻtadi</li>
+              <li><svg aria-hidden="true"><use href="#i-check"/></svg>Kafolat yozma — kafolat kartasi bilan</li>
+              <li><svg aria-hidden="true"><use href="#i-check"/></svg>Qishda ham uzluksiz ishlab chiqarish</li>
+              <li><svg aria-hidden="true"><use href="#i-check"/></svg>Toʻrt mahsulot — bitta menejer</li>
+            </ul>
+          </div>
+
+          <div class="vs__col vs__col--other reveal">
+            <h3 class="t-h3 vs__title">Vositachi orqali</h3>
+            <ul class="vs__list">
+              <li><svg aria-hidden="true"><use href="#i-cross"/></svg>Narx ustama bilan keladi</li>
+              <li><svg aria-hidden="true"><use href="#i-cross"/></svg>Hujjat koʻpincha berilmaydi</li>
+              <li><svg aria-hidden="true"><use href="#i-cross"/></svg>Marka soʻzda aytiladi, tekshirilmaydi</li>
+              <li><svg aria-hidden="true"><use href="#i-cross"/></svg>Sifat nazorati kimdaligi nomaʼlum</li>
+              <li><svg aria-hidden="true"><use href="#i-cross"/></svg>Kafolat ogʻzaki</li>
+              <li><svg aria-hidden="true"><use href="#i-cross"/></svg>Taqchillikda narx sakraydi</li>
+              <li><svg aria-hidden="true"><use href="#i-cross"/></svg>Har mahsulot boshqa odamdan</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══ §5.11 · MIJOZLAR — video intervyular ═════════════════════════ -->
+  <!-- ✎ Logo lentasi bu bo'limdan chiqarildi (mijoz qarori, 2026-08-19):
+       bitta bo'limda ikkita harakat — surilayotgan logolar va uchta video
+       kartochkasi — bir-biri bilan raqobatlashardi. Endi logolar keyingi
+       alohida, past bo'limda (§5.11b). -->
   <section class="section section--surface">
     <div class="container">
       <div class="grid">
         <div class="head reveal" style="grid-column:1/-1">
-          <p class="overline">Hamkorlar</p>
-          <h2 class="t-h2">Mijozlar va hamkorlar</h2>
-        </div>
-
-        <div class="logos reveal">
-          <!-- Bitta lenta, ro`yxat ikki marta: birinchi nusxa chapga chiqib
-               ketguncha ikkinchisi o`rniga keladi — uzilish ko`rinmaydi.
-               Nusxa ekran o`quvchisidan yashiriladi. -->
-          <div class="logos__track">
-            <div class="logo-tile"><img src="assets/logos/jba-group.svg" alt="JBA GROUP" loading="lazy"></div>
-            <div class="logo-tile"><img src="assets/logos/beton-max.svg" alt="BETON MAX" loading="lazy"></div>
-            <div class="logo-tile"><img src="assets/logos/central-beton.svg" alt="Central Beton" loading="lazy"></div>
-            <div class="logo-tile"><img src="assets/logos/dream-residence.svg" alt="DREAM RESIDENCE" loading="lazy"></div>
-            <div class="logo-tile"><img src="assets/logos/megamix.svg" alt="Megamix" loading="lazy"></div>
-            <div class="logo-tile"><img src="assets/logos/dilbar-tt-house.svg" alt="DILBAR-TT HOUSE" loading="lazy"></div>
-            <div class="logo-tile"><img src="assets/logos/ecoizolit.svg" alt="ECOIZOLIT" loading="lazy"></div>
-            <div class="logo-tile"><img src="assets/logos/quvasoy-chek-shifer.svg" alt="КУВАСАЙ ЧЕК ШИФЕР" loading="lazy"></div>
-            <div class="logo-tile" aria-hidden="true"><img src="assets/logos/jba-group.svg" alt="JBA GROUP" loading="lazy"></div>
-            <div class="logo-tile" aria-hidden="true"><img src="assets/logos/beton-max.svg" alt="BETON MAX" loading="lazy"></div>
-            <div class="logo-tile" aria-hidden="true"><img src="assets/logos/central-beton.svg" alt="Central Beton" loading="lazy"></div>
-            <div class="logo-tile" aria-hidden="true"><img src="assets/logos/dream-residence.svg" alt="DREAM RESIDENCE" loading="lazy"></div>
-            <div class="logo-tile" aria-hidden="true"><img src="assets/logos/megamix.svg" alt="Megamix" loading="lazy"></div>
-            <div class="logo-tile" aria-hidden="true"><img src="assets/logos/dilbar-tt-house.svg" alt="DILBAR-TT HOUSE" loading="lazy"></div>
-            <div class="logo-tile" aria-hidden="true"><img src="assets/logos/ecoizolit.svg" alt="ECOIZOLIT" loading="lazy"></div>
-            <div class="logo-tile" aria-hidden="true"><img src="assets/logos/quvasoy-chek-shifer.svg" alt="КУВАСАЙ ЧЕК ШИФЕР" loading="lazy"></div>
-          </div>
+          <p class="overline">Mijozlar</p>
+          <h2 class="t-h2 t-words">Mijozlarimiz nima deydi</h2>
         </div>
 
         <!-- Video kartochkalari — setkaning butun kengligida, 3 ustun. -->
@@ -626,13 +867,50 @@
     </div>
   </section>
 
+  <!-- ═══ §5.11b · HAMKORLAR — logo lentasi ═══════════════════════════ -->
+  <!-- Alohida, ataylab past bo'lim: sarlavhasi kichik, atrofidagi bo'shliq
+       kam. Logolar — isbot, kontent emas; ular o'z bo'limini talab qilmaydi,
+       shunchaki tasdiqlab o'tadi. -->
+  <section class="section partners">
+    <div class="container">
+      <div class="grid">
+        <div class="head head--sm reveal" style="grid-column:1/-1">
+          <h2 class="t-h4">Bizga ishonganlar</h2>
+        </div>
+        <div class="logos reveal">
+          <!-- Bitta lenta, ro`yxat ikki marta: birinchi nusxa chapga chiqib
+               ketguncha ikkinchisi o`rniga keladi — uzilish ko`rinmaydi.
+               Nusxa ekran o`quvchisidan yashiriladi. -->
+          <div class="logos__track">
+            <div class="logo-tile"><img src="assets/logos/jba-group.svg" alt="JBA GROUP" loading="lazy"></div>
+            <div class="logo-tile"><img src="assets/logos/beton-max.svg" alt="BETON MAX" loading="lazy"></div>
+            <div class="logo-tile"><img src="assets/logos/central-beton.svg" alt="Central Beton" loading="lazy"></div>
+            <div class="logo-tile"><img src="assets/logos/dream-residence.svg" alt="DREAM RESIDENCE" loading="lazy"></div>
+            <div class="logo-tile"><img src="assets/logos/megamix.svg" alt="Megamix" loading="lazy"></div>
+            <div class="logo-tile"><img src="assets/logos/dilbar-tt-house.svg" alt="DILBAR-TT HOUSE" loading="lazy"></div>
+            <div class="logo-tile"><img src="assets/logos/ecoizolit.svg" alt="ECOIZOLIT" loading="lazy"></div>
+            <div class="logo-tile"><img src="assets/logos/quvasoy-chek-shifer.svg" alt="КУВАСАЙ ЧЕК ШИФЕР" loading="lazy"></div>
+            <div class="logo-tile" aria-hidden="true"><img src="assets/logos/jba-group.svg" alt="JBA GROUP" loading="lazy"></div>
+            <div class="logo-tile" aria-hidden="true"><img src="assets/logos/beton-max.svg" alt="BETON MAX" loading="lazy"></div>
+            <div class="logo-tile" aria-hidden="true"><img src="assets/logos/central-beton.svg" alt="Central Beton" loading="lazy"></div>
+            <div class="logo-tile" aria-hidden="true"><img src="assets/logos/dream-residence.svg" alt="DREAM RESIDENCE" loading="lazy"></div>
+            <div class="logo-tile" aria-hidden="true"><img src="assets/logos/megamix.svg" alt="Megamix" loading="lazy"></div>
+            <div class="logo-tile" aria-hidden="true"><img src="assets/logos/dilbar-tt-house.svg" alt="DILBAR-TT HOUSE" loading="lazy"></div>
+            <div class="logo-tile" aria-hidden="true"><img src="assets/logos/ecoizolit.svg" alt="ECOIZOLIT" loading="lazy"></div>
+            <div class="logo-tile" aria-hidden="true"><img src="assets/logos/quvasoy-chek-shifer.svg" alt="КУВАСАЙ ЧЕК ШИФЕР" loading="lazy"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
   <!-- ═══ §5.13 · KALKULYATOR ═══════════════════════════════════════════ -->
   <section class="section" id="calculator" style="background:var(--enzo-100)">
     <div class="container">
       <div class="grid">
         <div class="head reveal" style="grid-column:1/-1">
           <p class="overline">Kalkulyator</p>
-          <h2 class="t-h2">Narx qanday hisoblanadi?</h2>
+          <h2 class="t-h2 t-words">Narx qanday hisoblanadi?</h2>
           <p class="t-body sub measure">Narx hamma buyurtmachilar uchun bir xil emas, chunki hajmlar har xil. Katta hajmda buyurtmalar uchun narx individual hisoblanadi. Doimiy hamkorlar uchun esa alohida shartlar kelishiladi.</p>
         </div>
 
@@ -663,6 +941,7 @@
               <option value="extra-qop">ENZO EXTRA M550 · qopli (50 kg)</option>
               <option value="optima-naval">ENZO Optima M450 · naval</option>
               <option value="extra-naval">ENZO EXTRA M550 · naval</option>
+              <option value="?">Bilmayman — menejer tanlashga yordam beradi</option>
             </select>
           </div>
 
@@ -672,6 +951,7 @@
               <option>M100</option><option>M150</option><option>M250</option>
               <option>M300</option><option>M350</option><option>M400</option>
               <option>M450</option><option>M500</option>
+              <option value="?">Bilmayman — menejer tanlashga yordam beradi</option>
             </select>
           </div>
 
@@ -683,6 +963,7 @@
               <option value="li60">Irrigatsion nov ЛИ 60.3.6/4 (6 m)</option>
               <option value="li30">Irrigatsion nov ЛИ 30.3.6/4 (3 m)</option>
               <option value="ct">Shpaler ustuni CT</option>
+              <option value="?">Bilmayman — menejer tanlashga yordam beradi</option>
             </select>
           </div>
 
@@ -707,7 +988,7 @@
         </form>
 
         <aside class="calc__result reveal">
-          <p class="t-small" style="color:var(--ink-60)">Sizning konfiguratsiyangiz uchun taxminiy narx</p>
+          <p class="t-small" id="c-cap" style="color:var(--ink-60)">Sizning konfiguratsiyangiz uchun taxminiy narx</p>
           <div class="t-stat calc__price" id="c-price" style="font-size:clamp(36px,4.5vw,64px)">— soʻm</div>
 
           <ul class="calc__list t-small">
@@ -751,7 +1032,7 @@
       <div class="grid">
         <div class="head faq__head reveal">
           <p class="overline">FAQ</p>
-          <h2 class="t-h2">Koʻp soʻraladigan savollar</h2>
+          <h2 class="t-h2 t-words">Koʻp soʻraladigan savollar</h2>
           <p class="t-body sub">Koʻpchilik ikkilanuvchi savollarga javoblar</p>
 
           <!-- Ierarxiya: telefon raqami — asosiy element, tugma emas.
@@ -795,6 +1076,7 @@
     </div>
   </section>
 
+
   <!-- ═══ §5.17 · FORMA (to'q · 3-to'q) ═════════════════════════════════ -->
   <div class="roof-bg">
   <section class="section section--lg section--dark roof-top" id="form">
@@ -837,8 +1119,7 @@
 
         <div class="f-col f-col--brand">
           <a class="logo" href="#home">
-            <span class="logo__mark" aria-hidden="true"><span></span><span></span><span></span></span>
-            <span class="logo__word">ENZO</span>
+            <svg class="logo__svg" aria-hidden="true"><use href="#i-enzo"/></svg>
           </a>
           <p class="t-body f-slogan">Bozorda yetkazuvchilar koʻp, lekin biz ishlab chiqaruvchi ishonchli brend</p>
         </div>
@@ -898,10 +1179,31 @@
 
 </main>
 
-<!-- Prototip boshqaruvi — yakuniy saytda o'chiriladi -->
-<div class="proto-bar">
-  <button id="btnWire" class="is-active" type="button">Struktura</button>
-  <button id="btnFull" type="button">Rang bilan</button>
+<!-- Scroll indikatori — o'ng chetdagi yupqa progress chizig'i.
+     `aria-hidden`: bu navigatsiya emas, o'lchagich; ekran o'quvchisi
+     sarlavhalar bo'yicha yuradi va bu takroriy shovqin bo'lardi. -->
+<div class="snav" aria-hidden="true"><i id="snavBar"></i></div>
+
+<!-- Ijtimoiy tarmoqlar — o'ng pastda, doim ko'rinib turadi.
+     Kvadrat, doira emas: radius nolga tenglangan (DESIGN.md §6.1).
+     Yopiq holatda bitta tugma; bosilganda uchtasi tepaga ochiladi —
+     shunda kalkulyator va formalar ustida doimiy uchta dog' turmaydi. -->
+<div class="soc" id="soc">
+  <div class="soc__list" id="socList">
+    <a class="soc__link soc__link--yt" href="https://www.youtube.com/@enzo_group" target="_blank" rel="noopener" aria-label="YouTube">
+      <svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M21.6 7.2a2.5 2.5 0 0 0-1.76-1.77C18.25 5 12 5 12 5s-6.25 0-7.84.43A2.5 2.5 0 0 0 2.4 7.2 26 26 0 0 0 2 12a26 26 0 0 0 .4 4.8 2.5 2.5 0 0 0 1.76 1.77C5.75 19 12 19 12 19s6.25 0 7.84-.43a2.5 2.5 0 0 0 1.76-1.77A26 26 0 0 0 22 12a26 26 0 0 0-.4-4.8ZM10 15.2V8.8l5.2 3.2-5.2 3.2Z"/></svg>
+    </a>
+    <a class="soc__link soc__link--ig" href="https://instagram.com/enzogroup_uz" target="_blank" rel="noopener" aria-label="Instagram">
+      <svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M12 2.2c3.2 0 3.6 0 4.85.07 1.17.05 1.8.25 2.23.41.56.22.96.48 1.38.9.42.42.68.82.9 1.38.16.42.36 1.06.41 2.23.06 1.25.07 1.65.07 4.85s0 3.6-.07 4.85c-.05 1.17-.25 1.8-.41 2.23a3.7 3.7 0 0 1-.9 1.38c-.42.42-.82.68-1.38.9-.42.16-1.06.36-2.23.41-1.25.06-1.65.07-4.85.07s-3.6 0-4.85-.07c-1.17-.05-1.8-.25-2.23-.41a3.7 3.7 0 0 1-1.38-.9 3.7 3.7 0 0 1-.9-1.38c-.16-.42-.36-1.06-.41-2.23C2.2 15.6 2.2 15.2 2.2 12s0-3.6.07-4.85c.05-1.17.25-1.8.41-2.23.22-.56.48-.96.9-1.38.42-.42.82-.68 1.38-.9.42-.16 1.06-.36 2.23-.41C8.4 2.2 8.8 2.2 12 2.2Zm0 3.83a5.97 5.97 0 1 0 0 11.94 5.97 5.97 0 0 0 0-11.94Zm0 9.85a3.88 3.88 0 1 1 0-7.76 3.88 3.88 0 0 1 0 7.76Zm7.6-10.08a1.4 1.4 0 1 1-2.79 0 1.4 1.4 0 0 1 2.79 0Z"/></svg>
+    </a>
+    <a class="soc__link soc__link--tg" href="https://t.me/enzogroup_uz" target="_blank" rel="noopener" aria-label="Telegram">
+      <svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M21.6 4.3 3.2 11.4c-.9.35-.9.86-.16 1.08l4.7 1.47 1.8 5.5c.22.6.4.83.86.83.35 0 .5-.16.7-.35l2.24-2.18 4.66 3.44c.86.47 1.47.23 1.68-.8l3.04-14.3c.3-1.26-.5-1.83-1.32-1.46l.2-.33Zm-11.6 9.5 8.5-5.36c.42-.26.8-.12.49.17l-7.28 6.57-.28 3.02-1.43-4.4Z"/></svg>
+    </a>
+  </div>
+  <button class="soc__toggle" id="socToggle" type="button" aria-expanded="false" aria-controls="socList" aria-label="Ijtimoiy tarmoqlar">
+    <svg class="soc__ico-open" viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M21.6 4.3 3.2 11.4c-.9.35-.9.86-.16 1.08l4.7 1.47 1.8 5.5c.22.6.4.83.86.83.35 0 .5-.16.7-.35l2.24-2.18 4.66 3.44c.86.47 1.47.23 1.68-.8l3.04-14.3c.3-1.26-.5-1.83-1.32-1.46l.2-.33Zm-11.6 9.5 8.5-5.36c.42-.26.8-.12.49.17l-7.28 6.57-.28 3.02-1.43-4.4Z"/></svg>
+    <svg class="soc__ico-close" viewBox="0 0 24 24" aria-hidden="true"><path fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" d="M6 6l12 12M18 6 6 18"/></svg>
+  </button>
 </div>
 
 <script src="js/main.js"></script>
