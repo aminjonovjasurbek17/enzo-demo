@@ -1734,45 +1734,82 @@ section[id] { scroll-margin-top:var(--s-24); }
 .card:hover .card__link::after { translate:3px 0; }
 .card__link:hover { color:var(--enzo-500); }
 
-/* 21 · ZAVOD VIDEOSI — §5.3 (2026-08-20) --------------------------------- */
-/* «Facade»: poster + tugma. Iframe faqat bosilgandan keyin quriladi
-   (main.js §13). Nisbat 16/9 — iframe ham, poster ham shu qutida turadi,
-   shunda almashganda sahifa sakramaydi. */
+/* 21 · ZAVOD VIDEOSI — §5.3 (✎ qayta qurildi 2026-08-20) ---------------- */
+/* To'liq kenglik: kadr `.container` dan chiqib, ekranning ikki chetiga
+   tegadi. `100vw` + manfiy chekka — setka ichida qolgan holda tashqariga
+   chiqishning yagona ishonchli usuli.
+
+   Kenglik `min()` bilan cheklanadi: 16:9 kadr keng ekranda balandligi
+   bo'yicha ekrandan chiqib ketardi (1920px kenglikda 1080px balandlik).
+   `100svh * 16/9` — balandlik ekrandan oshmaydigan kenglik.
+   Natijada kadr HAR DOIM butun ko'rinadi: qirqilmaydi ham, cho'zilmaydi ham. */
 .about__video { margin:0; }
-.vplay {
-  position:relative; display:block; width:100%;
-  padding:0; border:0; background:var(--surface);
-  aspect-ratio:16/9; cursor:pointer; overflow:hidden;
+/* `--vw` — scrollbar CHIQARIB TASHLANGAN kenglik, JS beradi (main.js §15).
+   `100vw` ishlatilsa, u scrollbar'ni ham qo'shib hisoblaydi va kadr o'ngga
+   surilib, chap chetda ~16px oq tasma qolardi (o'lchandi: x=16, w=1408). */
+.vwrap {
+  position:relative;
+  width:min(var(--vw, 100vw), calc(100svh * 16 / 9));
+  margin-left:calc(50% - min(var(--vw, 100vw) / 2, calc(50svh * 16 / 9)));
+  aspect-ratio:16/9;
+  background:var(--enzo-800);
+  overflow:hidden;
 }
-.vplay img { width:100%; height:100%; object-fit:cover; display:block; }
+.vwrap__poster { width:100%; height:100%; object-fit:cover; display:block; }
+.vwrap iframe { position:absolute; inset:0; width:100%; height:100%; border:0; }
 
-/* Tugma — kvadrat, radius yo'q (DESIGN.md §6.1). Oq maydon to'q kadrda ham,
-   och kadrda ham o'qiladi; hover'da brend ko'kiga o'tadi. */
-.vplay__btn {
-  position:absolute; left:50%; top:50%; translate:-50% -50%;
-  width:88px; height:88px;
-  display:flex; align-items:center; justify-content:center;
-  background:var(--white); color:var(--enzo-800);
-  transition:background 180ms var(--ease), color 180ms var(--ease), scale 220ms var(--ease-out);
+/* Ovoz tugmasi. Video ovozsiz boshlanadi (brauzer qoidasi), shuning uchun
+   yoqish yo'li ko'rinib turishi kerak — YouTube'ning o'z tugmasi kichkina
+   va pleyer paneli yashiringanda umuman ko'rinmaydi.
+   Kvadrat, radius yo'q (DESIGN.md §6.1). */
+.vsound {
+  position:absolute; z-index:2; left:var(--s-16); bottom:var(--s-16);
+  display:inline-flex; align-items:center; gap:var(--s-8);
+  height:44px; padding:0 var(--s-16);
+  border:0; cursor:pointer;
+  background:rgba(10,15,28,.72); color:var(--white);
+  font-family:inherit; font-size:15px; font-weight:500;
+  backdrop-filter:blur(6px);
+  transition:background 160ms var(--ease);
 }
-.vplay__btn svg { width:30px; height:30px; margin-left:4px; }
-.vplay:hover .vplay__btn { background:var(--enzo-500); color:var(--white); scale:1.06; }
-/* Klaviatura bilan yurganda tugma ko'rinib turishi kerak — fokus halqasi
-   kadr ustida yo'qolmasligi uchun oq, ichkaridan. */
-.vplay:focus-visible { outline:3px solid var(--white); outline-offset:-6px; }
-@media (max-width:767px) {
-  .vplay__btn { width:64px; height:64px; }
-  .vplay__btn svg { width:22px; height:22px; }
-}
-
-/* Iframe poster o'rniga keladi — o'sha qutini to'ldiradi */
-.about__video iframe {
-  display:block; width:100%; aspect-ratio:16/9; border:0;
-}
+.vsound:hover { background:var(--enzo-500); }
+.vsound svg { width:20px; height:20px; }
+@media (min-width:768px) { .vsound { left:var(--s-24); bottom:var(--s-24); } }
 
 .about__vcap { margin-top:var(--s-12); color:var(--ink-60); }
+@media (min-width:1024px) {
+  /* Kadr to'liq kenglikda, izoh esa matn ustuni bilan bir chiziqda qoladi */
+  .about__vcap { padding-inline:var(--edge); }
+}
 
-/* ID hali ulanmagan bo'lsa (main.js §13 shu sinfni qo'yadi): blok oddiy
-   rasm bo'lib qoladi — bosilmaydigan tugma ko'rsatilmaydi. */
-.vplay.is-empty { cursor:default; }
-.vplay.is-empty .vplay__btn { display:none; }
+/* 22 · KIRISH ANIMATSIYASI (2026-08-20) ---------------------------------- */
+/* Parda faqat `html.has-intro` da ko'rinadi — qarorni `<head>` dagi kichik
+   skript qabul qiladi (sessiyada bir marta, harakat kamaytirilmagan bo'lsa).
+
+   YO'QOLISHI sof CSS animatsiyasi bilan: JS ishlamay qolsa ham parda
+   ekranda osilib qolmaydi. Bu shu blokdagi eng muhim qaror — kirish
+   animatsiyasining klassik falokati aynan shu. */
+.intro { display:none; }
+
+html.has-intro { overflow:hidden; }
+html.has-intro .intro {
+  display:block; position:fixed; inset:0; z-index:200;
+  /* Videoning O'Z foni (o'lchandi: #354a92) — `contain` da yon tomonlarda
+     chegara ko'rinmaydi. */
+  background:#354a92;
+  /* 2700 ms — logotip ~2,0–2,4 s da to'liq shakllanadi (kadrma-kadr
+     o'lchandi), keyin qisqa nafas va so'nish. Videoning oxirigacha (5 s)
+     kutilmaydi: qolgani shunchaki ushlab turish. */
+  animation:intro-out 500ms var(--ease) 2700ms forwards;
+}
+.intro__v {
+  width:100%; height:100%;
+  /* `contain`, `cover` emas: tor ekranda `cover` logotipni qirqib
+     tashlardi. Fon bir xil bo'lgani uchun harflar ko'rinmaydi. */
+  object-fit:contain;
+}
+@keyframes intro-out {
+  to { opacity:0; visibility:hidden; }
+}
+/* Animatsiya tugagach parda hech narsani ushlab turmasin */
+html.has-intro .intro { pointer-events:none; }

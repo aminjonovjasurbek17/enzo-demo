@@ -857,56 +857,154 @@
 })();
 
 
-/* 13 · Zavod videosi — YouTube «facade»
+/* 13 · Zavod videosi — bo'lim ko'ringanda o'zi boshlanadi
    ---------------------------------------------------------------------------
-   Sahifa ochilganda YouTube'ga so'rov ketmaydi: poster va tugma oddiy
-   HTML. Foydalanuvchi bosgandagina iframe quriladi va `autoplay=1` bilan
-   darrov ijro boshlanadi — ya'ni bosish ikki marta talab qilinmaydi.
+   Play tugmasi yo'q (mijoz qarori, 2026-08-20): iframe bo'lim ekranga
+   kirganda quriladi va darrov ijro boshlanadi.
 
-   `youtube-nocookie.com` — kuki qo'ymaydigan domen. `rel=0` tugagandan
-   keyin begona kanallarning videolarini ko'rsatmaydi. */
+   OVOZSIZ boshlanadi. Bu tanlov emas — hech bir brauzer ovozli avtomatik
+   ijroga ruxsat bermaydi, `mute=1` bo'lmasa video umuman boshlanmaydi.
+   Ovozni yoqish uchun kadr ustida tugma turadi; u YouTube'ning IFrame API
+   siga `postMessage` yuboradi (`enablejsapi=1` shuning uchun kerak).
+
+   Iframe oldindan qo'yilmaydi: u ~1,3 MB skript va o'nlab so'rov olib
+   keladi. Sahifa boshida turgani uchun bu hero'ning yuklanishini bo'g'ardi
+   — mijoz sezgan «qotib qolish» aynan shundan.
+
+   `file://` da YouTube embed ishlamaydi («Ошибка 153»): sahifaning manbasi
+   yo'q. U yerda poster qoladi va bosilganda YouTube yangi oynada ochiladi. */
 (function () {
   'use strict';
 
-  var btns = document.querySelectorAll('.vplay');
-  if (!btns.length) return;
+  var box = document.getElementById('zavodVideo');
+  if (!box) return;
 
-  Array.prototype.forEach.call(btns, function (btn) {
-    var id = btn.getAttribute('data-yt');
+  var id = box.getAttribute('data-yt');
+  if (!id || id === 'VIDEO_ID') return;
 
-    /* ID hali ulanmagan — blok oddiy rasm bo'lib qoladi. Bosilmaydigan
-       tugma qo'yilsa, u ishlamaydigan sayt taassurotini berardi. */
-    if (!id || id === 'VIDEO_ID') {
-      btn.classList.add('is-empty');
-      btn.setAttribute('tabindex', '-1');
-      btn.setAttribute('aria-hidden', 'true');
-      return;
-    }
-
-    /* `file://` dan ochilganda iframe ISHLAMAYDI: sahifaning manbasi
-       (origin) bo'lmagani uchun YouTube «Ошибка 153» beradi — bu himoya
-       cheklovi, kod xatosi emas. Serverdan (GitHub Pages, hosting yoki
-       lokal server) ochilganda muammo yo'q.
-
-       Shu holat uchun zaxira yo'l: video yangi oynada YouTube'da ochiladi.
-       Aks holda mahalliy ko'rish paytida sayt buzuq ko'rinardi. */
-    var local = location.protocol === 'file:';
-    if (local) {
-      btn.setAttribute('aria-label', btn.getAttribute('aria-label') + ' (YouTube\'da ochiladi)');
-    }
-
-    btn.addEventListener('click', function () {
-      if (local) {
-        window.open('https://www.youtube.com/watch?v=' + id, '_blank', 'noopener');
-        return;
-      }
-      var fr = document.createElement('iframe');
-      fr.src = 'https://www.youtube-nocookie.com/embed/' + id +
-               '?autoplay=1&rel=0&modestbranding=1&playsinline=1';
-      fr.title = 'ENZO Kompaniyasi — video';
-      fr.allow = 'accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture';
-      fr.setAttribute('allowfullscreen', '');
-      btn.replaceWith(fr);
+  /* --- file:// zaxira yo'li --- */
+  if (location.protocol === 'file:') {
+    box.style.cursor = 'pointer';
+    box.setAttribute('role', 'link');
+    box.setAttribute('tabindex', '0');
+    box.setAttribute('aria-label', 'Videoni YouTube\'da ochish');
+    var open = function () {
+      window.open('https://www.youtube.com/watch?v=' + id, '_blank', 'noopener');
+    };
+    box.addEventListener('click', open);
+    box.addEventListener('keydown', function (e) {
+      if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); open(); }
     });
-  });
+    return;
+  }
+
+  var started = false;
+
+  var start = function () {
+    if (started) return;
+    started = true;
+
+    var fr = document.createElement('iframe');
+    fr.id = 'zavodFrame';
+    fr.src = 'https://www.youtube-nocookie.com/embed/' + id +
+             '?autoplay=1&mute=1&controls=1&rel=0&modestbranding=1' +
+             '&playsinline=1&enablejsapi=1&origin=' + encodeURIComponent(location.origin);
+    fr.title = 'ENZO Kompaniyasi — video';
+    fr.allow = 'accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture';
+    fr.setAttribute('allowfullscreen', '');
+    box.appendChild(fr);
+
+    /* Ovoz tugmasi. Iframe qurilgandan keyin qo'shiladi — video yo'q
+       joyda «ovozni yoqish» taklifi ma'nosiz bo'lardi. */
+    var snd = document.createElement('button');
+    snd.type = 'button';
+    snd.className = 'vsound';
+    snd.innerHTML = '<svg aria-hidden="true"><use href="#i-sound"/></svg>Ovozni yoqish';
+    snd.addEventListener('click', function () {
+      fr.contentWindow.postMessage(JSON.stringify({
+        event: 'command', func: 'unMute', args: []
+      }), '*');
+      fr.contentWindow.postMessage(JSON.stringify({
+        event: 'command', func: 'setVolume', args: [100]
+      }), '*');
+      snd.remove();
+    });
+    box.appendChild(snd);
+  };
+
+  /* Bo'limning yarmi ko'ringanda boshlanadi. Kichikroq chegara qo'yilsa,
+     video ekranning chetida, ko'z tushmagan joyda boshlanib ketardi. */
+  if (!('IntersectionObserver' in window)) { start(); return; }
+
+  var io = new IntersectionObserver(function (entries) {
+    entries.forEach(function (en) {
+      if (!en.isIntersecting) return;
+      io.disconnect();
+      start();
+    });
+  }, { threshold: 0.5 });
+
+  io.observe(box);
+})();
+
+
+/* 14 · Kirish animatsiyasi — o'tkazib yuborish
+   ---------------------------------------------------------------------------
+   Pardaning YO'QOLISHI CSS animatsiyasi bilan bo'ladi (style.css §22), bu
+   yerda faqat qo'shimchalar: bosish yoki Esc bilan darrov yopish, va
+   tugagandan keyin `<html>` dagi scroll qulfini olib tashlash.
+
+   Ya'ni bu blok ishlamay qolsa ham parda o'z vaqtida yo'qoladi. */
+(function () {
+  'use strict';
+
+  var root = document.documentElement;
+  if (!root.classList.contains('has-intro')) return;
+
+  var el = document.getElementById('intro');
+  if (!el) { root.classList.remove('has-intro'); return; }
+
+  var done = false;
+  var finish = function () {
+    if (done) return;
+    done = true;
+    /* Scroll qulfini `<head>` dagi skript o'zi ochadi — bu yerda faqat
+       parda DOM'dan olib tashlanadi. */
+    root.classList.remove('has-intro');
+    el.remove();
+  };
+
+  /* CSS animatsiyasi tugagach tozalaymiz. `animationend` kelmasa ham
+     (masalan animatsiya o'chirilgan bo'lsa) taymer ishlaydi. */
+  el.addEventListener('animationend', finish);
+  setTimeout(finish, 3600);
+
+  var skip = function () { el.style.animation = 'none'; finish(); };
+  el.addEventListener('click', skip);
+  document.addEventListener('keydown', function (e) {
+    if (e.key === 'Escape' || e.key === 'Enter' || e.key === ' ') skip();
+  }, { once: true });
+})();
+
+
+/* 15 · `--vw` — scrollbar'siz kenglik
+   ---------------------------------------------------------------------------
+   `100vw` scrollbar'ni ham qo'shib hisoblaydi. To'liq kenglikdagi bloklarda
+   (zavod videosi) bu kadrni o'ngga surib, chap chetda ~16px oq tasma
+   qoldirardi. `clientWidth` esa aynan ko'rinadigan kenglikni beradi. */
+(function () {
+  'use strict';
+
+  var set = function () {
+    document.documentElement.style.setProperty(
+      '--vw', document.documentElement.clientWidth + 'px');
+  };
+
+  set();
+
+  var t;
+  window.addEventListener('resize', function () {
+    clearTimeout(t);
+    t = setTimeout(set, 120);
+  }, { passive: true });
 })();

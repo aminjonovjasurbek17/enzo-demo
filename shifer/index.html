@@ -8,11 +8,61 @@
 <link rel="preload" href="../assets/fonts/SFProDisplay-Bold.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="preload" href="../assets/fonts/SFProDisplay-Regular.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="stylesheet" href="../css/style.css">
+<script>
+/* Kirish animatsiyasi — ko'rsatilsinmi? Qaror sahifa chizilishidan oldin
+   qabul qilinadi, shuning uchun skript `<head>` da va tashqi fayl emas.
+
+   Uchta holatda ko'rsatilmaydi:
+   1. Sessiyada allaqachon ko'rilgan — mahsulot sahifasiga o'tganda uni
+      har safar qayta ko'rish charchatadi;
+   2. Foydalanuvchi harakatni kamaytirishni so'ragan;
+   3. Sahifa ichki havola (#) bilan ochilgan — u yerda odam aniq bir
+      bo'limga kelayapti, parda esa uni to'sib qo'yardi. */
+(function () {
+  try {
+    if (sessionStorage.getItem('enzo-intro')) return;
+    if (matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+    if (location.hash) return;
+    sessionStorage.setItem('enzo-intro', '1');
+    var root = document.documentElement;
+    root.classList.add('has-intro');
+
+    /* Scroll qulfini SHU SKRIPT ochadi, main.js emas. Sabab: qulf shu
+       yerda qo'yiladi — agar uni ochish boshqa faylga qoldirilsa va o'sha
+       fayl yuklanmasa (tarmoq uzilishi, keshdagi eski nusxa), sahifa
+       butunlay scroll qilinmaydigan bo'lib qolardi. Bu kirish
+       animatsiyalarining klassik falokati.
+
+       3600 ms — parda 2700 + 500 ms da so'nadi, ustiga zaxira. */
+    setTimeout(function () { root.classList.remove('has-intro'); }, 3600);
+  } catch (e) { /* sessionStorage yopiq bo'lsa — animatsiya shunchaki bo'lmaydi */ }
+})();
+</script>
 </head>
 <body>
 
+<!-- Kirish animatsiyasi. Ko'rinishi `html.has-intro` ga bog'liq (yuqoridagi
+     skript qo'yadi), YO'QOLISHI esa sof CSS animatsiyasi bilan bo'ladi
+     (`style.css` §22). Shuning uchun JS ishlamay qolsa ham parda ekranda
+     osilib qolmaydi — bu eng muhim shart.
+
+     Video: 1920×1080, 5 s. Logotip ~2,4 s da to'liq shakllanadi, qolgani
+     ushlab turish — shuning uchun parda 2,4 s da so'na boshlaydi, videoning
+     oxirigacha kutilmaydi.
+
+     Fon `#354a92` — videoning O'Z foni (o'lchandi). Shuning uchun
+     `object-fit:contain` da yon tomonlarda chegara ko'rinmaydi. -->
+<div class="intro" id="intro" aria-hidden="true">
+  <video class="intro__v" src="../assets/video/enzo-logo.mp4"
+         autoplay muted playsinline preload="auto"></video>
+</div>
+
+
 <!-- SVG ikonka to'plami (assets/icons/ dan) -->
 <svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <!-- Ovoz — zavod videosidagi «Ovozni yoqish» tugmasi uchun (§5.3).
+       190×190 quti, 7,44px moduli — qolgan ENZO ikonkalari bilan bir tizimda. -->
+  <symbol id="i-sound" viewBox="0 0 190 190"><path fill="currentColor" d="M74.4,74.4h-22.32v41.2h22.32l29.76,26.04V48.36l-29.76,26.04ZM119.04,74.4v41.2c7.44-5.16,11.16-12.4,11.16-20.6s-3.72-15.44-11.16-20.6ZM119.04,44.64v14.88c14.88,7.44,22.32,20.6,22.32,35.48s-7.44,28.04-22.32,35.48v14.88c22.32-8.68,37.2-27.8,37.2-50.36s-14.88-41.68-37.2-50.36Z"/></symbol>
   <!-- ENZO logotipi — identity/enzo.svg dan olingan haqiqiy vektor
        (mijoz qarori, 2026-08-20). Avval belgi CSS bilan uchta tekis chiziq
        qilib chizilgandi; brendning o'z belgisi esa uchta QIYA plita —
