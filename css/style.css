@@ -1443,6 +1443,21 @@ section[id] { scroll-margin-top:var(--s-24); }
     padding-block:0;
   }
 
+  /* ✎ Yo'l BIR MARTA ishlatiladi (2026-08-22). Chiziq to'lgach JS shu
+     klassni qo'yadi: qadash tugaydi va bo'lim oddiy blokka aylanadi.
+     Sababi — ikkinchi marta o'sha yerdan o'tganda (ayniqsa yuqoriga
+     qaytganda) ekranda hech narsa o'zgarmaydigan yarim ekranlik masofa
+     paydo bo'lardi: sahifa siljiydi, ko'rinish qotib turadi.
+
+     Sahifa balandligi shu payt qisqaradi, JS esa scroll'ni aynan shuncha
+     suradi — ko'z uchun hech narsa qimirlamaydi (js/main.js §16). */
+  .pin.is-done { height:auto; }
+  /* Sahna o'lchamiga TEGILMAYDI — faqat qadash bekor qilinadi. Balandlik
+     yoki padding o'zgarsa, yig'ishtirish paytidagi scroll hisobi ham
+     buzilar edi: JS aynan yo'l uzunligicha suradi, boshqa hech narsa
+     o'zgarmasligi kerak. */
+  .pin.is-done .pin__stage { position:static; }
+
   /* ✎ Ustunlar orasidagi vertikal ajratuvchilar olib tashlandi (2026-08-21):
      ularning o'rnini gorizontal chiziq egalladi — ikkalasi birga bo'lsa
      setka to'r bo'lib ko'rinardi. */

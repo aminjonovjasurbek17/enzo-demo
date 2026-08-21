@@ -699,6 +699,15 @@
     }
   }, { passive: false });
 
+  /* Sahifa balandligi kod tomonidan o'zgartirilsa (masalan qadalgan
+     bo'lim yo'lini yig'ishtirish), scroll ham shuncha siljishi kerak.
+     Bu yerda `target` va `current` ikkalasi birga suriladi — aks holda
+     silliq scroll keyingi kadrda eski nishonga qaytarib tashlardi. */
+  window.__enzoScrollShift = function (dy) {
+    target += dy;
+    current += dy;
+  };
+
   /* Boshqa yo'l bilan siljitilsa (klaviatura, scrollbar, anchor) — sinxron */
   window.addEventListener('scroll', function () {
     if (!running) {
@@ -1325,6 +1334,40 @@
   var ticking = false;
   var live = false;
   var pMax = 0;      // eng uzoq borilgan to'lish darajasi
+  var done = false;  // yo'l yig'ishtirilganmi
+
+  /* ✎ Yo'lni bir marta ishlatib, keyin yig'ishtirish (mijoz qarori,
+     2026-08-22).
+
+     Muammo: qadash yo'li (160svh) chiziq to'lgandan KEYIN ham joyida
+     qolardi. Ikkinchi marta o'sha yerdan o'tganda — ayniqsa yuqoriga
+     qaytganda — ekranda hech narsa o'zgarmaydigan yarim ekranlik masofa
+     paydo bo'lardi: sahifa siljiyapti, ko'rinish esa qotib turadi.
+
+     Yechim: animatsiya tugagan zahoti «pin» yo'li olib tashlanadi va
+     bo'lim oddiy blokka aylanadi. Shu payt sahifa balandligi yo'l
+     uzunligicha qisqaradi, shuning uchun scroll ham aynan shuncha
+     yuqoriga suriladi — ko'z uchun hech narsa qimirlamaydi, lekin
+     bo'limda endi ushlab turadigan bo'sh masofa qolmaydi.
+
+     Siljish window.__enzoScrollShift orqali silliq scroll bloki bilan
+     ham kelishiladi (main.js §11), aks holda u keyingi kadrda eski
+     nishonga tortib qaytarardi. */
+  var yigishtir = function (sticky) {
+    if (done) return;
+    done = true;
+    /* Haqiqatda ishlatilgan sticky masofasi — 0 va yo'l uzunligi orasida.
+       Tez scroll qilinganda sahna allaqachon qo'zg'algan bo'lishi mumkin,
+       o'shanda to'liq yo'lga surish sakrashga olib kelardi. */
+    pin.classList.add('is-done');
+    if (sticky > 0) {
+      var y = window.scrollY - sticky;
+      window.scrollTo(0, y);
+      if (typeof window.__enzoScrollShift === 'function') {
+        window.__enzoScrollShift(-sticky);
+      }
+    }
+  };
 
   var measure = function () {
     ticking = false;
@@ -1344,7 +1387,13 @@
          formulaga o'tadi. */
       var pr  = pin.getBoundingClientRect();
       var yol = pin.offsetHeight - stage.offsetHeight;
-      p = (-pr.top + head) / (yol || 1);
+      var oq  = -pr.top + head;          // yo'l bo'ylab o'tilgan masofa
+      p = oq / (yol || 1);
+
+      if (p >= 1) {
+        /* Chiziq to'ldi — yo'l endi keraksiz. */
+        measure.qol = Math.max(0, Math.min(yol, oq));
+      }
     } else {
       /* Oddiy oqim (mobil). Yo'l uzunligi bo'lim balandligiga EMAS, unga
          qo'shimcha yarim ekranga teng — aks holda chiziq bir necha yuz
@@ -1371,6 +1420,12 @@
       var lit = p >= Math.max(0, i / steps.length - 0.04);
       el.classList.toggle('is-lit', lit);
     });
+
+    if (measure.qol !== undefined) {
+      var q = measure.qol;
+      measure.qol = undefined;
+      yigishtir(q);
+    }
   };
 
   var onScroll = function () {
