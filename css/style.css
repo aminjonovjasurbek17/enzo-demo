@@ -1307,7 +1307,9 @@ body.is-locked { overflow:hidden; }
 }
 
 .reel__quote { margin-top:var(--s-16); color:var(--ink); text-wrap:pretty; }
-.reel__name  { margin-top:var(--s-12); }
+/* Iqtibos matni olib tashlangach ism to'g'ridan-to'g'ri kadr ostida
+   turadi — oraliq biroz kattaroq. */
+.reel__name  { margin-top:var(--s-16); }
 .reel__role  { margin-top:var(--s-4); color:var(--ink-60); }
 
 /* --- §5.13 · Kalkulyator ------------------------------------------------ */
@@ -1930,23 +1932,76 @@ section[id] { scroll-margin-top:var(--s-24); }
 }
 .vwrap__v { width:100%; height:100%; object-fit:cover; display:block; background:var(--enzo-800); }
 
-/* Ovoz tugmasi. Video ovozsiz boshlanadi (brauzer qoidasi), shuning uchun
-   yoqish yo'li ko'rinib turishi kerak — YouTube'ning o'z tugmasi kichkina
-   va pleyer paneli yashiringanda umuman ko'rinmaydi.
-   Kvadrat, radius yo'q (DESIGN.md §6.1). */
-.vsound {
-  position:absolute; z-index:2; left:var(--s-16); bottom:var(--s-16);
-  display:inline-flex; align-items:center; gap:var(--s-8);
-  height:44px; padding:0 var(--s-16);
-  border:0; cursor:pointer;
-  background:rgba(10,15,28,.72); color:var(--white);
-  font-family:inherit; font-size:15px; font-weight:500;
-  backdrop-filter:blur(6px);
-  transition:background 160ms var(--ease);
+/* ✎ O'z pleyer paneli (2026-08-22). Avval bu yerda faqat «Ovozni yoqish»
+   tugmasi turardi — mijoz to'liq boshqaruv so'radi: ijro/pauza, ovoz
+   darajasi, vaqt, o'tish chizig'i va to'liq ekran.
+
+   Joylashuv YouTube'nikiga o'xshash (chapda ijro va ovoz, o'ngda to'liq
+   ekran) — bu odat bo'lib ketgan va o'rgatish talab qilmaydi. Ko'rinish
+   esa saytniki: kvadrat, radius yo'q (DESIGN.md §6.1), rang brenddan. */
+.vctl {
+  position:absolute; z-index:2; left:0; right:0; bottom:0;
+  padding:var(--s-24) var(--s-16) var(--s-12);
+  color:var(--white);
+  /* Pastdan yuqoriga so'nuvchi qorayish — panel har qanday kadr ustida
+     o'qiladi, kadrni esa deyarli yopmaydi. */
+  background:linear-gradient(to top, rgba(6,10,20,.85) 0%, rgba(6,10,20,.55) 45%, transparent 100%);
+  opacity:0; transform:translateY(8px);
+  transition:opacity 200ms var(--ease), transform 200ms var(--ease);
 }
-.vsound:hover { background:var(--enzo-500); }
-.vsound svg { width:20px; height:20px; }
-@media (min-width:768px) { .vsound { left:var(--s-24); bottom:var(--s-24); } }
+/* Panel kursor kadr ustida bo'lganda, video to'xtaganda yoki biror tugma
+   fokusda bo'lganda ko'rinadi — klaviatura bilan ham yetib bo'ladi. */
+.vwrap:hover .vctl, .vwrap.is-paused .vctl, .vctl:focus-within { opacity:1; transform:none; }
+.vwrap.is-paused .vctl { opacity:1; }
+
+.vctl__bar { padding-inline:var(--s-8); }
+.vctl__row {
+  display:flex; align-items:center; gap:var(--s-8);
+  margin-top:var(--s-4);
+}
+.vctl__btn {
+  flex:0 0 auto; width:40px; height:40px;
+  display:flex; align-items:center; justify-content:center;
+  border:0; cursor:pointer;
+  background:transparent; color:var(--white);
+  transition:background 140ms var(--ease);
+}
+.vctl__btn:hover { background:rgba(255,255,255,.16); }
+.vctl__btn svg { width:20px; height:20px; }
+.vctl__btn--end { margin-left:auto; }
+
+.vctl__vol { display:flex; align-items:center; gap:var(--s-8); }
+/* Ovoz slayderi tor ekranda joy egallamasin — u yerda tugmaning o'zi
+   (ovozni yoqish/o'chirish) yetarli. */
+.vctl__range { width:0; opacity:0; transition:width 180ms var(--ease), opacity 180ms var(--ease); }
+.vctl__vol:hover .vctl__range, .vctl__range:focus { width:84px; opacity:1; }
+
+/* Slayderlar — brauzer ko'rinishisiz, ikkalasi bir xil uslubda */
+.vctl input[type="range"] {
+  -webkit-appearance:none; appearance:none;
+  height:4px; background:rgba(255,255,255,.3); cursor:pointer;
+}
+.vctl__seek { width:100%; display:block; }
+.vctl input[type="range"]::-webkit-slider-thumb {
+  -webkit-appearance:none; appearance:none;
+  width:12px; height:12px; background:var(--play-red); border:0;
+}
+.vctl input[type="range"]::-moz-range-thumb {
+  width:12px; height:12px; background:var(--play-red); border:0; border-radius:0;
+}
+/* O'tilgan qism qizil: fon gradient bilan chiziladi (JS foizni yozadi) */
+.vctl__seek {
+  background:linear-gradient(to right,
+    var(--play-red) 0 var(--seek, 0%), rgba(255,255,255,.3) var(--seek, 0%) 100%);
+}
+
+.vctl__time { font-size:14px; font-variant-numeric:tabular-nums; opacity:.9; }
+
+/* To'liq ekranda kadr butun oynani egallaydi: 16:9 cheklovi olib
+   tashlanadi, aks holda video kichik quti bo'lib qolardi. */
+.vwrap:fullscreen { max-width:none; width:100vw; height:100vh; aspect-ratio:auto; }
+.vwrap:fullscreen .vwrap__v { object-fit:contain; }
+@media (max-width:480px) { .vctl__time { display:none; } }
 
 .about__vcap { margin-top:var(--s-12); color:var(--ink-60); }
 

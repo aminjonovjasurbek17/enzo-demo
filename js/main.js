@@ -1052,22 +1052,129 @@
   var loaded = false;
   var pausedByUs = false;
 
+  /* ═══ Pleyer paneli ═══════════════════════════════════════════════════
+     Panel HTML'da tayyor turadi, lekin `hidden` — JS ishlamasa u umuman
+     ko'rinmaydi va o'rniga brauzerning o'z boshqaruvi yoqiladi. Ishlagan
+     holatda esa aksincha: panel ochiladi, brauzerniki kerak emas. */
+  var ctl   = document.getElementById('zavodCtl');
+  var bPlay = document.getElementById('vPlay');
+  var bMute = document.getElementById('vMute');
+  var eVol  = document.getElementById('vVol');
+  var eSeek = document.getElementById('vSeek');
+  var eTime = document.getElementById('vTime');
+  var bFull = document.getElementById('vFull');
+
+  /* Boshlang'ich ovoz 35% — mijoz so'radi: to'liq balandlik zavod
+     shovqini bilan birga keskin eshitiladi. */
+  var VOL = 0.35;
+
+  var ikon = function (btn, id) {
+    var u = btn.querySelector('use');
+    if (u) u.setAttribute('href', '#' + id);
+  };
+  var vaqt = function (t) {
+    if (!isFinite(t)) return '0:00';
+    var m = Math.floor(t / 60), s2 = Math.floor(t % 60);
+    return m + ':' + (s2 < 10 ? '0' : '') + s2;
+  };
+  var holat = function () {
+    box.classList.toggle('is-paused', v.paused);
+    ikon(bPlay, v.paused ? 'i-play' : 'i-pause');
+    bPlay.setAttribute('aria-label', v.paused ? 'Ijro etish' : 'Toʻxtatish');
+    var jim = v.muted || v.volume === 0;
+    ikon(bMute, jim ? 'i-mute' : 'i-sound');
+    bMute.setAttribute('aria-label', jim ? 'Ovozni yoqish' : 'Ovozni oʻchirish');
+  };
+
+  if (ctl && bPlay && bMute && eVol && eSeek && eTime && bFull) {
+    ctl.hidden = false;
+    v.volume = VOL;
+    eVol.value = String(Math.round(VOL * 100));
+
+    bPlay.addEventListener('click', function () {
+      if (v.paused) { start(); } else { v.pause(); pausedByUs = false; }
+    });
+
+    bMute.addEventListener('click', function () {
+      v.muted = !(v.muted || v.volume === 0);
+      /* Ovoz nolga tushirilgan holatda «yoqish» bosilsa — eshitiladigan
+         darajaga qaytariladi, aks holda tugma hech narsa qilmagandek
+         tuyulardi. */
+      if (!v.muted && v.volume === 0) { v.volume = VOL; eVol.value = String(Math.round(VOL * 100)); }
+      holat();
+    });
+
+    eVol.addEventListener('input', function () {
+      v.volume = (+eVol.value) / 100;
+      v.muted = v.volume === 0;
+      holat();
+    });
+
+    /* O'tish chizig'i. Sudralayotgan paytda vaqt yangilanishi to'xtatiladi,
+       aks holda barmoq ostidagi tugmacha o'z-o'zidan sakrab turardi. */
+    var sudrash = false;
+    eSeek.addEventListener('pointerdown', function () { sudrash = true; });
+    var qoyish = function () {
+      if (!v.duration) return;
+      v.currentTime = (+eSeek.value / 1000) * v.duration;
+    };
+    eSeek.addEventListener('input', function () {
+      eSeek.style.setProperty('--seek', (+eSeek.value / 10) + '%');
+      if (!sudrash) qoyish();
+    });
+    eSeek.addEventListener('change', function () { sudrash = false; qoyish(); });
+
+    v.addEventListener('timeupdate', function () {
+      if (!v.duration) return;
+      if (!sudrash) {
+        var p = v.currentTime / v.duration;
+        eSeek.value = String(Math.round(p * 1000));
+        eSeek.style.setProperty('--seek', (p * 100).toFixed(2) + '%');
+      }
+      eTime.textContent = vaqt(v.currentTime) + ' / ' + vaqt(v.duration);
+    });
+    v.addEventListener('loadedmetadata', function () {
+      eTime.textContent = vaqt(0) + ' / ' + vaqt(v.duration);
+    });
+    v.addEventListener('play', holat);
+    v.addEventListener('pause', holat);
+    v.addEventListener('volumechange', holat);
+
+    bFull.addEventListener('click', function () {
+      var d = document;
+      if (d.fullscreenElement || d.webkitFullscreenElement) {
+        (d.exitFullscreen || d.webkitExitFullscreen).call(d);
+      } else if (box.requestFullscreen) {
+        box.requestFullscreen();
+      } else if (box.webkitRequestFullscreen) {
+        box.webkitRequestFullscreen();
+      } else if (v.webkitEnterFullscreen) {
+        /* iPhone: sahifa elementi to'liq ekranga chiqmaydi, faqat
+           videoning o'zi — o'sha yerda brauzerning o'z paneli ishlaydi. */
+        v.webkitEnterFullscreen();
+      }
+    });
+    document.addEventListener('fullscreenchange', function () {
+      var f = !!document.fullscreenElement;
+      ikon(bFull, f ? 'i-exitfull' : 'i-full');
+      bFull.setAttribute('aria-label', f ? 'Toʻliq ekrandan chiqish' : 'Toʻliq ekran');
+    });
+
+    /* Kadr ustiga bosish — ijro/pauza (video pleyerlarda odat bo'lgan
+       harakat). Panelning o'ziga bosilganda ishlamaydi. */
+    v.addEventListener('click', function () {
+      if (v.paused) { start(); } else { v.pause(); pausedByUs = false; }
+    });
+
+    holat();
+  } else {
+    v.controls = true;   // panel topilmadi — brauzerniki ishlatiladi
+  }
+
   var start = function () {
     if (!loaded) {
       loaded = true;
       v.src = src;
-      /* Ovoz tugmasi faqat manba qo'yilgandan keyin — video yo'q joyda
-         «ovozni yoqish» taklifi ma'nosiz. */
-      var snd = document.createElement('button');
-      snd.type = 'button';
-      snd.className = 'vsound';
-      snd.innerHTML = '<svg aria-hidden="true"><use href="#i-sound"/></svg>Ovozni yoqish';
-      snd.addEventListener('click', function () {
-        v.muted = false;
-        v.volume = 1;
-        snd.remove();
-      });
-      box.appendChild(snd);
     }
     /* `play()` va'da qaytaradi va u rad etilishi mumkin (masalan tejamkor
        rejim). Ushlamasak konsolda ushlanmagan xato qolardi. */

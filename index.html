@@ -96,6 +96,10 @@
   <symbol id="i-beton" viewBox="0 0 190 190"><path fill="currentColor" fill-rule="evenodd" clip-rule="evenodd" d="M44.64,44.64h104.16l-37.2,59.52h-29.76L44.64,44.64h0ZM89.28,104.16h14.88v14.88h-14.88v-14.88h0ZM52.08,156.24l44.64-37.2,44.64,37.2H52.08Z"/></symbol>
   <symbol id="i-plita" viewBox="0 0 190 190"><path fill="currentColor" fill-rule="evenodd" clip-rule="evenodd" d="M37.2,74.4h119.04v44.64H37.2v-44.64h0ZM59.52,89.28h14.88v14.88h-14.88v-14.88h0ZM89.28,89.28h14.88v14.88h-14.88v-14.88h0ZM119.04,89.28h14.88v14.88h-14.88v-14.88h0Z"/></symbol>
   <symbol id="i-envelope" viewBox="0 0 190 190"><path fill="currentColor" fill-rule="evenodd" clip-rule="evenodd" d="M37.2,52.08h119.04v81.84H37.2V52.08h0ZM52.08,66.96l44.64,37.2,44.64-37.2H52.08Z"/></symbol>
+  <symbol id="i-pause" viewBox="0 0 190 190"><path fill="currentColor" d="M56,40h26v110h-26V40ZM108,40h26v110h-26V40Z"/></symbol>
+  <symbol id="i-mute" viewBox="0 0 190 190"><path fill="currentColor" d="M74.4,74.4h-22.32v41.2h22.32l29.76,26.04V48.36l-29.76,26.04ZM121.5,79.2l10.6,10.6,10.6-10.6,7.5,7.5-10.6,10.6,10.6,10.6-7.5,7.5-10.6-10.6-10.6,10.6-7.5-7.5,10.6-10.6-10.6-10.6,7.5-7.5Z"/></symbol>
+  <symbol id="i-full" viewBox="0 0 190 190"><path fill="currentColor" d="M44,44h48v14h-34v34h-14V44ZM98,44h48v48h-14v-34h-34v-14ZM44,98h14v34h34v14H44v-48ZM132,98h14v48h-48v-14h34v-34Z"/></symbol>
+  <symbol id="i-exitfull" viewBox="0 0 190 190"><path fill="currentColor" d="M58,58h34v-14h-48v48h14v-34ZM132,58v34h14v-48h-48v14h34ZM58,132v-34h-14v48h48v-14h-34ZM132,132h-34v14h48v-48h-14v34Z"/></symbol>
   <symbol id="i-play" viewBox="0 0 190 190"><path fill="currentColor" d="M66.96,44.64l74.4,50.36-74.4,50.36V44.64Z"/></symbol>
   <symbol id="i-prev" viewBox="0 0 190 190"><path fill="currentColor" d="M123.04,44.64v100.72l-74.4-50.36,74.4-50.36Z"/></symbol>
   <symbol id="i-next" viewBox="0 0 190 190"><path fill="currentColor" d="M66.96,44.64l74.4,50.36-74.4,50.36V44.64Z"/></symbol>
@@ -274,6 +278,43 @@
                    muted playsinline loop preload="none"
                    width="1920" height="1080"
                    aria-label="ENZO GROUP zavodi — ishlab chiqarish jarayoni"></video>
+
+            <!-- ✎ O'z pleyer paneli (mijoz qarori, 2026-08-22). Avval bu
+                 yerda faqat «Ovozni yoqish» tugmasi turardi. Endi to'liq
+                 boshqaruv: ijro/pauza, ovoz va uning darajasi, vaqt,
+                 o'tish chizig'i, to'liq ekran.
+
+                 Nima uchun brauzerning o'z «controls» i emas: u har
+                 brauzerda boshqacha ko'rinadi va YouTube'ga o'xshab
+                 ketadi. Bu panel — saytning o'z uslubida (kvadrat,
+                 radius yo'q), lekin joylashuvi tanish: chapda ijro va
+                 ovoz, o'ngda to'liq ekran.
+
+                 Panel JS bilan emas, HTML'da turadi — JS ishlamay qolsa
+                 video baribir boshqariladi (tugmalar «hidden» bo'ladi va
+                 o'rniga brauzer boshqaruvi yoqiladi). -->
+            <div class="vctl" id="zavodCtl" hidden>
+              <div class="vctl__bar">
+                <input class="vctl__seek" id="vSeek" type="range" min="0" max="1000" value="0"
+                       aria-label="Videoda oʻtish">
+              </div>
+              <div class="vctl__row">
+                <button class="vctl__btn" id="vPlay" type="button" aria-label="Ijro etish">
+                  <svg aria-hidden="true"><use href="#i-play"/></svg>
+                </button>
+                <div class="vctl__vol">
+                  <button class="vctl__btn" id="vMute" type="button" aria-label="Ovozni yoqish">
+                    <svg aria-hidden="true"><use href="#i-mute"/></svg>
+                  </button>
+                  <input class="vctl__range" id="vVol" type="range" min="0" max="100" value="35"
+                         aria-label="Ovoz balandligi">
+                </div>
+                <span class="vctl__time" id="vTime">0:00 / 0:00</span>
+                <button class="vctl__btn vctl__btn--end" id="vFull" type="button" aria-label="Toʻliq ekran">
+                  <svg aria-hidden="true"><use href="#i-full"/></svg>
+                </button>
+              </div>
+            </div>
           </div>
           <figcaption class="t-small about__vcap">«ENZO Kompaniyasi» — zavod ichidan olingan kadrlar: liniyalar, uskunalar va kunlik ish jarayoni.</figcaption>
         </figure>
@@ -909,8 +950,9 @@
              qoladi, 16:9 ga kesilmaydi: kesilsa gapiruvchining boshi
              qirqilardi.
 
-             ⚠️ Ism, lavozim va iqtibos matni TO'LDIRGICH — mijozdan
-             aniqlashtirish kerak. Videoning o'zi haqiqiy. -->
+             ✎ Ism va lavozim mijozdan keldi (2026-08-22). Iqtibos matni
+             yozilmadi: gap videoda aytilgan, uni kadr ostida takrorlash
+             bir narsani ikki marta o'qishga majbur qilardi. -->
         <div class="reels reels--2 reveal">
           <article class="reel">
             <div class="reel__poster" data-src="assets/video/otziv-massiv.mp4">
@@ -929,9 +971,8 @@
                 <svg aria-hidden="true"><use href="#i-play"/></svg>
               </button>
             </div>
-            <p class="t-body reel__quote">«Iqtibos matni — mijozdan olinadi, 2–3 qator.»</p>
-            <div class="t-h4 reel__name">Ism</div>
-            <div class="t-caption reel__role">Lavozim · Kompaniya</div>
+            <div class="t-h4 reel__name">Baxtiyor</div>
+            <div class="t-caption reel__role">Prorab · Vodiy Nihol</div>
           </article>
 
           <article class="reel">
@@ -951,9 +992,8 @@
                 <svg aria-hidden="true"><use href="#i-play"/></svg>
               </button>
             </div>
-            <p class="t-body reel__quote">«Iqtibos matni — mijozdan olinadi, 2–3 qator.»</p>
-            <div class="t-h4 reel__name">Ism</div>
-            <div class="t-caption reel__role">Lavozim · Kompaniya</div>
+            <div class="t-h4 reel__name">Ikromjon</div>
+            <div class="t-caption reel__role">Prorab · Pakana Residence</div>
           </article>
         </div>
 
@@ -985,6 +1025,7 @@
             <div class="logo-tile"><img src="assets/logos/dilbar-tt-house.svg" alt="DILBAR-TT HOUSE" loading="lazy"></div>
             <div class="logo-tile"><img src="assets/logos/ecoizolit.svg" alt="ECOIZOLIT" loading="lazy"></div>
             <div class="logo-tile"><img src="assets/logos/quvasoy-chek-shifer.svg" alt="КУВАСАЙ ЧЕК ШИФЕР" loading="lazy"></div>
+            <div class="logo-tile"><img src="assets/logos/rivoj.svg" alt="Rivoj" loading="lazy"></div>
             <div class="logo-tile" aria-hidden="true"><img src="assets/logos/jba-group.svg" alt="JBA GROUP" loading="lazy"></div>
             <div class="logo-tile" aria-hidden="true"><img src="assets/logos/beton-max.svg" alt="BETON MAX" loading="lazy"></div>
             <div class="logo-tile" aria-hidden="true"><img src="assets/logos/central-beton.svg" alt="Central Beton" loading="lazy"></div>
@@ -993,6 +1034,7 @@
             <div class="logo-tile" aria-hidden="true"><img src="assets/logos/dilbar-tt-house.svg" alt="DILBAR-TT HOUSE" loading="lazy"></div>
             <div class="logo-tile" aria-hidden="true"><img src="assets/logos/ecoizolit.svg" alt="ECOIZOLIT" loading="lazy"></div>
             <div class="logo-tile" aria-hidden="true"><img src="assets/logos/quvasoy-chek-shifer.svg" alt="КУВАСАЙ ЧЕК ШИФЕР" loading="lazy"></div>
+            <div class="logo-tile" aria-hidden="true"><img src="assets/logos/rivoj.svg" alt="Rivoj" loading="lazy"></div>
             <div class="logo-tile" aria-hidden="true"><img src="assets/logos/jba-group.svg" alt="JBA GROUP" loading="lazy"></div>
             <div class="logo-tile" aria-hidden="true"><img src="assets/logos/beton-max.svg" alt="BETON MAX" loading="lazy"></div>
             <div class="logo-tile" aria-hidden="true"><img src="assets/logos/central-beton.svg" alt="Central Beton" loading="lazy"></div>
@@ -1001,6 +1043,7 @@
             <div class="logo-tile" aria-hidden="true"><img src="assets/logos/dilbar-tt-house.svg" alt="DILBAR-TT HOUSE" loading="lazy"></div>
             <div class="logo-tile" aria-hidden="true"><img src="assets/logos/ecoizolit.svg" alt="ECOIZOLIT" loading="lazy"></div>
             <div class="logo-tile" aria-hidden="true"><img src="assets/logos/quvasoy-chek-shifer.svg" alt="КУВАСАЙ ЧЕК ШИФЕР" loading="lazy"></div>
+            <div class="logo-tile" aria-hidden="true"><img src="assets/logos/rivoj.svg" alt="Rivoj" loading="lazy"></div>
           </div>
         </div>
       </div>
