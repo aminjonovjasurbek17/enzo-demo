@@ -367,7 +367,9 @@ h1,h2,h3,h4 { text-wrap:balance; }
 /* `margin-top:auto` — pastki guruh ekran pastiga qadaladi, havolalar esa
    tepada qoladi. Ular orasidagi bo'shliq ekran balandligiga qarab o'zi
    o'zgaradi. */
-.menu__foot { margin-top:auto; display:flex; flex-direction:column; gap:var(--s-16); }
+/* Pastki guruh ekran tubiga YOPISHMAYDI: eskizda uning ostida ham havo
+   bor. `margin-top:auto` bilan o'sha havo yo'qolardi. */
+.menu__foot { margin-top:12vh; padding-bottom:8vh; display:flex; flex-direction:column; gap:var(--s-16); }
 .menu__foot .btn { width:100%; }
 .menu__phone { font-size:20px; font-weight:500; display:flex; align-items:center; gap:var(--s-12); }
 .menu__phone svg { width:20px; height:20px; }
@@ -1271,23 +1273,22 @@ body.is-locked { overflow:hidden; }
    yuradigan lenta sahifa scroll'i bilan raqobatlashadi, ikkinchidan
    takrorlangan nusxalar (lenta uch marta yozilgan) ikki qatorda ko'zga
    tashlanardi — shuning uchun mobilda faqat ASLI ko'rsatiladi. */
+.logos__track--rev { display:none; }
+
+/* ✎ Mobilda IKKI QATOR, ikkisi qarama-qarshi yo'nalishda (mijoz qarori,
+   2026-08-22). Avvalgi variantda harakat butunlay to'xtatilgan edi — mijoz
+   lenta yurib turishini so'radi.
+
+   Qatorlar mazmuni bo'yicha bo'linadi: birinchi lentada faqat `--a`
+   logolari (5 ta), ikkinchi lentada faqat `--b` (4 ta). Shu sababli
+   bitta logo ikki qatorda takrorlanmaydi. Har ikkalasida ro'yxat uch
+   nusxa — animatsiya -33,33% da uzluksiz yopiladi. */
 @media (max-width:767px) {
-  .logos {
-    width:auto; margin-left:0;
-    overflow-x:auto; scroll-snap-type:x proximity;
-    scrollbar-width:none;
-    padding-inline:var(--pad);
-    margin-inline:calc(var(--pad) * -1);
-  }
-  .logos::-webkit-scrollbar { display:none; }
-  .logos__track {
-    animation:none; width:auto;
-    display:grid; grid-auto-flow:column;
-    grid-template-rows:repeat(2, auto);
-    gap:var(--s-16) var(--s-24);
-  }
-  .logo-tile[aria-hidden="true"] { display:none; }
-  .logo-tile { height:56px; padding-inline:var(--s-8); scroll-snap-align:start; }
+  .logos { display:grid; gap:var(--s-16); }
+  .logos__track--rev { display:flex; animation-direction:reverse; }
+  .logos__track .logo-tile--b { display:none; }
+  .logos__track--rev .logo-tile--a { display:none; }
+  .logo-tile { height:48px; padding-inline:var(--s-20); }
 }
 /* Plitka o'rniga ixcham katak: balandligi qat'iy, kengligi kontentga
    qarab — qator bir tekis yuradi. */
@@ -1305,16 +1306,23 @@ body.is-locked { overflow:hidden; }
    koʻproq maydon egallaydi. Har logoning boʻyoq maydoni oʻlchandi va
    maydonlar tenglashadigan balandlik hisoblandi (qisman tuzatish — 0,75
    daraja, aks holda keng yozuvlar haddan tashqari kichrayadi). */
-.logo-tile img { width:auto; max-width:none; height:44px; object-fit:contain; }
-.logo-tile img[src$="beton-max.svg"] { height:35px; }
-.logo-tile img[src$="jba-group.svg"] { height:38px; }
-.logo-tile img[src$="central-beton.svg"] { height:47px; }
-.logo-tile img[src$="dilbar-tt-house.svg"] { height:53px; }
-.logo-tile img[src$="ecoizolit.svg"] { height:53px; }
-.logo-tile img[src$="dream-residence.svg"] { height:54px; }
-.logo-tile img[src$="megamix.svg"] { height:54px; }
-.logo-tile img[src$="quvasoy-chek-shifer.svg"] { height:55px; }
-@media (max-width:767px) { .logo-tile img { height:32px !important; } }
+/* ✎ O'lcham endi `--logo-h` o'zgaruvchisida (2026-08-22). Sabab: mobil
+   qoida `height:32px !important` bilan HAMMA logoni tenglashtirib
+   qo'yardi va yuqoridagi optik balans yo'qolardi — keng yozuvli logolar
+   kattaroq, belgili logolar kichikroq ko'rinardi. Endi mobil ham,
+   hamkorlar bo'limi ham shu bitta ro'yxatni koeffitsiyent bilan
+   ko'paytiradi, ya'ni balans hamma joyda bir xil qoladi. */
+.logo-tile img { width:auto; max-width:none; height:var(--logo-h, 44px); object-fit:contain; }
+.logo-tile img[src$="beton-max.svg"]           { --logo-h:35px; }
+.logo-tile img[src$="jba-group.svg"]           { --logo-h:38px; }
+.logo-tile img[src$="rivoj.svg"]               { --logo-h:40px; }
+.logo-tile img[src$="central-beton.svg"]       { --logo-h:47px; }
+.logo-tile img[src$="dilbar-tt-house.svg"]     { --logo-h:53px; }
+.logo-tile img[src$="ecoizolit.svg"]           { --logo-h:53px; }
+.logo-tile img[src$="dream-residence.svg"]     { --logo-h:54px; }
+.logo-tile img[src$="megamix.svg"]             { --logo-h:54px; }
+.logo-tile img[src$="quvasoy-chek-shifer.svg"] { --logo-h:55px; }
+@media (max-width:767px) { .logo-tile img { height:calc(var(--logo-h, 44px) * 0.68); } }
 @media (min-width:768px)  { .logo-tile { height:96px; padding-inline:var(--s-56); } }
 
 /* --- §5.12 · Mijozlar fikri · vertikal video tasmasi -------------------- */
@@ -1752,7 +1760,12 @@ section[id] { scroll-margin-top:var(--s-24); }
 @media (max-width:767px) {
   .f-col { grid-column:span 6; margin-bottom:var(--s-32); }
   .f-col--brand { grid-column:1 / -1; }
+  /* Aloqa ustunida uzun qatorlar bor (pochta manzili) — u to'liq kenglikda
+     qoladi, tarmoqlar esa yonidagi ustunga tushadi. */
+  .f-col--cont { grid-column:1 / -1; }
+  .f-col--soc  { grid-column:1 / -1; }
 }
+@media (min-width:1024px) { .f-col--soc { grid-column:10 / span 3; } }
 .f-col h3 { color:var(--white); margin-bottom:var(--s-16); }
 .f-col li + li { margin-top:var(--s-12); }
 .f-slogan { color:var(--enzo-300); margin-top:var(--s-16); max-width:36ch; }
@@ -1802,6 +1815,12 @@ section[id] { scroll-margin-top:var(--s-24); }
 .map:hover .map__go { color:var(--enzo-800); }
 @media (min-width:768px) { .maps { grid-template-columns:1fr 1fr; } }
 
+/* ✎ Mobilda pastki qator ikki qatorga bo'linadi va o'ng chetda suzuvchi
+   Telegram tugmasi uchun joy qoldiriladi — avval «Fargʻona viloyati»
+   yozuvi tugma ostida qolib ketardi (mijoz koʻrsatdi, 2026-08-22). */
+@media (max-width:767px) {
+  .f-bottom { flex-direction:column; gap:var(--s-8); padding-right:72px; }
+}
 .f-bottom {
   margin-top:var(--s-56); padding:var(--s-24) 0;
   border-top:1px solid rgba(255,255,255,.2);
@@ -1979,20 +1998,23 @@ section[id] { scroll-margin-top:var(--s-24); }
    bo'lgani uchun logolar keng bo'sh maydon ichida kichkina bo'lib turardi.
    Endi lenta logoning o'z balandligiga yaqin. */
 .partners { padding-block:var(--s-32); }
+/* ✎ Mobilda bo'lim ixchamlashdi (mijoz qarori, 2026-08-22): tepasida ham,
+   pastida ham havo ko'p edi va logolar ikki lenta bo'lgach bo'lim yana
+   cho'zilardi. Endi sarlavha, lentalar va chegara bitta yaxlit blok. */
+@media (max-width:767px) {
+  .partners { padding-block:var(--s-16); }
+  .partners .logos { margin-top:var(--s-12); }
+  .partners .head--sm { margin-bottom:0; }
+}
 .partners .head--sm h2 { color:var(--ink-60); font-weight:500; }
 .partners .logos { margin-top:var(--s-16); }
 /* ✎ Kattalashtirildi (2026-08-21): lenta endi butun ekran kengligida —
    avvalgi o'lchamda logolar keng maydonda mayda bo'lib qolardi. */
 .partners .logo-tile { height:64px; padding-inline:var(--s-56); }
-.partners .logo-tile img { height:38px; }
-.partners .logo-tile img[src$="beton-max.svg"] { height:30px; }
-.partners .logo-tile img[src$="jba-group.svg"] { height:33px; }
-.partners .logo-tile img[src$="central-beton.svg"] { height:40px; }
-.partners .logo-tile img[src$="dilbar-tt-house.svg"] { height:45px; }
-.partners .logo-tile img[src$="ecoizolit.svg"] { height:45px; }
-.partners .logo-tile img[src$="dream-residence.svg"] { height:46px; }
-.partners .logo-tile img[src$="megamix.svg"] { height:46px; }
-.partners .logo-tile img[src$="quvasoy-chek-shifer.svg"] { height:48px; }
+.partners .logo-tile img { height:calc(var(--logo-h, 44px) * 0.86); }
+@media (max-width:767px) {
+  .partners .logo-tile img { height:calc(var(--logo-h, 44px) * 0.62); }
+}
 @media (min-width:768px) { .partners .logo-tile { height:76px; padding-inline:var(--s-72); } }
 
 /* 20 · YANGI BO'LIMLAR (§5.5c, §5.9b, §5.16 — 2026-08-20) ---------------- */
@@ -2185,6 +2207,12 @@ section[id] { scroll-margin-top:var(--s-24); }
   position:absolute; left:-9999px; top:auto;
   width:1px; height:1px; opacity:0; pointer-events:none;
 }
+
+/* ✎ Tugma oq emas, brend ko'kida (mijoz qarori, 2026-08-22): oq to'rtburchak
+   formaning eng katta dog'i bo'lib, ko'z uni harakat emas, maydon deb
+   o'qirdi. `--enzo-500` to'q ko'k fonda ham yorqin ajralib turadi. */
+.form__send { background:var(--enzo-500); color:var(--white); }
+.form__send:hover { background:var(--enzo-300); color:var(--enzo-800); }
 
 .form__status { margin-top:var(--s-16); color:var(--enzo-300); }
 .form__status:empty { margin-top:0; }
