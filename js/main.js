@@ -89,19 +89,20 @@
       ['Xorazm viloyati', 3, ['Urganch','Xiva','Bogʻot','Gurlan','Xonqa','Hazorasp','Qoʻshkoʻpir','Shovot','Urganch tumani','Yangiariq','Yangibozor','Tuproqqalʼa']],
       ['Qoraqalpogʻiston Respublikasi', 3, ['Nukus','Xoʻjayli','Beruniy','Chimboy','Ellikqalʼa','Kegeyli','Moʻynoq','Qanlikoʻl','Qoʻngʻirot','Qoraoʻzak','Shumanay','Taxtakoʻpir','Toʻrtkoʻl','Amudaryo','Boʻzatov']]
     ];
-    var ZONA = { 1: 1, 2: 1.8, 3: 2.6 };          // yetkazish koeffitsiyenti
-    var SHIP_BASE = 1400000;                      // so'm — bitta reys, to'ldirgich
+    /* Yetkazib berish narxi kalkulyatorda hisoblanmaydi — mijoz aytdi:
+       yo'lkira narxi tez-tez o'zgaradi va hudud bo'yicha alohida
+       kelishiladi. Xulosada shu jumla ko'rsatiladi. */
+    var SHIP_TEXT = 'Hududga qarab alohida kelishiladi';
 
     /* ═══ NARXLAR — mijoz roʻyxatidan (2026-08-21) ═══════════════════════
        Avval bu yerda to'ldirgich koeffitsiyentlar turardi. Endi raqamlar
        mijoz bergan narx varaqlaridan.
 
-       ⚠️ Yetkazib berish tarifi hamon to'ldirgich (SHIP_BASE, ZONA) —
-       mijozdan alohida so'raladi.
        ⚠️ ПБ plitalari va ЛИ novlari uchun narx varaqi hali yo'q: ular
        «menejer hisoblab beradi» holatida qoladi (narx 0). */
 
-    /* Shifer — bitta o'lcham, ikki xil mahsulot */
+    /* Shifer — bitta o'lcham, ikki xil mahsulot. Faqat dona bo'yicha
+       hisoblanadi (mijoz talabi) — m² ga o'tkazish ko'rsatilmaydi. */
     var SHIFER = { enzo: 43500, chek: 45000 };
 
     /* Tayyor beton — 1 m³, marka bo'yicha.
@@ -110,6 +111,13 @@
     var BETON = {
       M100: 345000, M150: 365000, M200: 370000, M250: 390000,
       M300: 420000, M350: 450000, M400: 485000
+    };
+
+    /* Sement — mijoz narxlari (2026-08-21), bir tonna uchun.
+       Qop (50 kg) narxi shundan chiqariladi: tonna / 20. */
+    var SEMENT_T = {
+      'optima-naval': 530000, 'optima-qop': 570000,
+      'extra-naval':  560000, 'extra-qop':  630000
     };
 
     /* 2ПК ko'p bo'shliqli plita — uzunlik (m) va kenglik (m) bo'yicha.
@@ -197,18 +205,16 @@
       shifer: {
         nom: 'Shifer', field: 'f-shifer', sel: 'c-shifer', birlik: 'dona', boshl: 100,
         narx: function () { return SHIFER[$('c-shifer').value] || 0; },
-        reys: 400,
-        izoh: function (q) { return 'Qoplanadigan maydon ≈ ' + fmt(q * 1.6) + ' m² (1 varaq = 1,6 m²)'; }
+        izoh: function () { return 'Narx bitta varaq uchun hisoblangan'; }
       },
       sement: {
         nom: 'Sement', field: 'f-sement', sel: 'c-sement', boshl: 100,
         naval: function () { return $('c-sement').value.indexOf('naval') > -1; },
         birlik: function () { return P.sement.naval() ? 'tonna' : 'qop (50 kg)'; },
         narx: function () {
-          var extra = $('c-sement').value.indexOf('extra') === 0;
-          return P.sement.naval() ? (extra ? 1180000 : 1050000) : (extra ? 62000 : 55000);
+          var t = SEMENT_T[$('c-sement').value] || 0;
+          return P.sement.naval() ? t : t / 20;   /* qop = 50 kg */
         },
-        reys: function () { return P.sement.naval() ? 25 : 500; },
         izoh: function (q) {
           return P.sement.naval()
             ? 'Naval sement sement-voz bilan tashiladi, eng kam partiya 25 t'
@@ -220,7 +226,6 @@
         /* Narx varaqida M100…M400 bor. M450 va M500 bo'sh qaytaradi —
            kalkulyator ularni «menejer hisoblab beradi» holatiga o'tkazadi. */
         narx: function () { return BETON[$('c-marka').value] || 0; },
-        reys: 10,
         izoh: function (q) { return Math.ceil(q / 10) + ' ta mikser reysi (har biri 10 m³)'; }
       },
       jbi: {
@@ -230,10 +235,6 @@
         narx: function () {
           if ($('c-jbi').value !== 'pk2') return 0;
           return PK2[$('c-pk2') ? $('c-pk2').value : ''] || 0;
-        },
-        reys: function () {
-          var v = $('c-jbi').value;
-          return (v === 'pb' || v === 'pk2') ? 8 : 20;
         },
         izoh: function () { return 'Aniq pozitsiya (uzunlik, yuklama) menejer bilan tasdiqlanadi'; }
       }
@@ -292,7 +293,6 @@
 
       var qty = Math.max(1, Math.floor(+elQty.value || 1));
       var birlik = val(p.birlik);
-      var zona = REGIONS[+elRegion.value][1];
       var sel = $(p.sel);
 
       /* «Bilmayman» — o'lchov savoliga javob berolmagan xaridor. Hisob
@@ -319,16 +319,15 @@
         elCap.textContent = 'Bu tanlov uchun narx tanlangan turga bogʻliq';
         $('c-price').textContent = 'Menejer hisoblab beradi';
         $('o-spec').textContent = 'Menejer bilan aniqlanadi';
-        $('o-ship').textContent = '—';
+        $('o-ship').textContent = SHIP_TEXT;
         return;
       }
 
       var tovar = val(p.narx) * qty;
-      var ship  = Math.ceil(qty / val(p.reys)) * SHIP_BASE * ZONA[zona];
 
       $('c-hint').textContent = p.izoh(qty);
       elCap.textContent = 'Sizning konfiguratsiyangiz uchun taxminiy narx';
-      $('c-price').textContent = fmt(tovar + ship) + ' soʻm';
+      $('c-price').textContent = fmt(tovar) + ' soʻm';
       /* 2ПК da pozitsiyani ikki savol belgilaydi — turkum va o'lcham.
          Xulosada ikkalasi ham ko'rinishi kerak, aks holda mijoz qaysi
          plitaning narxini ko'rayotganini bilmaydi. */
@@ -337,7 +336,7 @@
         spec = '2ПК ' + elPk2.options[elPk2.selectedIndex].textContent;
       }
       $('o-spec').textContent = spec;
-      $('o-ship').textContent = fmt(ship) + ' soʻm';
+      $('o-ship').textContent = SHIP_TEXT;
     };
 
     /* Mahsulot kartochkasidagi «Narxni bilib oling» kalkulyatorga tushiradi va
