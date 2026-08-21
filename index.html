@@ -246,31 +246,37 @@
           <p class="t-body-l about__closing measure" style="margin-top:var(--s-24)">Bugun ENZO GROUP – bu faqat ishlab chiqarish emas, balki qurilish uchun ishonchli va mustahkam tizim.</p>
         </div>
 
-        <!-- Zavod videosi. ✎ Play tugmasi olib tashlandi (mijoz qarori,
-             2026-08-20): video bo'lim ekranga kirganda O'ZI boshlanadi.
+        <!-- Zavod videosi. ✎ YouTube iframe'i olib tashlandi (mijoz qarori,
+             2026-08-21): endi video O'Z serverimizda, oddiy `<video>` tegida.
 
-             Ovozsiz boshlanadi — bu brauzer qoidasi, tanlov emas: ovozli
-             avtomatik ijroga hech bir brauzer ruxsat bermaydi. Ovozni yoqish
-             uchun kadr ustida alohida tugma turadi (main.js §13).
+             Nima o'zgardi:
+             · YouTube'ning ~1,3 MB skripti va o'nlab so'rovi butunlay yo'q
+             · Video sahifaning O'Z elementi — begona iframe emas. Ya'ni
+               g'ildirak uning ustidan ham normal o'tadi va scroll bir xil
+               ishlaydi (iframe `wheel` hodisasini yutib qo'yardi)
+             · `file://` dagi «Ошибка 153» ham o'z-o'zidan yo'qoldi
 
-             Iframe faqat bo'lim ko'ringanda quriladi. Sahifa ochilishida
-             qo'yilsa, YouTube ~1,3 MB skript va o'nlab so'rov olib kelib,
-             hero'ning yuklanishini sekinlashtirardi — «qotib qolish» aynan
-             shundan edi.
+             Ikki manba: keng ekranga 1080p, 900px dan tor ekranga 720p
+             (`main.js` §13 tanlaydi). Mobil internetga 29 MB yubormaslik
+             uchun — u yerda kadr baribir kichik ko'rinadi.
 
-             To'liq kenglik: kadr konteynerdan chiqib, ekran chetigacha
-             cho'ziladi. Manba 1920×1080, ya'ni aynan 16:9 — cho'zilish yoki
-             qirqilish yo'q. Balandligi 88svh dan oshmaydi (style.css §21),
-             shuning uchun keng ekranlarda ham butunligicha ko'rinadi. -->
+             `preload="none"` va `poster`: sahifa ochilganda video BAYT ham
+             yuklamaydi. Yuklash bo'lim ekranga kirganda boshlanadi.
+
+             Ovozsiz boshlanadi — bu brauzer qoidasi, tanlov emas. Ovozni
+             yoqish uchun kadr ustida tugma turadi. -->
         <figure class="about__video reveal" style="grid-column:1/-1; margin-top:var(--s-56)">
-          <div class="vwrap" id="zavodVideo" data-yt="P0kx0A4uUVI">
-            <img class="vwrap__poster" src="assets/img/zavod-dron.png"
-                 alt="ENZO GROUP zavodi — umumiy koʻrinish"
-                 loading="lazy" width="1672" height="941">
+          <div class="vwrap" id="zavodVideo"
+               data-src-1080="assets/video/zavod-1080.mp4"
+               data-src-720="assets/video/zavod-720.mp4">
+            <video class="vwrap__v" id="zavodPlayer"
+                   poster="assets/img/zavod-poster.jpg"
+                   muted playsinline loop preload="none"
+                   width="1920" height="1080"
+                   aria-label="ENZO GROUP zavodi — ishlab chiqarish jarayoni"></video>
           </div>
           <figcaption class="t-small about__vcap">«ENZO Kompaniyasi» — zavod ichidan olingan kadrlar: liniyalar, uskunalar va kunlik ish jarayoni.</figcaption>
         </figure>
-
       </div>
     </div>
   </section>
@@ -787,13 +793,23 @@
 
        ⚠️ Matn yangi — mijoz tasdig'i kerak. Ayniqsa: kichik hajm qabul
        qilinadimi va oylik grafik shartnomasi bormi. -->
-  <section class="section">
+  <!-- ✎ To'q ko'k fon (mijoz qarori, 2026-08-21). Bo'lim uch xil xaridorni
+       ajratadi — ya'ni sahifadagi burilish nuqtasi. Oq oqim ichida bitta to'q
+       maydon bo'lib turgani uchun ko'z uni alohida bo'lim sifatida o'qiydi.
+       Qo'shnilari (§5.9a bento va §5.10 taqqoslash) oq — DESIGN.md §10
+       qoida 8 buzilmaydi. -->
+  <section class="section section--dark">
     <div class="container">
       <div class="grid">
         <div class="head reveal" style="grid-column:1/-1">
-          <p class="overline">Kim uchun</p>
-          <h2 class="t-h2 t-words">Har kimning savoli boshqa</h2>
-          <p class="t-body-l sub measure">Bir xil beton uch xil odamga keladi. Quyida — har biri odatda birinchi boʻlib soʻraydigan narsa.</p>
+          <!-- ✎ Sarlavha almashtirildi (mijoz qarori, 2026-08-21).
+               «Har kimning savoli boshqa» — kimning savoli, qanday savol,
+               nima uchun bu yerda turibdi: uchalasi ham noaniq edi. Yangi
+               sarlavha bo'limning o'zi nima ekanini aytadi: quyida uchta
+               xaridor turi va har biriga tegishli shart. -->
+          <p class="overline overline--on-dark">Kim uchun</p>
+          <h2 class="t-h2 t-words">Kimlar bilan ishlaymiz</h2>
+          <p class="t-body-l sub measure">Bir xil beton uch xil odamga keladi — yirik pudratchiga, prorabga va oʻz uyini quruvchiga. Har birining birinchi savoli boshqa, javobi ham shunga qarab.</p>
         </div>
 
         <div class="body-col body-col--full reveal">
@@ -884,33 +900,43 @@
           <h2 class="t-h2 t-words">Mijozlarimiz nima deydi</h2>
         </div>
 
-        <!-- Video kartochkalari — setkaning butun kengligida, 3 ustun. -->
-        <div class="reels reveal">
+        <!-- ✎ Real videolar ulandi (mijoz fayllari, 2026-08-21). Uchta
+             to'ldirgich o'rniga IKKITA haqiqiy intervyu — mijoz shu ikkisini
+             berdi. Uchinchi kartochka qo'shilmadi: bo'sh joyni to'ldirish
+             uchun qo'yilgan «kelayotgan» kartochka bo'limni zaiflashtiradi.
+
+             Format 9:16 (vertikal, telefonda olingan) — kadr shundayligicha
+             qoladi, 16:9 ga kesilmaydi: kesilsa gapiruvchining boshi
+             qirqilardi.
+
+             ⚠️ Ism, lavozim va iqtibos matni TO'LDIRGICH — mijozdan
+             aniqlashtirish kerak. Videoning o'zi haqiqiy. -->
+        <div class="reels reels--2 reveal">
           <article class="reel">
-            <a class="reel__poster ph" data-ph="Video kadri 16:9" href="#" aria-label="Vakil ismi bilan video intervyu">
-              <img src="" alt="" loading="lazy">
-              <span class="reel__play"><svg aria-hidden="true"><use href="#i-play"/></svg></span>
-            </a>
-            <p class="t-body reel__quote">«Iqtibos matni — Telegram intervyusidan soʻzma-soʻz olinadi, 2–3 qator.»</p>
-            <div class="t-h4 reel__name">Vakil ismi</div>
+            <div class="reel__poster" data-src="assets/video/otziv-massiv.mp4">
+              <video preload="none" playsinline muted
+                     poster="assets/video/otziv-massiv.jpg"
+                     aria-label="Mijoz intervyusi — video"></video>
+              <button type="button" class="reel__play" aria-label="Videoni ijro etish">
+                <svg aria-hidden="true"><use href="#i-play"/></svg>
+              </button>
+            </div>
+            <p class="t-body reel__quote">«Iqtibos matni — mijozdan olinadi, 2–3 qator.»</p>
+            <div class="t-h4 reel__name">Ism</div>
             <div class="t-caption reel__role">Lavozim · Kompaniya</div>
           </article>
+
           <article class="reel">
-            <a class="reel__poster ph" data-ph="Video kadri 16:9" href="#" aria-label="Vakil ismi bilan video intervyu">
-              <img src="" alt="" loading="lazy">
-              <span class="reel__play"><svg aria-hidden="true"><use href="#i-play"/></svg></span>
-            </a>
-            <p class="t-body reel__quote">«Iqtibos matni — Telegram intervyusidan soʻzma-soʻz olinadi, 2–3 qator.»</p>
-            <div class="t-h4 reel__name">Vakil ismi</div>
-            <div class="t-caption reel__role">Lavozim · Kompaniya</div>
-          </article>
-          <article class="reel">
-            <a class="reel__poster ph" data-ph="Video kadri 16:9" href="#" aria-label="Vakil ismi bilan video intervyu">
-              <img src="" alt="" loading="lazy">
-              <span class="reel__play"><svg aria-hidden="true"><use href="#i-play"/></svg></span>
-            </a>
-            <p class="t-body reel__quote">«Iqtibos matni — Telegram intervyusidan soʻzma-soʻz olinadi, 2–3 qator.»</p>
-            <div class="t-h4 reel__name">Vakil ismi</div>
+            <div class="reel__poster" data-src="assets/video/otziv-pakana.mp4">
+              <video preload="none" playsinline muted
+                     poster="assets/video/otziv-pakana.jpg"
+                     aria-label="Mijoz intervyusi — video"></video>
+              <button type="button" class="reel__play" aria-label="Videoni ijro etish">
+                <svg aria-hidden="true"><use href="#i-play"/></svg>
+              </button>
+            </div>
+            <p class="t-body reel__quote">«Iqtibos matni — mijozdan olinadi, 2–3 qator.»</p>
+            <div class="t-h4 reel__name">Ism</div>
             <div class="t-caption reel__role">Lavozim · Kompaniya</div>
           </article>
         </div>
@@ -929,9 +955,10 @@
           <h2 class="t-h4">Bizga ishonganlar</h2>
         </div>
         <div class="logos reveal">
-          <!-- Bitta lenta, ro`yxat ikki marta: birinchi nusxa chapga chiqib
-               ketguncha ikkinchisi o`rniga keladi — uzilish ko`rinmaydi.
-               Nusxa ekran o`quvchisidan yashiriladi. -->
+          <!-- Bitta lenta, ro`yxat UCH marta. Ikki nusxa keng ekranda
+               yetmasdi: bitta to`plam ~1600px, ekran esa 1920px — lenta
+               yarmiga yetganda o`ngdan bo`sh joy ochilib qolardi.
+               Nusxalar ekran o`quvchisidan yashiriladi. -->
           <div class="logos__track">
             <div class="logo-tile"><img src="assets/logos/jba-group.svg" alt="JBA GROUP" loading="lazy"></div>
             <div class="logo-tile"><img src="assets/logos/beton-max.svg" alt="BETON MAX" loading="lazy"></div>
@@ -941,6 +968,14 @@
             <div class="logo-tile"><img src="assets/logos/dilbar-tt-house.svg" alt="DILBAR-TT HOUSE" loading="lazy"></div>
             <div class="logo-tile"><img src="assets/logos/ecoizolit.svg" alt="ECOIZOLIT" loading="lazy"></div>
             <div class="logo-tile"><img src="assets/logos/quvasoy-chek-shifer.svg" alt="КУВАСАЙ ЧЕК ШИФЕР" loading="lazy"></div>
+            <div class="logo-tile" aria-hidden="true"><img src="assets/logos/jba-group.svg" alt="JBA GROUP" loading="lazy"></div>
+            <div class="logo-tile" aria-hidden="true"><img src="assets/logos/beton-max.svg" alt="BETON MAX" loading="lazy"></div>
+            <div class="logo-tile" aria-hidden="true"><img src="assets/logos/central-beton.svg" alt="Central Beton" loading="lazy"></div>
+            <div class="logo-tile" aria-hidden="true"><img src="assets/logos/dream-residence.svg" alt="DREAM RESIDENCE" loading="lazy"></div>
+            <div class="logo-tile" aria-hidden="true"><img src="assets/logos/megamix.svg" alt="Megamix" loading="lazy"></div>
+            <div class="logo-tile" aria-hidden="true"><img src="assets/logos/dilbar-tt-house.svg" alt="DILBAR-TT HOUSE" loading="lazy"></div>
+            <div class="logo-tile" aria-hidden="true"><img src="assets/logos/ecoizolit.svg" alt="ECOIZOLIT" loading="lazy"></div>
+            <div class="logo-tile" aria-hidden="true"><img src="assets/logos/quvasoy-chek-shifer.svg" alt="КУВАСАЙ ЧЕК ШИФЕР" loading="lazy"></div>
             <div class="logo-tile" aria-hidden="true"><img src="assets/logos/jba-group.svg" alt="JBA GROUP" loading="lazy"></div>
             <div class="logo-tile" aria-hidden="true"><img src="assets/logos/beton-max.svg" alt="BETON MAX" loading="lazy"></div>
             <div class="logo-tile" aria-hidden="true"><img src="assets/logos/central-beton.svg" alt="Central Beton" loading="lazy"></div>
@@ -979,10 +1014,15 @@
           </div>
 
           <!-- Har mahsulotning oʻz oʻlchov savoli — faqat tanlangani koʻrinadi -->
-          <!-- Shiferda bitta oʻlcham bor — tanlov emas, maʼlumot -->
-          <div class="field field--info" id="f-shifer" hidden>
-            <span class="t-caption">Shifer oʻlchami</span>
-            <p class="t-body" id="c-shifer">1750 × 1130 mm · 5,7 mm · 8 toʻlqin</p>
+          <!-- ✎ Shifer endi tanlov (mijoz narxlari, 2026-08-21): ikki xil
+               shifer sotiladi va narxi har xil. Avval bu yerda bitta
+               oʻlcham maʼlumot sifatida turardi. -->
+          <div class="field" id="f-shifer" hidden>
+            <label class="t-caption" for="c-shifer">Shifer turi</label>
+            <select id="c-shifer">
+              <option value="enzo">ENZO shifer · 1750 × 1130 mm · 8 toʻlqin</option>
+              <option value="chek">Chek shifer · 1750 × 1130 mm · 8 toʻlqin</option>
+            </select>
           </div>
 
           <div class="field" id="f-sement" hidden>
@@ -999,9 +1039,9 @@
           <div class="field" id="f-marka" hidden>
             <label class="t-caption" for="c-marka">Beton markasi</label>
             <select id="c-marka">
-              <option>M100</option><option>M150</option><option>M250</option>
-              <option>M300</option><option>M350</option><option>M400</option>
-              <option>M450</option><option>M500</option>
+              <option>M100</option><option>M150</option><option>M200</option>
+              <option>M250</option><option>M300</option><option>M350</option>
+              <option>M400</option><option>M450</option><option>M500</option>
               <option value="?">Bilmayman — menejer tanlashga yordam beradi</option>
             </select>
           </div>
@@ -1016,6 +1056,14 @@
               <option value="ct">Shpaler ustuni CT</option>
               <option value="?">Bilmayman — menejer tanlashga yordam beradi</option>
             </select>
+          </div>
+
+
+          <!-- 2ПК plitasi tanlansa — aniq oʻlcham. Narxlar mijoz
+               roʻyxatidan (2026-08-21): uzunlik va kenglik boʻyicha. -->
+          <div class="field" id="f-pk2" hidden>
+            <label class="t-caption" for="c-pk2">Plita oʻlchami (uzunlik × kenglik)</label>
+            <select id="c-pk2"></select>
           </div>
 
           <div class="field">
@@ -1059,19 +1107,35 @@
   </section>
 
   <!-- ═══ §5.14 · ISH JARAYONI ══════════════════════════════════════════ -->
-  <section class="section">
-    <div class="container">
-      <div class="grid">
-        <div class="head reveal" style="grid-column:1/-1">
-          <p class="overline">Jarayon</p>
-          <p class="t-body-l measure" style="margin-top:var(--s-16)">Koʻpchilik yangi yetkazuvchi bilan ishlash qiyin deb oʻylaydi. Aslida, eng koʻp vaqt narxni aniqlashtirishga ketadi</p>
-        </div>
+  <!-- ✎ Ekranga qadaldi (mijoz qarori, 2026-08-21). Avval bo'lim oddiy
+       oqimda turardi va scroll tez o'tib ketganda chiziq oxirigacha to'lib
+       ulgurmasdi — mijoz «animatsiya juda kech bo'lyapti, pastga tushib
+       ketsam keyin oxirigacha botyapti» degani shu.
 
-        <div class="process">
-          <div class="pstep reveal"><div class="pstep__n">01</div><h3 class="t-h3 pstep__title">Bogʻlanasiz</h3><p class="t-body pstep__text">Sizga mahsulot turi, miqdor va yetkazish manzili asosida mos taklif tayyorlaymiz.</p></div>
-          <div class="pstep reveal"><div class="pstep__n">02</div><h3 class="t-h3 pstep__title">Hisoblaymiz</h3><p class="t-body pstep__text">Qisqa vaqt ichida sizga aniq narx va yetkazib berish muddatini hisoblab beramiz.</p></div>
-          <div class="pstep reveal"><div class="pstep__n">03</div><h3 class="t-h3 pstep__title">Shartnoma</h3><p class="t-body pstep__text">Hammasi yozma ravishda aniq belgilanadi - narx, miqdor, yetkazib berish va kafolat shartlari.</p></div>
-          <div class="pstep reveal"><div class="pstep__n">04</div><h3 class="t-h3 pstep__title">Yetkazib beramiz</h3><p class="t-body pstep__text">Mahsulotni aytilgan manzilga yetkazib beramiz. Keyin ham aloqa davom etadi, kafolat davrida muammo boʻlsa, biz hal qilamiz.</p></div>
+       Endi bo'lim ekranda TO'XTAB turadi: sahifa siljiydi, sahna esa
+       joyida qoladi va o'sha siljish chiziqni to'ldiradi. To'rtinchi qadam
+       yongandan keyingina sahifa pastga o'tadi.
+
+       Qadash sof CSS `position:sticky` bilan — scroll hech qachon
+       to'sib qo'yilmaydi. Foydalanuvchi xohlagan payt tepaga qaytishi yoki
+       tezroq o'tib ketishi mumkin; JS faqat `--p` sonini yangilaydi. -->
+  <section class="section process-sec">
+    <div class="pin" id="processPin">
+      <div class="pin__stage">
+        <div class="container">
+          <div class="grid">
+            <div class="head" style="grid-column:1/-1">
+              <p class="overline">Jarayon</p>
+              <p class="t-body-l measure" style="margin-top:var(--s-16)">Koʻpchilik yangi yetkazuvchi bilan ishlash qiyin deb oʻylaydi. Aslida, eng koʻp vaqt narxni aniqlashtirishga ketadi</p>
+            </div>
+
+            <div class="process">
+              <div class="pstep"><div class="pstep__n">01</div><h3 class="t-h3 pstep__title">Bogʻlanasiz</h3><p class="t-body pstep__text">Sizga mahsulot turi, miqdor va yetkazish manzili asosida mos taklif tayyorlaymiz.</p></div>
+              <div class="pstep"><div class="pstep__n">02</div><h3 class="t-h3 pstep__title">Hisoblaymiz</h3><p class="t-body pstep__text">Qisqa vaqt ichida sizga aniq narx va yetkazib berish muddatini hisoblab beramiz.</p></div>
+              <div class="pstep"><div class="pstep__n">03</div><h3 class="t-h3 pstep__title">Shartnoma</h3><p class="t-body pstep__text">Hammasi yozma ravishda aniq belgilanadi - narx, miqdor, yetkazib berish va kafolat shartlari.</p></div>
+              <div class="pstep"><div class="pstep__n">04</div><h3 class="t-h3 pstep__title">Yetkazib beramiz</h3><p class="t-body pstep__text">Mahsulotni aytilgan manzilga yetkazib beramiz. Keyin ham aloqa davom etadi, kafolat davrida muammo boʻlsa, biz hal qilamiz.</p></div>
+            </div>
+          </div>
         </div>
       </div>
     </div>
@@ -1206,17 +1270,32 @@
           </ul>
         </div>
 
+        <!-- ✎ Yandex lokatsiyalari ulandi (mijoz havolalari, 2026-08-21).
+             Bo'sh to'ldirgich kadr o'rniga BOSILADIGAN kartochka: butun
+             kartochka havola, Yandex yangi oynada ochiladi.
+
+             Nega iframe emas: xarita iframe'i boshqa manbadan keladi va u
+             ikki narsani buzardi — sahifaga o'nlab so'rov qo'shadi, va
+             kursor uning ustida bo'lganda g'ildirak ota-hujjatga yetib
+             kelmaydi (silliq scroll o'sha joyda uzilib qoladi). Aynan shu
+             sabab bilan YouTube iframe'i ham olib tashlangan (DESIGN.md §8).
+
+             Kartochka baribir kerakli ishni bajaradi: manzilni ko'rsatadi va
+             bitta bosishda navigatsiyaga uzatadi. -->
         <div class="maps">
-          <div class="map">
-            <figure class="ph" data-ph="Yandex xarita — zavod"><img src="" alt="" loading="lazy"></figure>
+          <a class="map" href="https://yandex.com/maps/-/CTs9EK8r" target="_blank" rel="noopener">
+            <span class="map__pin"><svg aria-hidden="true"><use href="#i-pin"/></svg></span>
             <h3 class="t-h4 map__title">Bizning zavod</h3>
-            <p class="t-small map__addr"><svg class="inline-icon" aria-hidden="true"><use href="#i-pin"/></svg>Fargʻona viloyati, Quvasoy, Doʻstlik MFY · +998 55 810 77 77</p>
-          </div>
-          <div class="map">
-            <figure class="ph" data-ph="Yandex xarita — showroom"><img src="" alt="" loading="lazy"></figure>
+            <p class="t-small map__addr">Fargʻona viloyati, Quvasoy, Doʻstlik MFY · +998 55 810 77 77</p>
+            <span class="t-small map__go">Yandex xaritada ochish</span>
+          </a>
+          <a class="map" href="https://yandex.com/maps/-/CTs9IU4F" target="_blank" rel="noopener">
+            <span class="map__pin"><svg aria-hidden="true"><use href="#i-pin"/></svg></span>
             <h3 class="t-h4 map__title">Bizning showroom</h3>
-            <p class="t-small map__addr"><svg class="inline-icon" aria-hidden="true"><use href="#i-pin"/></svg>Fargʻona shahri, Maʼrifat MFY, Alisher Navoiy prospekti, 6 · +998 33 770 13 03</p>
-          </div>
+            <p class="t-small map__addr">Fargʻona shahri, Maʼrifat MFY, Alisher Navoiy prospekti, 6 · +998 33 770 13 03</p>
+            <span class="t-small map__go">Yandex xaritada ochish</span>
+          </a>
+        </div>
         </div>
 
       </div>

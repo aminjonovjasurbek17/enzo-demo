@@ -3,34 +3,44 @@
 (function () {
   'use strict';
 
+  /* Bu IIFE ichida bir necha blok ketma-ket turadi. Biri yo'q elementga
+     murojaat qilib xato bersa, KEYINGILARI ham ishga tushmaydi — shu jumladan
+     kalkulyator. Shuning uchun har blok o'z elementini avval tekshiradi.
+     (2026-08-21 da aniqlandi: kalkulyatorni alohida sahifaga ko'chirganda
+     sarhad yo'qligi butun skriptni to'xtatib qo'ygandi.) */
+
   /* 1 · Header — scroll'da oq fonga o'tadi (DESIGN.md §6.6) */
   var header = document.getElementById('header');
-  var onScroll = function () {
-    header.classList.toggle('is-scrolled', window.scrollY > 24);
-  };
-  onScroll();
-  window.addEventListener('scroll', onScroll, { passive: true });
+  if (header) {
+    var onScroll = function () {
+      header.classList.toggle('is-scrolled', window.scrollY > 24);
+    };
+    onScroll();
+    window.addEventListener('scroll', onScroll, { passive: true });
+  }
 
   /* 2 · Mobil menyu */
   var burger = document.getElementById('burger');
   var menu = document.getElementById('menu');
 
-  var setMenu = function (open) {
-    menu.classList.toggle('is-open', open);
-    document.body.classList.toggle('is-locked', open);
-    burger.setAttribute('aria-expanded', String(open));
-    burger.setAttribute('aria-label', open ? 'Yopish' : 'Menyu');
-  };
+  if (burger && menu) {
+    var setMenu = function (open) {
+      menu.classList.toggle('is-open', open);
+      document.body.classList.toggle('is-locked', open);
+      burger.setAttribute('aria-expanded', String(open));
+      burger.setAttribute('aria-label', open ? 'Yopish' : 'Menyu');
+    };
 
-  burger.addEventListener('click', function () {
-    setMenu(!menu.classList.contains('is-open'));
-  });
-  menu.addEventListener('click', function (e) {
-    if (e.target.closest('a')) setMenu(false);
-  });
-  document.addEventListener('keydown', function (e) {
-    if (e.key === 'Escape' && menu.classList.contains('is-open')) setMenu(false);
-  });
+    burger.addEventListener('click', function () {
+      setMenu(!menu.classList.contains('is-open'));
+    });
+    menu.addEventListener('click', function (e) {
+      if (e.target.closest('a')) setMenu(false);
+    });
+    document.addEventListener('keydown', function (e) {
+      if (e.key === 'Escape' && menu.classList.contains('is-open')) setMenu(false);
+    });
+  }
 
   /* 3 · FAQ akkordeon — bir vaqtda bittasi ochiladi (DESIGN.md §6.4) */
   var faqItems = Array.prototype.slice.call(document.querySelectorAll('.faq__item'));
@@ -82,6 +92,100 @@
     var ZONA = { 1: 1, 2: 1.8, 3: 2.6 };          // yetkazish koeffitsiyenti
     var SHIP_BASE = 1400000;                      // so'm — bitta reys, to'ldirgich
 
+    /* ═══ NARXLAR — mijoz roʻyxatidan (2026-08-21) ═══════════════════════
+       Avval bu yerda to'ldirgich koeffitsiyentlar turardi. Endi raqamlar
+       mijoz bergan narx varaqlaridan.
+
+       ⚠️ Yetkazib berish tarifi hamon to'ldirgich (SHIP_BASE, ZONA) —
+       mijozdan alohida so'raladi.
+       ⚠️ ПБ plitalari va ЛИ novlari uchun narx varaqi hali yo'q: ular
+       «menejer hisoblab beradi» holatida qoladi (narx 0). */
+
+    /* Shifer — bitta o'lcham, ikki xil mahsulot */
+    var SHIFER = { enzo: 43500, chek: 45000 };
+
+    /* Tayyor beton — 1 m³, marka bo'yicha.
+       Ro'yxatda M100…M400 bor. M450 va M500 sotuvda bor, lekin narx
+       varaqida yo'q — ular menejerga uzatiladi. */
+    var BETON = {
+      M100: 345000, M150: 365000, M200: 370000, M250: 390000,
+      M300: 420000, M350: 450000, M400: 485000
+    };
+
+    /* 2ПК ko'p bo'shliqli plita — uzunlik (m) va kenglik (m) bo'yicha.
+       Kalit: 'uzunlik_kenglik'. Manba: mijozning «2 ПК (Арматуралик)»
+       narx varaqi. */
+    var PK2 = {
+      '1.9_1.2': 655000,  '1.9_1.0': 620000,
+      '2.0_1.2': 660000,  '2.0_1.0': 625000,
+      '2.1_1.2': 670000,  '2.1_1.0': 635000,
+      '2.2_1.2': 670000,  '2.2_1.0': 640000,
+      '2.3_1.2': 680000,  '2.3_1.0': 645000,
+      '2.4_1.2': 690000,  '2.4_1.0': 655000,
+      '2.5_1.2': 670000,  '2.5_1.0': 660000,
+      '2.6_1.2': 705000,  '2.6_1.0': 665000,
+      '2.7_1.2': 715000,  '2.7_1.0': 675000,
+      '2.8_1.2': 720000,  '2.8_1.0': 680000,
+      '2.9_1.2': 730000,  '2.9_1.0': 685000,
+      '3.0_1.2': 670000,  '3.0_1.0': 635000,
+      '3.1_1.2': 805000,  '3.1_1.0': 760000,
+      '3.2_1.2': 810000,  '3.2_1.0': 765000,
+      '3.3_1.2': 815000,  '3.3_1.0': 770000,
+      '3.4_1.2': 825000,  '3.4_1.0': 780000,
+      '3.5_1.2': 830000,  '3.5_1.0': 785000,
+      '3.6_1.2': 835000,  '3.6_1.0': 790000,
+      '3.7_1.2': 845000,  '3.7_1.0': 800000,
+      '3.8_1.2': 850000,  '3.8_1.0': 800000,
+      '3.9_1.2': 860000,  '3.9_1.0': 805000,
+      '4.0_1.2': 865000,  '4.0_1.0': 815000,
+      '4.1_1.2': 870000,  '4.1_1.0': 820000,
+      '4.2_1.2': 880000,  '4.2_1.0': 825000,
+      '4.3_1.2': 890000,  '4.3_1.0': 830000,
+      '4.4_1.2': 895000,  '4.4_1.0': 835000,
+      '4.5_1.2': 900000,  '4.5_1.0': 840000,
+      '4.6_1.2': 905000,  '4.6_1.0': 850000,
+      '4.7_1.2': 915000,  '4.7_1.0': 860000,
+      '4.8_1.2': 1105000, '4.8_1.0': 1050000,
+      '4.9_1.2': 1115000, '4.9_1.0': 1055000,
+      '5.0_1.2': 1120000, '5.0_1.0': 1060000,
+      '5.1_1.2': 1130000, '5.1_1.0': 1065000,
+      '5.2_1.2': 1135000, '5.2_1.0': 1070000,
+      '5.3_1.2': 1140000, '5.3_1.0': 1080000,
+      '5.4_1.2': 1150000, '5.4_1.0': 1090000,
+      '5.5_1.2': 1160000, '5.5_1.0': 1090000,
+      '5.6_1.2': 1160000, '5.6_1.0': 1095000,
+      '5.7_1.2': 1170000, '5.7_1.0': 1100000,
+      '5.8_1.2': 1175000, '5.8_1.0': 1105000,
+      '5.9_1.2': 1190000, '5.9_1.0': 1110000,
+      '6.0_1.2': 1560000, '6.0_1.0': 1485000,
+      '6.1_1.2': 1565000, '6.1_1.0': 1490000,
+      '6.2_1.2': 1570000, '6.2_1.0': 1495000,
+      '6.3_1.2': 1580000, '6.3_1.0': 1500000,
+      '6.4_1.2': 1600000, '6.4_1.0': 1515000,
+      '6.5_1.2': 1600000, '6.5_1.0': 1520000,
+      '6.6_1.2': 1740000, '6.6_1.0': 1660000,
+      '6.7_1.2': 1745000, '6.7_1.0': 1665000,
+      '6.8_1.2': 1750000, '6.8_1.0': 1670000,
+      '6.9_1.2': 1760000, '6.9_1.0': 1675000,
+      '7.0_1.2': 1765000, '7.0_1.0': 1685000,
+      '7.1_1.2': 1775000, '7.1_1.0': 1690000
+    };
+
+    /* 2ПК o'lchov ro'yxatini HTML'da qo'lda yozish 108 qator bo'lardi —
+       jadvalning o'zidan tuziladi. Tartib: uzunlik o'sib boradi, har
+       uzunlikda avval 1,2 m keyin 1,0 m. */
+    var elPk2 = $('c-pk2');
+    if (elPk2) {
+      Object.keys(PK2).forEach(function (k) {
+        var qism = k.split('_');
+        var o = document.createElement('option');
+        o.value = k;
+        o.textContent = qism[0].replace('.', ',') + ' × ' + qism[1].replace('.', ',') + ' m';
+        elPk2.appendChild(o);
+      });
+      elPk2.value = '6.0_1.2';   // eng ko'p so'raladigan o'lcham
+    }
+
     var fmt = function (n) {
       return String(Math.round(n)).replace(/\B(?=(\d{3})+(?!\d))/g, ' ');
     };
@@ -91,8 +195,8 @@
        bitta reysga sig'adigan miqdori (yetkazish reyslarini sanash uchun). */
     var P = {
       shifer: {
-        nom: 'Shifer', field: 'f-shifer', sel: 'c-shifer', text: true, birlik: 'dona', boshl: 100,
-        narx: function () { return 48000; },
+        nom: 'Shifer', field: 'f-shifer', sel: 'c-shifer', birlik: 'dona', boshl: 100,
+        narx: function () { return SHIFER[$('c-shifer').value] || 0; },
         reys: 400,
         izoh: function (q) { return 'Qoplanadigan maydon ≈ ' + fmt(q * 1.6) + ' m² (1 varaq = 1,6 m²)'; }
       },
@@ -113,18 +217,19 @@
       },
       beton: {
         nom: 'Tayyor beton', field: 'f-marka', sel: 'c-marka', birlik: 'm³', boshl: 10,
-        narx: function () {
-          var MARKA = { M100:1, M150:1.06, M250:1.14, M300:1.2, M350:1.27, M400:1.34, M450:1.41, M500:1.48 };
-          return 375000 * (MARKA[$('c-marka').value] || 1);
-        },
+        /* Narx varaqida M100…M400 bor. M450 va M500 bo'sh qaytaradi —
+           kalkulyator ularni «menejer hisoblab beradi» holatiga o'tkazadi. */
+        narx: function () { return BETON[$('c-marka').value] || 0; },
         reys: 10,
         izoh: function (q) { return Math.ceil(q / 10) + ' ta mikser reysi (har biri 10 m³)'; }
       },
       jbi: {
         nom: 'Temir-beton buyumlar', field: 'f-jbi', sel: 'c-jbi', birlik: 'dona', boshl: 10,
+        /* 2ПК — o'lchov jadvalidan. Qolganlari uchun narx varaqi hali
+           yo'q (ПБ, ЛИ, ЦТ): ular 0 qaytaradi va menejerga uzatiladi. */
         narx: function () {
-          var N = { pb: 2400000, pk2: 2150000, li60: 640000, li30: 380000, ct: 290000 };
-          return N[$('c-jbi').value] || 0;
+          if ($('c-jbi').value !== 'pk2') return 0;
+          return PK2[$('c-pk2') ? $('c-pk2').value : ''] || 0;
         },
         reys: function () {
           var v = $('c-jbi').value;
@@ -176,6 +281,11 @@
       /* Faqat tanlangan mahsulotning o'lchov savoli ko'rinadi */
       FIELDS.forEach(function (id) { $(id).hidden = (id !== p.field); });
 
+      /* 2ПК o'lchami — qo'shimcha savol, faqat o'sha turkum tanlanganda.
+         Boshqa turkumlarda (ПБ, ЛИ, ЦТ) o'lcham savoli ma'nosiz. */
+      var fPk2 = $('f-pk2');
+      if (fPk2) fPk2.hidden = !(elProduct.value === 'jbi' && $('c-jbi').value === 'pk2');
+
       /* Mahsulot almashsa, miqdor shu mahsulot uchun mantiqiy qiymatdan
          boshlanadi — 100 dona shifer 100 m³ beton bilan bir narsa emas */
       if (prevKey !== elProduct.value) { elQty.value = p.boshl; prevKey = elProduct.value; }
@@ -185,15 +295,17 @@
       var zona = REGIONS[+elRegion.value][1];
       var sel = $(p.sel);
 
-      /* «Bilmayman» — o'lchov savoliga javob berolmagan xaridor.
-         Ilgari bunday xaridor to'siqqa urilardi: beton markasini bilmasa,
-         kalkulyatordan chiqib ketardi. Endi hisob to'xtaydi, lekin ariza
-         yo'li ochiq qoladi — miqdor va manzil menejerga baribir yetib boradi.
+      /* «Bilmayman» — o'lchov savoliga javob berolmagan xaridor. Hisob
+         to'xtaydi, lekin ariza yo'li ochiq qoladi: miqdor va manzil
+         menejerga baribir yetib boradi.
 
-         Bu yerda taxminiy raqam KO'RSATILMAYDI. Marka narxni 1,48 barobargacha
-         o'zgartiradi (M100 → M500), sementda esa o'lchov birligi ham boshqa
-         (qop ↔ tonna) — «taxminan» deb yozilgan raqam yo'l qo'yarli emas. */
-      var noaniq = !p.text && sel.value === '?';
+         Ikki holat menejerga uzatiladi:
+           · xaridor «Bilmayman» degan;
+           · tanlangan pozitsiya uchun bizda narx yo'q (ПБ plitalari,
+             ЛИ novlari, M450/M500 beton — narx varaqi hali kelmagan).
+         Ikkalasida ham taxminiy raqam KO'RSATILMAYDI: «taxminan» deb
+         yozilgan noto'g'ri raqam raqamsizlikdan yomonroq. */
+      var noaniq = (!p.text && sel.value === '?') || val(p.narx) <= 0;
 
       $('v-unit').textContent = birlik;
       calcResult.classList.toggle('is-noaniq', noaniq);
@@ -217,7 +329,14 @@
       $('c-hint').textContent = p.izoh(qty);
       elCap.textContent = 'Sizning konfiguratsiyangiz uchun taxminiy narx';
       $('c-price').textContent = fmt(tovar + ship) + ' soʻm';
-      $('o-spec').textContent = p.text ? sel.textContent : sel.options[sel.selectedIndex].textContent;
+      /* 2ПК da pozitsiyani ikki savol belgilaydi — turkum va o'lcham.
+         Xulosada ikkalasi ham ko'rinishi kerak, aks holda mijoz qaysi
+         plitaning narxini ko'rayotganini bilmaydi. */
+      var spec = sel.options[sel.selectedIndex].textContent;
+      if (elProduct.value === 'jbi' && $('c-jbi').value === 'pk2' && elPk2) {
+        spec = '2ПК ' + elPk2.options[elPk2.selectedIndex].textContent;
+      }
+      $('o-spec').textContent = spec;
       $('o-ship').textContent = fmt(ship) + ' soʻm';
     };
 
@@ -446,6 +565,21 @@
 
 /* 8 · Silliq scroll (DESIGN.md §8)
    ---------------------------------------------------------------------------
+   ✎ QAYTARILDI (2026-08-21). 21-avgust kuni bu blok olib tashlangandi:
+   sahifada YouTube iframe'i turgan ekan, u ikki narsani buzardi — ~1,3 MB
+   skript asosiy oqimni band qilardi (JS scroll aynan shu oqimda ishlaydi),
+   va kursor iframe ustida bo'lganda `wheel` hodisasi bizga umuman yetib
+   kelmasdi, ya'ni video ustida scroll boshqacha ishlab, chetga chiqqanda
+   sakrardi.
+
+   Endi video o'z serverimizda, oddiy `<video>` tegida — begona iframe
+   sahifada qolmadi. Ikkala sabab ham yo'qoldi, shuning uchun mijoz so'ragan
+   silliqlik qaytarildi.
+
+   > Agar kelajakda sahifaga yana boshqa manbadagi iframe qo'yilsa
+   > (xarita, YouTube, to'lov oynasi) — shu blok qayta ko'rib chiqilsin.
+   > Iframe va JS scroll bir sahifada yaxshi yashamaydi.
+
    Sichqoncha g'ildiragi sahifani darrov siljitmaydi — u nishonni belgilaydi,
    sahifa esa o'sha nishonga bir necha kadrda yetib boradi.
 
@@ -573,7 +707,6 @@
   }, { passive: true });
 })();
 
-
 /* 8 · Matn ochilishi — sarlavhalar so'zma-so'z, qolgani bir butun
    ---------------------------------------------------------------------------
    Ikki sinf:
@@ -664,6 +797,27 @@
 
   function show(el) { el.classList.add('is-in'); done(el); }
 
+  /* Kirish pardasi bilan ketma-ketlik (2026-08-21).
+     Muammo: parda ekranni ~2,35 s to'sib turadi, hero matni esa sahifa
+     ochilishi bilan darrov ochilardi — butun animatsiya parda ORTIDA o'tib
+     ketardi va parda ko'tarilganda matn allaqachon joyida turardi. Mijoz
+     aytgan «herodagi matnlar animatsiya bo'lmayapti» aynan shu.
+
+     Endi ekran tepasidagi matn parda so'na boshlashiga yaqin qo'zg'aladi —
+     matn parda ortidan chiqib kelayotgandek ko'rinadi.
+
+     1750 ms: parda 1900 ms da so'nishni boshlaydi, matn undan sal oldin
+     yo'lga tushadi — ikkisi ulanib ketadi, ketma-ket sanalmaydi.
+
+     Kechikish sinfga bog'langan: parda bo'lmasa (has-intro yo'q — takroriy
+     tashrif, ichki havola, harakat kamaytirilgan) kechikish ham nolga teng. */
+  var introWait = document.documentElement.classList.contains('has-intro') ? 1750 : 0;
+
+  function atStart(el) {
+    if (!introWait) { show(el); return; }
+    setTimeout(function () { show(el); }, introWait);
+  }
+
   if (!('IntersectionObserver' in window)) {
     all.forEach(show);
     return;
@@ -681,7 +835,7 @@
     /* Ekran tepasidagi matn (hero) kuzatuvni kutmaydi — sahifa ochilishi
        bilan chiqadi. Aks holda hero ketma-ketligi ishga tushmay qolardi:
        u allaqachon ko'rinib turibdi, "kesib o'tish" hodisasi bo'lmaydi. */
-    if (el.getBoundingClientRect().top < window.innerHeight) show(el);
+    if (el.getBoundingClientRect().top < window.innerHeight) atStart(el);
     else io.observe(el);
   });
 })();
@@ -857,94 +1011,84 @@
 })();
 
 
-/* 13 · Zavod videosi — bo'lim ko'ringanda o'zi boshlanadi
+/* 13 · Zavod videosi — o'z serverimizdagi MP4 (§5.3)
    ---------------------------------------------------------------------------
-   Play tugmasi yo'q (mijoz qarori, 2026-08-20): iframe bo'lim ekranga
-   kirganda quriladi va darrov ijro boshlanadi.
+   ✎ YouTube iframe'i olib tashlandi (mijoz qarori, 2026-08-21). Sabab:
+   iframe boshqa manba (`youtube.com`) bo'lgani uchun ikki narsani buzardi —
+   ~1,3 MB skript asosiy oqimni band qilardi, va kursor uning ustida
+   bo'lganda `wheel` hodisasi bizning sahifamizga umuman yetib kelmasdi.
 
-   OVOZSIZ boshlanadi. Bu tanlov emas — hech bir brauzer ovozli avtomatik
-   ijroga ruxsat bermaydi, `mute=1` bo'lmasa video umuman boshlanmaydi.
-   Ovozni yoqish uchun kadr ustida tugma turadi; u YouTube'ning IFrame API
-   siga `postMessage` yuboradi (`enablejsapi=1` shuning uchun kerak).
+   Endi video sahifaning O'Z elementi. Uch qoida:
 
-   Iframe oldindan qo'yilmaydi: u ~1,3 MB skript va o'nlab so'rov olib
-   keladi. Sahifa boshida turgani uchun bu hero'ning yuklanishini bo'g'ardi
-   — mijoz sezgan «qotib qolish» aynan shundan.
+   1. `preload="none"` — sahifa ochilganda bayt ham yuklanmaydi. Manba
+      (`src`) faqat bo'lim ekranga kirganda qo'yiladi. Ya'ni hero va
+      birinchi ekranlar video tufayli sekinlashmaydi.
+   2. Ekran kengligiga qarab ikki fayldan biri: 900px dan keng bo'lsa
+      1080p (~29 MB), tor bo'lsa 720p (~15 MB). Mobil internetga katta
+      faylni yuborishning ma'nosi yo'q — u yerda kadr baribir kichik.
+   3. Ekrandan chiqsa pauza, qaytsa davom. Video sahifaning qolgan qismi
+      bo'ylab ijro bo'lib turishi — bekorga dekodlash va tarmoq.
 
-   `file://` da YouTube embed ishlamaydi («Ошибка 153»): sahifaning manbasi
-   yo'q. U yerda poster qoladi va bosilganda YouTube yangi oynada ochiladi. */
+   OVOZSIZ boshlanadi: ovozli avtomatik ijroga hech bir brauzer ruxsat
+   bermaydi. Kadr ustidagi tugma ovozni yoqadi. */
 (function () {
   'use strict';
 
   var box = document.getElementById('zavodVideo');
-  if (!box) return;
+  var v   = document.getElementById('zavodPlayer');
+  if (!box || !v) return;
 
-  var id = box.getAttribute('data-yt');
-  if (!id || id === 'VIDEO_ID') return;
+  var src = window.innerWidth >= 900
+    ? box.getAttribute('data-src-1080')
+    : box.getAttribute('data-src-720');
+  if (!src) return;
 
-  /* --- file:// zaxira yo'li --- */
-  if (location.protocol === 'file:') {
-    box.style.cursor = 'pointer';
-    box.setAttribute('role', 'link');
-    box.setAttribute('tabindex', '0');
-    box.setAttribute('aria-label', 'Videoni YouTube\'da ochish');
-    var open = function () {
-      window.open('https://www.youtube.com/watch?v=' + id, '_blank', 'noopener');
-    };
-    box.addEventListener('click', open);
-    box.addEventListener('keydown', function (e) {
-      if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); open(); }
-    });
-    return;
-  }
-
-  var started = false;
+  var loaded = false;
+  var pausedByUs = false;
 
   var start = function () {
-    if (started) return;
-    started = true;
-
-    var fr = document.createElement('iframe');
-    fr.id = 'zavodFrame';
-    fr.src = 'https://www.youtube-nocookie.com/embed/' + id +
-             '?autoplay=1&mute=1&controls=1&rel=0&modestbranding=1' +
-             '&playsinline=1&enablejsapi=1&origin=' + encodeURIComponent(location.origin);
-    fr.title = 'ENZO Kompaniyasi — video';
-    fr.allow = 'accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture';
-    fr.setAttribute('allowfullscreen', '');
-    box.appendChild(fr);
-
-    /* Ovoz tugmasi. Iframe qurilgandan keyin qo'shiladi — video yo'q
-       joyda «ovozni yoqish» taklifi ma'nosiz bo'lardi. */
-    var snd = document.createElement('button');
-    snd.type = 'button';
-    snd.className = 'vsound';
-    snd.innerHTML = '<svg aria-hidden="true"><use href="#i-sound"/></svg>Ovozni yoqish';
-    snd.addEventListener('click', function () {
-      fr.contentWindow.postMessage(JSON.stringify({
-        event: 'command', func: 'unMute', args: []
-      }), '*');
-      fr.contentWindow.postMessage(JSON.stringify({
-        event: 'command', func: 'setVolume', args: [100]
-      }), '*');
-      snd.remove();
-    });
-    box.appendChild(snd);
+    if (!loaded) {
+      loaded = true;
+      v.src = src;
+      /* Ovoz tugmasi faqat manba qo'yilgandan keyin — video yo'q joyda
+         «ovozni yoqish» taklifi ma'nosiz. */
+      var snd = document.createElement('button');
+      snd.type = 'button';
+      snd.className = 'vsound';
+      snd.innerHTML = '<svg aria-hidden="true"><use href="#i-sound"/></svg>Ovozni yoqish';
+      snd.addEventListener('click', function () {
+        v.muted = false;
+        v.volume = 1;
+        snd.remove();
+      });
+      box.appendChild(snd);
+    }
+    /* `play()` va'da qaytaradi va u rad etilishi mumkin (masalan tejamkor
+       rejim). Ushlamasak konsolda ushlanmagan xato qolardi. */
+    var pr = v.play();
+    if (pr && pr.catch) pr.catch(function () {});
   };
 
-  /* Bo'limning yarmi ko'ringanda boshlanadi. Kichikroq chegara qo'yilsa,
-     video ekranning chetida, ko'z tushmagan joyda boshlanib ketardi. */
   if (!('IntersectionObserver' in window)) { start(); return; }
 
   var io = new IntersectionObserver(function (entries) {
     entries.forEach(function (en) {
-      if (!en.isIntersecting) return;
-      io.disconnect();
-      start();
+      if (en.isIntersecting) {
+        if (!loaded || pausedByUs) { start(); pausedByUs = false; }
+      } else if (loaded && !v.paused) {
+        v.pause();
+        pausedByUs = true;
+      }
     });
-  }, { threshold: 0.5 });
+  }, { threshold: 0.35 });
 
   io.observe(box);
+
+  /* Foydalanuvchi o'zi to'xtatgan videoni qaytib kelganda majburan
+     yoqmaymiz — «o'zi yonib ketdi» hissi bo'lmasin. */
+  v.addEventListener('pause', function () {
+    if (!pausedByUs) pausedByUs = false;
+  });
 })();
 
 
@@ -1007,4 +1151,164 @@
     clearTimeout(t);
     t = setTimeout(set, 120);
   }, { passive: true });
+})();
+
+
+/* 16 · Ish jarayoni — chiziq scroll bilan to'ladi (§5.14)
+   ---------------------------------------------------------------------------
+   Qadamlar bo'ylab o'tgan chiziq o'quvchi bilan birga oldinga siljiydi va
+   yetib borgan qadam yonadi. CSS `--p` (0…1) qiymatini o'qiydi (style.css
+   §5.14), bu blok esa faqat shu bitta sonni yangilaydi.
+
+   Uchta ataylab qilingan cheklov:
+   · Hisob FAQAT bo'lim ekranda turganda ishlaydi — IntersectionObserver
+     scroll tinglovchisini yoqib-o'chiradi. Aks holda sahifaning har bir
+     pikselida bekorga o'lchov olinardi.
+   · O'lchov `requestAnimationFrame` ichida — scroll hodisasining o'zida
+     `getBoundingClientRect` chaqirilsa, brauzer uslublarni qayta hisoblashga
+     majbur bo'ladi va aynan scroll paytida taqillash paydo bo'ladi.
+   · JS ishlamasa `--p` umuman qo'yilmaydi va CSS'dagi `--p:1` qoladi:
+     chiziq to'la, qadamlar yongan. Hech narsa yashirin qolmaydi. */
+(function () {
+  'use strict';
+
+  var box = document.querySelector('.process');
+  if (!box) return;
+  if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+
+  var steps = [].slice.call(box.querySelectorAll('.pstep'));
+  if (!steps.length) return;
+
+  /* Qadalgan sahna (desktop). Mobilda `.pin__stage` oddiy blok bo'lib qoladi. */
+  var pin   = document.getElementById('processPin');
+  var stage = pin && pin.querySelector('.pin__stage');
+  var head  = parseFloat(getComputedStyle(document.documentElement)
+                .getPropertyValue('--header-h')) || 0;
+
+  var ticking = false;
+  var live = false;
+
+  var measure = function () {
+    ticking = false;
+
+    var vh = window.innerHeight;
+    var p;
+
+    if (pin && stage && stage.offsetHeight < pin.offsetHeight) {
+      /* QADALGAN holat (desktop). Sahna ekranda turadi, `.pin` esa uning
+         ostidagi yo'l. To'lish shu yo'l bo'ylab o'tilgan masofa bilan
+         o'lchanadi: 0 — sahna endigina qadaldi, 1 — yo'l tugadi va sahna
+         joyidan qo'zg'aladi.
+
+         Shart `stage.offsetHeight < pin.offsetHeight` — sticky haqiqatan
+         ishlayotganining belgisi. Mobilda (yoki harakat kamaytirilganda)
+         sahna butun `.pin` ni to'ldiradi va hisob o'zi pastdagi oddiy
+         formulaga o'tadi. */
+      var pr  = pin.getBoundingClientRect();
+      var yol = pin.offsetHeight - stage.offsetHeight;
+      p = (-pr.top + head) / (yol || 1);
+    } else {
+      /* Oddiy oqim (mobil). Yo'l uzunligi bo'lim balandligiga EMAS, unga
+         qo'shimcha yarim ekranga teng — aks holda chiziq bir necha yuz
+         piksel scroll ichida to'lib bo'lardi va to'lish ko'rinmasdi. */
+      var r = box.getBoundingClientRect();
+      p = (vh * 0.85 - r.top) / (r.height + vh * 0.45);
+    }
+
+    p = Math.max(0, Math.min(1, p));
+
+    box.style.setProperty('--p', p.toFixed(3));
+
+    /* Qadam chiziq unga YETGANDA yonadi. Chegara qadamning o'z ulushidan
+       biroz oldin (0,04) — belgi chiziq ustiga kelgan payt bilan yonish
+       bir vaqtga to'g'ri kelsin. */
+    steps.forEach(function (el, i) {
+      var lit = p >= Math.max(0, i / steps.length - 0.04);
+      el.classList.toggle('is-lit', lit);
+    });
+  };
+
+  var onScroll = function () {
+    if (ticking) return;
+    ticking = true;
+    requestAnimationFrame(measure);
+  };
+
+  if (!('IntersectionObserver' in window)) {
+    box.style.setProperty('--p', '1');
+    steps.forEach(function (el) { el.classList.add('is-lit'); });
+    return;
+  }
+
+  new IntersectionObserver(function (entries) {
+    entries.forEach(function (en) {
+      if (en.isIntersecting === live) return;
+      live = en.isIntersecting;
+      if (live) {
+        window.addEventListener('scroll', onScroll, { passive: true });
+        measure();
+      } else {
+        window.removeEventListener('scroll', onScroll);
+      }
+    });
+  }, { rootMargin: '20% 0px 20% 0px' }).observe(box);
+
+  window.addEventListener('resize', onScroll, { passive: true });
+})();
+
+/* 17 · Mijoz otzivlari — vertikal videolar (§5.11)
+   ---------------------------------------------------------------------------
+   Kadr bosilguncha video umuman yuklanmaydi: `preload="none"` va `src`
+   yo'q, ekranda faqat poster turadi. Ikkita 9:16 video ~22 MB — ularni
+   sahifa ochilishida yuklash mumkin emas.
+
+   Bosilganda: manba qo'yiladi, ovoz yoqiladi (bu foydalanuvchining O'Z
+   harakati, shuning uchun brauzer ruxsat beradi) va pleyer boshqaruvi
+   ko'rinadi.
+
+   Bir vaqtda faqat bittasi ijro bo'ladi — ikkita ovoz bir-birining ustiga
+   chiqmasin. */
+(function () {
+  'use strict';
+
+  var boxes = [].slice.call(document.querySelectorAll('.reel__poster[data-src]'));
+  if (!boxes.length) return;
+
+  var players = [];
+
+  boxes.forEach(function (box) {
+    var v   = box.querySelector('video');
+    var btn = box.querySelector('.reel__play');
+    if (!v || !btn) return;
+    players.push(v);
+
+    btn.addEventListener('click', function () {
+      players.forEach(function (other) { if (other !== v) other.pause(); });
+
+      if (!v.src) v.src = box.getAttribute('data-src');
+      v.muted = false;
+      v.controls = true;
+      box.classList.add('is-on');
+
+      var pr = v.play();
+      if (pr && pr.catch) pr.catch(function () {
+        /* Ijro rad etilsa tugma qaytadi — foydalanuvchi qayta urinib
+           ko'rishi kerak, kadr esa «boshlangan» ko'rinishda qolmasin. */
+        box.classList.remove('is-on');
+      });
+    });
+  });
+
+  /* Ekrandan chiqqan video to'xtaydi. Ovoz yoqilgani uchun bu ayniqsa
+     muhim: ko'rinmayotgan joydan kelayotgan ovoz — eng bezovta qiladigan
+     narsa. */
+  if (!('IntersectionObserver' in window)) return;
+
+  var io = new IntersectionObserver(function (entries) {
+    entries.forEach(function (en) {
+      if (!en.isIntersecting) en.target.pause();
+    });
+  }, { threshold: 0.2 });
+
+  players.forEach(function (v) { io.observe(v); });
 })();

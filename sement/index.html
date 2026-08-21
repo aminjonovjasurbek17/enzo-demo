@@ -315,10 +315,14 @@
           </div>
 
           <!-- Har mahsulotning oʻz oʻlchov savoli — faqat tanlangani koʻrinadi -->
-          <!-- Shiferda bitta oʻlcham bor — tanlov emas, maʼlumot -->
-          <div class="field field--info" id="f-shifer" hidden>
-            <span class="t-caption">Shifer oʻlchami</span>
-            <p class="t-body" id="c-shifer">1750 × 1130 mm · 5,7 mm · 8 toʻlqin</p>
+          <!-- ✎ Shifer endi tanlov (mijoz narxlari, 2026-08-21): ikki xil
+               shifer sotiladi va narxi har xil. -->
+          <div class="field" id="f-shifer" hidden>
+            <label class="t-caption" for="c-shifer">Shifer turi</label>
+            <select id="c-shifer">
+              <option value="enzo">ENZO shifer · 1750 × 1130 mm · 8 toʻlqin</option>
+              <option value="chek">Chek shifer · 1750 × 1130 mm · 8 toʻlqin</option>
+            </select>
           </div>
 
           <div class="field" id="f-sement" hidden>
@@ -335,9 +339,9 @@
           <div class="field" id="f-marka" hidden>
             <label class="t-caption" for="c-marka">Beton markasi</label>
             <select id="c-marka">
-              <option>M100</option><option>M150</option><option>M250</option>
-              <option>M300</option><option>M350</option><option>M400</option>
-              <option>M450</option><option>M500</option>
+              <option>M100</option><option>M150</option><option>M200</option>
+              <option>M250</option><option>M300</option><option>M350</option>
+              <option>M400</option><option>M450</option><option>M500</option>
               <option value="?">Bilmayman — menejer tanlashga yordam beradi</option>
             </select>
           </div>
@@ -352,6 +356,14 @@
               <option value="ct">Shpaler ustuni CT</option>
               <option value="?">Bilmayman — menejer tanlashga yordam beradi</option>
             </select>
+          </div>
+
+
+          <!-- 2ПК plitasi tanlansa — aniq oʻlcham. Narxlar mijoz
+               roʻyxatidan (2026-08-21): uzunlik va kenglik boʻyicha. -->
+          <div class="field" id="f-pk2" hidden>
+            <label class="t-caption" for="c-pk2">Plita oʻlchami (uzunlik × kenglik)</label>
+            <select id="c-pk2"></select>
           </div>
 
           <div class="field">

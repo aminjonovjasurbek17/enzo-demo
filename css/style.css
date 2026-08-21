@@ -1176,16 +1176,29 @@ body.is-locked { overflow:hidden; }
    Avval 2×4 setka bo'lib bir joyda turardi va ko'p joy egallardi.
    Ro'yxat ikki marta takrorlanadi: birinchi nusxa chapga chiqib
    ketguncha ikkinchisi o'rniga keladi — uzilish ko'rinmaydi. */
-.logos { grid-column:1 / -1; margin-top:var(--s-40); overflow:hidden;
-  position:relative; }
-.logos::before, .logos::after {
-  content:''; position:absolute; top:0; bottom:0; width:120px; z-index:1; pointer-events:none;
+/* ✎ To'liq ekran kengligi, so'nish maskasisiz (mijoz qarori, 2026-08-21).
+   Lenta `.container` dan chiqib ekranning ikki chetiga tegadi va uzluksiz
+   yuradi: chetda to'xtagandek ko'rinadigan joy qolmaydi.
+
+   Chetlardagi gradient maskalar OLIB TASHLANDI. Ular lenta konteyner ichida
+   turganda kerak edi — logo chegarada birdan kesilib qolmasin uchun. Endi
+   kesilish joyi ekranning o'z cheti, ya'ni yashiradigan narsaning o'zi yo'q.
+
+   `--vw` — scrollbar chiqarib tashlangan kenglik (main.js §15). `100vw`
+   scrollbar'ni ham qo'shib hisoblaydi va lenta o'ngga surilib qolardi. */
+.logos {
+  grid-column:1 / -1; margin-top:var(--s-40);
+  width:var(--vw, 100vw);
+  margin-left:calc(50% - var(--vw, 100vw) / 2);
+  overflow:hidden; position:relative;
 }
-.logos::before { left:0;  background:linear-gradient(90deg, var(--surface), transparent); }
-.logos::after  { right:0; background:linear-gradient(270deg, var(--surface), transparent); }
-.logos__track { display:flex; width:max-content; animation:logo-yur 42s linear infinite; }
-@keyframes logo-yur { from { transform:translateX(0); } to { transform:translateX(-50%); } }
-.logos:hover .logos__track { animation-play-state:paused; }
+/* Ro'yxat UCH marta takrorlanadi, ikki emas. Sabab o'lchov: bitta to'plam
+   ~1600px, keng ekran esa 1920px. Ikki nusxada lenta -50% ga yetganda
+   o'ngdan bo'sh joy ochilib qolardi — uch nusxada bunday holat yo'q. */
+.logos__track { display:flex; width:max-content; animation:logo-yur 60s linear infinite; }
+@keyframes logo-yur { from { transform:translateX(0); } to { transform:translateX(-33.3333%); } }
+/* ✎ Kursor ostida to'xtash bekor qilindi (mijoz qarori, 2026-08-21):
+   lenta hech to'xtamasligi kerak. */
 @media (prefers-reduced-motion: reduce) { .logos__track { animation:none; } }
 /* Plitka o'rniga ixcham katak: balandligi qat'iy, kengligi kontentga
    qarab — qator bir tekis yuradi. */
@@ -1232,11 +1245,19 @@ body.is-locked { overflow:hidden; }
 }
 @media (max-width:767px) { .reels { grid-template-columns:1fr; } }
 
+/* ✎ Ikkita vertikal video (2026-08-21). Uchta 16:9 to'ldirgich o'rniga
+   mijozning haqiqiy 9:16 kadrlari. Ikki ustun setkaning yarmini egallaydi:
+   vertikal kadr uch ustunda juda ingichka bo'lib qolardi. */
+.reels--2 { grid-template-columns:repeat(2, minmax(0,1fr)); max-width:680px; }
+@media (max-width:767px) { .reels--2 { grid-template-columns:1fr; max-width:none; } }
+
 .reel__poster {
   position:relative; display:block;
-  aspect-ratio:16/9; background:var(--surface);
+  aspect-ratio:9/16; background:var(--enzo-800);
+  overflow:hidden;
 }
-.reel__poster img { width:100%; height:100%; object-fit:cover; }
+.reel__poster video { width:100%; height:100%; object-fit:cover; display:block; }
+.reel__poster.is-on .reel__play { display:none; }
 
 /* Play tugmasi — kvadrat, radius yo'q (DESIGN.md §6.1). Oq maydon to'q
    kadrda ham, och kadrda ham ko'rinadi. */
@@ -1312,23 +1333,100 @@ section[id] { scroll-margin-top:var(--s-24); }
 }
 
 /* --- §5.14 · Ish jarayoni ---------------------------------------------- */
+/* ✎ Ekranga qadalgan sahna + to'lib boruvchi chiziq (2026-08-21).
 
-.process { grid-column:1 / -1; margin-top:var(--s-56); display:grid; gap:var(--s-32); }
-.pstep { position:relative; }
-.pstep__n { font-size:clamp(40px,4vw,56px); font-weight:700; color:var(--line-2); letter-spacing:-0.03em; line-height:1; }
+   Muammo: chiziq oddiy oqimda to'lardi, ya'ni tez scroll qilinganda bo'lim
+   ko'zdan o'tib ketguncha animatsiya oxiriga yetmasdi.
+
+   Yechim: `position:sticky`. Sahna ekranda turadi, sahifa esa uning
+   ostidagi bo'sh yo'l bo'ylab siljiydi — o'sha siljish chiziqni to'ldiradi.
+   To'rtinchi qadam yongandan keyin sahna joyidan qo'zg'aladi.
+
+   ⚠️ Scroll HECH QACHON to'sib qo'yilmaydi. Sticky — brauzerning o'z
+   mexanizmi, kompozitorda ishlaydi: foydalanuvchi xohlagan payt tepaga
+   qaytadi yoki tezroq o'tib ketadi. JS bu yerda faqat `--p` sonini
+   yangilaydi, scroll'ga umuman tegmaydi.
+
+   Yo'l uzunligi 260svh: sahna 100svh, demak to'lish uchun 160svh siljish
+   qoladi — 900px ekranda ~1440px, ya'ni odatdagi ikki-uch aylanish. */
+
+.process-sec { padding-block:0; }
+
+/* Mobil: qadash yo'q. Kichik ekranda sahna baribir sig'maydi va sticky
+   faqat bo'limni cho'zib yuborardi. U yerda oddiy oqim qoladi. */
+.pin { position:relative; }
+.pin__stage { padding-block:var(--s-72); }
+
+.process {
+  grid-column:1 / -1; margin-top:var(--s-56);
+  display:grid; gap:var(--s-32);
+  position:relative;
+  --p:1;                       /* JS yo'q bo'lsa — to'liq to'lgan holat */
+}
+
+/* Mobil: chiziq vertikal, chap chetda */
+.process::before, .process::after {
+  content:''; position:absolute; left:3px; top:0; bottom:0; width:2px;
+}
+.process::before { background:var(--line); }
+.process::after {
+  background:var(--enzo-500);
+  transform:scaleY(var(--p)); transform-origin:50% 0;
+}
+.pstep { position:relative; padding-left:var(--s-32); }
+/* Qadam belgisi — chiziq ustidagi kvadrat (DESIGN.md §6.1: radius yo'q) */
+.pstep::before {
+  content:''; position:absolute; left:0; top:10px; width:8px; height:8px;
+  background:var(--line-2); z-index:1;
+  transition:background 240ms var(--ease);
+}
+.pstep.is-lit::before { background:var(--enzo-500); }
+
+.pstep__n {
+  font-size:clamp(40px,4vw,56px); font-weight:700; color:var(--line-2);
+  letter-spacing:-0.03em; line-height:1;
+  transition:color 240ms var(--ease);
+}
+.pstep.is-lit .pstep__n { color:var(--enzo-800); }
+/* Matn ham qadam bilan birga «yonadi»: yonguncha bir oz orqada turadi */
+.pstep__title, .pstep__text { transition:opacity 240ms var(--ease); }
+.pstep:not(.is-lit) .pstep__title, .pstep:not(.is-lit) .pstep__text { opacity:.45; }
 .pstep__title { margin-top:var(--s-16); }
 .pstep__text { margin-top:var(--s-12); color:var(--ink-60); }
 
 @media (min-width:1024px) {
-  /* ✎ Ustunlar orasi 24px → 72px (mijoz qarori, 2026-08-16): avval qadamlar
-     bir-biriga yopishib turardi. Ajratuvchi chiziq endi qatorlar ichida emas,
-     bo'shliqning o'rtasida — shuning uchun to'rttala ustun ham teng kenglikda
-     qoladi va matn bloklari bir xil o'lchamda ko'rinadi. */
-  .process { grid-template-columns:repeat(4,minmax(0,1fr)); gap:var(--s-72); }
-  .pstep + .pstep::before {
-    content:''; position:absolute; left:calc(var(--s-72) / -2);
-    top:0; bottom:0; width:1px; background:var(--line);
+  .pin { height:260svh; }
+  .pin__stage {
+    position:sticky; top:var(--header-h);
+    height:calc(100svh - var(--header-h));
+    display:flex; align-items:center;
+    padding-block:0;
   }
+
+  /* ✎ Ustunlar orasidagi vertikal ajratuvchilar olib tashlandi (2026-08-21):
+     ularning o'rnini gorizontal chiziq egalladi — ikkalasi birga bo'lsa
+     setka to'r bo'lib ko'rinardi. */
+  .process { grid-template-columns:repeat(4,minmax(0,1fr)); gap:var(--s-72);
+    padding-top:var(--s-40); margin-top:var(--s-72); }
+
+  .process::before, .process::after {
+    left:0; right:0; top:0; bottom:auto; width:auto; height:2px;
+  }
+  .process::after { transform:scaleX(var(--p)); transform-origin:0 50%; }
+
+  .pstep { padding-left:0; }
+  .pstep::before { left:0; top:calc(var(--s-40) * -1 - 3px); }
+}
+
+@media (prefers-reduced-motion:reduce) {
+  /* Harakat kamaytirilgan bo'lsa qadash ham, to'lish ham yo'q:
+     chiziq to'la, qadamlar yongan, bo'lim oddiy oqimda turadi. */
+  .pin { height:auto; }
+  .pin__stage { position:static; height:auto; display:block; padding-block:var(--s-72); }
+  .process { --p:1; }
+  .pstep::before { background:var(--enzo-500); }
+  .pstep__n { color:var(--enzo-800); }
+  .pstep__title, .pstep__text { opacity:1; }
 }
 
 /* --- §5.15 · FAQ akkordeon --------------------------------------------- */
@@ -1485,10 +1583,31 @@ section[id] { scroll-margin-top:var(--s-24); }
 .f-col li + li { margin-top:var(--s-12); }
 .f-slogan { color:var(--enzo-300); margin-top:var(--s-16); max-width:36ch; }
 
+/* ✎ Xarita kartochkasi — butun kartochka havola (2026-08-21).
+   Avval bu yerda bo'sh to'ldirgich kadr turardi. Iframe qo'yilmadi: boshqa
+   manbadagi iframe g'ildirakni yutib qo'yadi va silliq scroll o'sha joyda
+   uziladi (DESIGN.md §8 dagi qoida). */
 .maps { grid-column:1 / -1; display:grid; gap:var(--gutter); margin-top:var(--s-40); }
-.map .ph { aspect-ratio:16/9; }
-.map__title { margin-top:var(--s-16); }
+.map {
+  display:block; text-decoration:none;
+  padding:var(--s-32);
+  border:1px solid rgba(255,255,255,.2);
+  transition:background 160ms var(--ease), border-color 160ms var(--ease);
+}
+.map:hover { background:rgba(255,255,255,.06); border-color:var(--enzo-300); }
+.map__pin {
+  display:flex; align-items:center; justify-content:center;
+  width:48px; height:48px; margin-bottom:var(--s-24);
+  background:var(--enzo-500); color:var(--white);
+}
+.map__pin svg { width:22px; height:22px; }
+.map__title { margin-top:0; color:var(--white); }
 .map__addr  { margin-top:var(--s-8); color:var(--enzo-300); }
+.map__go {
+  display:inline-block; margin-top:var(--s-16); color:var(--white); font-weight:500;
+}
+.map__go::after { content:' →'; }
+.map:hover .map__go { color:var(--enzo-300); }
 @media (min-width:768px) { .maps { grid-template-columns:1fr 1fr; } }
 
 .f-bottom {
@@ -1670,21 +1789,19 @@ section[id] { scroll-margin-top:var(--s-24); }
 .partners { padding-block:var(--s-32); }
 .partners .head--sm h2 { color:var(--ink-60); font-weight:500; }
 .partners .logos { margin-top:var(--s-16); }
-/* Bo'lim foni oq — chetlardagi so'nish maskasi ham oq bo'lishi kerak,
-   aks holda lenta chetida kulrang tasma paydo bo'lardi. */
-.partners .logos::before { background:linear-gradient(90deg, var(--white), transparent); }
-.partners .logos::after  { background:linear-gradient(270deg, var(--white), transparent); }
-.partners .logo-tile { height:48px; padding-inline:var(--s-32); }
-.partners .logo-tile img { height:30px; }
-.partners .logo-tile img[src$="beton-max.svg"] { height:24px; }
-.partners .logo-tile img[src$="jba-group.svg"] { height:26px; }
-.partners .logo-tile img[src$="central-beton.svg"] { height:32px; }
-.partners .logo-tile img[src$="dilbar-tt-house.svg"] { height:36px; }
-.partners .logo-tile img[src$="ecoizolit.svg"] { height:36px; }
-.partners .logo-tile img[src$="dream-residence.svg"] { height:37px; }
-.partners .logo-tile img[src$="megamix.svg"] { height:37px; }
-.partners .logo-tile img[src$="quvasoy-chek-shifer.svg"] { height:38px; }
-@media (min-width:768px) { .partners .logo-tile { height:56px; padding-inline:var(--s-40); } }
+/* ✎ Kattalashtirildi (2026-08-21): lenta endi butun ekran kengligida —
+   avvalgi o'lchamda logolar keng maydonda mayda bo'lib qolardi. */
+.partners .logo-tile { height:64px; padding-inline:var(--s-56); }
+.partners .logo-tile img { height:38px; }
+.partners .logo-tile img[src$="beton-max.svg"] { height:30px; }
+.partners .logo-tile img[src$="jba-group.svg"] { height:33px; }
+.partners .logo-tile img[src$="central-beton.svg"] { height:40px; }
+.partners .logo-tile img[src$="dilbar-tt-house.svg"] { height:45px; }
+.partners .logo-tile img[src$="ecoizolit.svg"] { height:45px; }
+.partners .logo-tile img[src$="dream-residence.svg"] { height:46px; }
+.partners .logo-tile img[src$="megamix.svg"] { height:46px; }
+.partners .logo-tile img[src$="quvasoy-chek-shifer.svg"] { height:48px; }
+@media (min-width:768px) { .partners .logo-tile { height:76px; padding-inline:var(--s-72); } }
 
 /* 20 · YANGI BO'LIMLAR (§5.5c, §5.9b, §5.16 — 2026-08-20) ---------------- */
 
@@ -1739,29 +1856,32 @@ section[id] { scroll-margin-top:var(--s-24); }
 .card:hover .card__link::after { translate:3px 0; }
 .card__link:hover { color:var(--enzo-500); }
 
-/* 21 · ZAVOD VIDEOSI — §5.3 (✎ qayta qurildi 2026-08-20) ---------------- */
-/* To'liq kenglik: kadr `.container` dan chiqib, ekranning ikki chetiga
-   tegadi. `100vw` + manfiy chekka — setka ichida qolgan holda tashqariga
-   chiqishning yagona ishonchli usuli.
+/* 21 · ZAVOD VIDEOSI — §5.3 (✎ setkaga qaytarildi 2026-08-21) ----------- */
+/* Avval kadr `.container` dan chiqib ekranning ikki chetiga tegib turardi.
+   Ikki muammo bor edi:
+     1. Sahifadagi hamma narsa — sarlavha, matn, kartochkalar — bitta chap
+        chiziqdan boshlanadi, video esa undan ~100px chapdan boshlanardi.
+        Bitta blok butun ritmdan chiqib turardi.
+     2. Ekran bo'yi kadr scroll paytida eng katta kompozitsiya yuki beradi.
+   Endi kadr setka ichida, qolgan bo'limlar bilan bir chiziqda.
 
-   Kenglik `min()` bilan cheklanadi: 16:9 kadr keng ekranda balandligi
-   bo'yicha ekrandan chiqib ketardi (1920px kenglikda 1080px balandlik).
-   `100svh * 16/9` — balandlik ekrandan oshmaydigan kenglik.
-   Natijada kadr HAR DOIM butun ko'rinadi: qirqilmaydi ham, cho'zilmaydi ham. */
+   Balandligi `88svh` bilan cheklanadi: 16:9 kadr past oynada baribir
+   ekrandan chiqib ketmasin. Kenglik shunda `aspect-ratio` orqali o'zi
+   kichrayadi va kadr markazda qoladi. */
 .about__video { margin:0; }
-/* `--vw` — scrollbar CHIQARIB TASHLANGAN kenglik, JS beradi (main.js §15).
-   `100vw` ishlatilsa, u scrollbar'ni ham qo'shib hisoblaydi va kadr o'ngga
-   surilib, chap chetda ~16px oq tasma qolardi (o'lchandi: x=16, w=1408). */
+
 .vwrap {
   position:relative;
-  width:min(var(--vw, 100vw), calc(100svh * 16 / 9));
-  margin-left:calc(50% - min(var(--vw, 100vw) / 2, calc(50svh * 16 / 9)));
+  width:100%;
+  max-width:calc(88svh * 16 / 9);
+  margin-inline:auto;
   aspect-ratio:16/9;
   background:var(--enzo-800);
   overflow:hidden;
+  /* Kadr o'z qatlamida — ijro paytida ustidagi matn qayta chizilmaydi */
+  contain:paint;
 }
-.vwrap__poster { width:100%; height:100%; object-fit:cover; display:block; }
-.vwrap iframe { position:absolute; inset:0; width:100%; height:100%; border:0; }
+.vwrap__v { width:100%; height:100%; object-fit:cover; display:block; background:var(--enzo-800); }
 
 /* Ovoz tugmasi. Video ovozsiz boshlanadi (brauzer qoidasi), shuning uchun
    yoqish yo'li ko'rinib turishi kerak — YouTube'ning o'z tugmasi kichkina
@@ -1782,10 +1902,6 @@ section[id] { scroll-margin-top:var(--s-24); }
 @media (min-width:768px) { .vsound { left:var(--s-24); bottom:var(--s-24); } }
 
 .about__vcap { margin-top:var(--s-12); color:var(--ink-60); }
-@media (min-width:1024px) {
-  /* Kadr to'liq kenglikda, izoh esa matn ustuni bilan bir chiziqda qoladi */
-  .about__vcap { padding-inline:var(--edge); }
-}
 
 /* 22 · KIRISH ANIMATSIYASI (2026-08-20) ---------------------------------- */
 /* Parda faqat `html.has-intro` da ko'rinadi — qarorni `<head>` dagi kichik
