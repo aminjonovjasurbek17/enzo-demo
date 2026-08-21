@@ -1186,6 +1186,7 @@
 
   var ticking = false;
   var live = false;
+  var pMax = 0;      // eng uzoq borilgan to'lish darajasi
 
   var measure = function () {
     ticking = false;
@@ -1215,6 +1216,13 @@
     }
 
     p = Math.max(0, Math.min(1, p));
+
+    /* ✎ Faqat oldinga (mijoz qarori, 2026-08-21). Yuqoriga qaytilganda
+       chiziq orqaga qaytib bo'shalardi — animatsiya ikki tomonga ishlab,
+       o'quvchi allaqachon o'qib bo'lgan qadamlar so'nardi. Endi eng
+       uzoq borilgan nuqta eslab qolinadi: pastga siljiganda to'ladi,
+       yuqoriga qaytganda o'sha holida turadi. */
+    if (p < pMax) { p = pMax; } else { pMax = p; }
 
     box.style.setProperty('--p', p.toFixed(3));
 
