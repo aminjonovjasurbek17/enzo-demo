@@ -787,6 +787,23 @@ body.is-locked { overflow:hidden; }
 }
 .product__copy  { grid-column:1 / -1; margin-top:var(--s-32); align-self:center; }
 
+/* ✎ Mobil tartib (mijoz qarori, 2026-08-22): belgi → sarlavha → matn →
+   RASM → jadval → tugmalar. Avval rasm eng tepada turardi va odam nima
+   haqida gap ketayotganini bilmasdan turib kadrni ko'rardi.
+
+   `display:contents` — `.product__copy` o'zi quti bo'lmaydi, bolalari
+   to'g'ridan-to'g'ri setkaga chiqadi. Shundagina rasmni ular ORASIGA
+   qo'yish mumkin (aks holda u faqat blokdan oldin yoki keyin turardi). */
+@media (max-width:1023px) {
+  .product__copy { display:contents; }
+  .product__head { grid-column:1 / -1; order:1; margin-top:var(--s-32); }
+  .product__media { order:2; margin-top:var(--s-24); }
+  .product__rest { grid-column:1 / -1; order:3; }
+  /* Quti yo'qolgani uchun `.reveal` ham ishlamaydi (opacity quyiladigan
+     element qolmadi) — bolalar shundayligicha ko'rinadi. Mobilda bu
+     sezilmaydi: blok baribir bitta ustunda. */
+}
+
 /* Mahsulot rasmi ustidagi plashka OLIB TASHLANDI (mijoz qarori, 2026-08-15).
    Sabab: mahsulot nomi yonidagi H3 da allaqachon bor — takror.
    Rasm toza qoladi. PROMPT.md P8 va DESIGN.md §3.2 shu bilan yangilanadi. */
@@ -883,6 +900,32 @@ body.is-locked { overflow:hidden; }
    ketadi (otzivlar blokida 18px chiqib ketgan edi). */
 @media (min-width:768px)  { .cards--3 { grid-template-columns:repeat(3,minmax(0,1fr)); } }
 @media (min-width:768px)  { .cards--2 { grid-template-columns:repeat(2,minmax(0,1fr)); } }
+/* ✎ Mobilda to'rtta kartochka yonma-yon suriladi (mijoz qarori,
+   2026-08-22, referens: jahonschool.uz). Ustma-ust turganda ular ekranning
+   to'rt bo'yini egallardi va odam to'rtinchisiga yetguncha birinchisini
+   unutardi.
+
+   `scroll-snap` — kartochka har safar chetга tekis to'xtaydi. Manfiy
+   margin konteyner chetidan chiqaradi: lenta ekranning bir chetidan
+   ikkinchisiga o'tadi, kartochkalar esa matn bilan bir chiziqda boshlanadi. */
+@media (max-width:767px) {
+  .cards--4 {
+    grid-auto-flow:column;
+    grid-auto-columns:78%;
+    overflow-x:auto;
+    scroll-snap-type:x mandatory;
+    scroll-padding-inline:var(--pad);
+    margin-inline:calc(var(--pad) * -1);
+    padding-inline:var(--pad);
+    padding-bottom:var(--s-8);
+    scrollbar-width:none;
+  }
+  .cards--4::-webkit-scrollbar { display:none; }
+  .cards--4 > .card { scroll-snap-align:start; }
+  /* Ekrandan tashqaridagi kartochka «paydo bo'lish» kutib turmaydi:
+     lenta yonga surilganda u allaqachon ko'rinishi kerak. */
+  .cards--4 > .card.reveal { opacity:1; transform:none; }
+}
 @media (min-width:768px)  { .cards--4 { grid-template-columns:repeat(2,minmax(0,1fr)); } }
 @media (min-width:1024px) { .cards--4 { grid-template-columns:repeat(4,minmax(0,1fr)); } }
 /* Sertifikatlar yon ustunga sig`maydi: 4 ta skan bir qatorda turishi kerak,
@@ -1561,6 +1604,14 @@ section[id] { scroll-margin-top:var(--s-24); }
 
 /* Sarlavha va o'tkazish tugmalari bitta qatorda */
 .deck__head { display:flex; flex-direction:column; gap:var(--s-24); }
+/* ✎ Mobilda oraliqlar qisqardi (mijoz qarori, 2026-08-22): kadr o'tkazish
+   tugmalariga yaqin turadi (ular bir ish qiladi), izoh esa kadrga —
+   u kadrning bir qismi. */
+@media (max-width:767px) {
+  .deck__head { gap:var(--s-16); }
+  .deck { margin-top:var(--s-16); }
+  .deck__cap { margin-top:var(--s-12); }
+}
 @media (min-width:640px) {
   .deck__head { flex-direction:row; align-items:center; justify-content:space-between; }
 }
@@ -1912,6 +1963,14 @@ section[id] { scroll-margin-top:var(--s-24); }
 .cost__shots {
   grid-column:1 / -1; margin-top:var(--s-40);
   display:grid; gap:var(--gutter);
+}
+/* ✎ Mobilda kadrlar sarlavhaga yaqinroq (mijoz qarori, 2026-08-22):
+   telefonda ular orasidagi bo'shliq bir ekranning uchdan birini yeb
+   qo'yardi. Izoh ham kadrga yopishadi — u kadrning davomi, alohida
+   matn emas. */
+@media (max-width:767px) {
+  .cost__shots { margin-top:var(--s-24); gap:var(--s-24); }
+  .cost__cap { margin-top:var(--s-8); }
 }
 @media (min-width:768px) { .cost__shots { grid-template-columns:repeat(2,minmax(0,1fr)); } }
 .cost__shot { margin:0; }
