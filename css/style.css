@@ -30,6 +30,10 @@
   --ink-60:#5B6478;
   --ink-40:#8D8D8E;
   --line:#E2E2E2;
+  /* Video play tugmasi. Brend palitrasidan tashqaridagi yagona rang —
+     ataylab: u brend emas, "bu yerda video bor" degan universal belgi. */
+  --play-red:#E62117;
+  --play-red-dark:#B81810;
   --line-2:#CCCCCC;
   --surface:#F6F7F9;
   --shot-bg:#F0F0F0;        /* mahsulot kadri foni — och kulrang */
@@ -1284,17 +1288,23 @@ body.is-locked { overflow:hidden; }
 @media (max-width:767px) { .reel__poster { aspect-ratio:4/3; } }
 .reel__poster.is-on .reel__play { display:none; }
 
-/* Play tugmasi — kvadrat, radius yo'q (DESIGN.md §6.1). Oq maydon to'q
-   kadrda ham, och kadrda ham ko'rinadi. */
+/* Play tugmasi — kvadrat, radius yo'q (DESIGN.md §6.1).
+   ✎ Rang oqdan QIZILGA o'zgardi (mijoz qarori, 2026-08-21): odamda
+   "qizil uchburchak = video" assotsiatsiyasi allaqachon o'rnashgan,
+   oq kvadrat esa bir zum o'ylatib qo'yadi. Shakl baribir kvadrat
+   qoladi — saytda hech qayerda radius yo'q. */
 .reel__play {
   position:absolute; left:50%; top:50%; transform:translate(-50%,-50%);
   width:56px; height:56px;
   display:flex; align-items:center; justify-content:center;
-  background:var(--white); color:var(--enzo-800);
-  transition:background 150ms var(--ease), color 150ms var(--ease);
+  background:var(--play-red); color:var(--white);
+  transition:background 150ms var(--ease), transform 150ms var(--ease);
 }
 .reel__play svg { width:20px; height:20px; margin-left:2px; }
-.reel__poster:hover .reel__play { background:var(--enzo-800); color:var(--white); }
+.reel__poster:hover .reel__play {
+  background:var(--play-red-dark);
+  transform:translate(-50%,-50%) scale(1.06);
+}
 
 .reel__quote { margin-top:var(--s-16); color:var(--ink); text-wrap:pretty; }
 .reel__name  { margin-top:var(--s-12); }
