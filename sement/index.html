@@ -493,7 +493,8 @@
              Yashirin maydonlar — reklama manbasi. Ular URL'dagi utm_*
              dan to'ldiriladi va odam boshqa sahifaga o'tsa ham saqlanadi
              (js/main.js §18). -->
-        <form class="form__box reveal" id="leadForm" data-endpoint="" novalidate>
+        <form class="form__box reveal" id="leadForm"
+              data-endpoint="https://api.web3forms.com/submit" novalidate>
           <div class="field">
             <label class="t-caption" for="f-name">Ism</label>
             <input type="text" id="f-name" name="name" placeholder="Ismingiz"
@@ -505,6 +506,15 @@
                    autocomplete="tel" inputmode="tel" required>
           </div>
 
+          <!-- Web3Forms kaliti. Bu TOKEN EMAS — u faqat «shu pochtaga
+               yubor» degan identifikator, shuning uchun brauzer kodida
+               turishi normal. Bo'sh bo'lsa forma yubormaydi va telefon
+               taklif qiladi (js/main.js §19).
+               Kalit egasi: aminjonovjasurbek3@gmail.com -->
+          <input type="hidden" name="access_key" value="">
+          <input type="hidden" name="subject" value="ENZO GROUP — saytdan yangi ariza">
+          <input type="hidden" name="from_name" value="enzogroup.uz">
+
           <input type="hidden" name="utm_source"   value="">
           <input type="hidden" name="utm_medium"   value="">
           <input type="hidden" name="utm_campaign" value="">
@@ -512,8 +522,10 @@
           <input type="hidden" name="utm_term"     value="">
           <input type="hidden" name="referrer"     value="">
           <input type="hidden" name="page"         value="">
-          <!-- Bot tuzog'i: odam ko'rmaydi, avtomat to'ldiradi -->
-          <input type="text" name="company" tabindex="-1" autocomplete="off"
+          <!-- Bot tuzog'i. Nomi ataylab «botcheck» — Web3Forms ham aynan shu
+               nomdagi maydonni tekshiradi va to'ldirilgan bo'lsa arizani rad
+               etadi. Ikki qavat himoya bitta maydonda. -->
+          <input type="text" name="botcheck" tabindex="-1" autocomplete="off"
                  aria-hidden="true" class="form__trap">
 
           <button class="btn btn--on-dark" type="submit">Yuborish</button>

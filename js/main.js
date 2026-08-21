@@ -1373,7 +1373,7 @@
     if (ketdi) return;
 
     /* Bot tuzog'i to'ldirilgan bo'lsa — jim to'xtaymiz. */
-    var trap = form.querySelector('[name="company"]');
+    var trap = form.querySelector('[name="botcheck"]');
     if (trap && trap.value) return;
 
     if (!ism.value.trim()) { xato('Ismingizni yozing'); ism.focus(); return; }
@@ -1395,8 +1395,12 @@
     var pg = form.querySelector('[name="page"]');
     if (pg) pg.value = location.pathname;
 
+    /* Manzil bor, lekin kalit hali qo'yilmagan bo'lishi mumkin — u holda
+       yuborish baribir muvaffaqiyatsiz bo'lardi, faqat foydalanuvchi buni
+       «xatolik» deb ko'rardi. Shuning uchun oldindan tekshiriladi. */
+    var kalit = form.querySelector('[name="access_key"]');
     var url = form.getAttribute('data-endpoint');
-    if (!url) {
+    if (!url || (kalit && !kalit.value)) {
       /* Ulanish hali yo'q — bor haqiqat aytiladi, «rahmat» yozilmaydi. */
       holat.className = 't-small form__status is-warn';
       holat.innerHTML = 'Onlayn ariza hozircha ulanmoqda. Iltimos, qoʻngʻiroq qiling: ' +
@@ -1418,7 +1422,11 @@
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(body)
     }).then(function (r) {
-      if (!r.ok) throw new Error(r.status);
+      return r.json().catch(function () { return { success: r.ok }; });
+    }).then(function (d) {
+      /* Web3Forms 200 qaytarib, ichida `success:false` yozishi mumkin
+         (masalan kalit noto'g'ri) — javobning o'zi o'qiladi. */
+      if (!d || d.success === false) throw new Error('rad etildi');
       form.classList.add('is-sent');
       holat.className = 't-small form__status';
       holat.textContent = '';
