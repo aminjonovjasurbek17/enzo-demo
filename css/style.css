@@ -350,18 +350,24 @@ h1,h2,h3,h4 { text-wrap:balance; }
 }
 
 /* Mobil menyu — to'liq ekran */
+/* ✎ Joylashuv mijozning eskizi bo'yicha (2026-08-22): havolalar TEPADA,
+   tugma, telefon va til esa pastda. Avval hammasi birga o'rtada turardi —
+   ekranning tepasi ham, pasti ham bo'sh qolardi. */
 .menu {
   position:fixed; inset:0; z-index:99;
   background:var(--enzo-800); color:var(--white);
-  display:flex; flex-direction:column; justify-content:center; gap:var(--s-24);
-  padding:var(--s-96) var(--pad) var(--s-40);
+  display:flex; flex-direction:column; justify-content:flex-start; gap:var(--s-24);
+  padding:calc(var(--s-96) + var(--s-24)) var(--pad) var(--s-56);
   transform:translateY(-100%);
   transition:transform 250ms var(--ease);
   visibility:hidden;
 }
 .menu.is-open { transform:translateY(0); visibility:visible; }
 .menu a.menu__link { font-size:26px; font-weight:600; letter-spacing:-0.02em; }
-.menu__foot { margin-top:var(--s-40); display:flex; flex-direction:column; gap:var(--s-16); }
+/* `margin-top:auto` — pastki guruh ekran pastiga qadaladi, havolalar esa
+   tepada qoladi. Ular orasidagi bo'shliq ekran balandligiga qarab o'zi
+   o'zgaradi. */
+.menu__foot { margin-top:auto; display:flex; flex-direction:column; gap:var(--s-16); }
 .menu__foot .btn { width:100%; }
 .menu__phone { font-size:20px; font-weight:500; display:flex; align-items:center; gap:var(--s-12); }
 .menu__phone svg { width:20px; height:20px; }
@@ -692,6 +698,10 @@ body.is-locked { overflow:hidden; }
 .section--dark .sub--lead { color:var(--white); }
 
 .body-col { grid-column:1 / -1; margin-top:var(--s-32); }
+/* ✎ Mobilda matn sarlavhaga yaqinroq (mijoz qarori, 2026-08-22).
+   Telefonda sarlavha va matn bir ekranda ko'rinishi kerak — 32px bo'shliq
+   o'sha ekranning bir qismini bekorga yeb qo'yardi. */
+@media (max-width:1023px) { .body-col { margin-top:var(--s-16); } }
 
 @media (min-width:1024px) {
   .head     { grid-column:1 / span 4; }
@@ -740,6 +750,10 @@ body.is-locked { overflow:hidden; }
 /* --- §5.5 · Mahsulotlar ------------------------------------------------- */
 
 .product { padding-block:var(--s-56); }
+/* ✎ Mobilda mahsulot bloklari bir-biriga va sarlavhaga yaqinlashdi
+   (mijoz qarori, 2026-08-22): to'rtta blok orasidagi 56px bo'shliq
+   telefonda bo'limni keraksiz cho'zib yuborardi. */
+@media (max-width:767px) { .product { padding-block:var(--s-24); } }
 /* Mahsulot kadri — brend qolipi: to'q ko'k maydon, pastida oq brend shakli,
    mahsulot esa oq yuzada turadi (mijoz qarori, 2026-08-18).
    Kesilgan PNG (shaffof fon) shuni talab qiladi: oq fonli kadrni ko'k ustiga
@@ -895,6 +909,8 @@ body.is-locked { overflow:hidden; }
 /* --- §5.8 · Sertifikatlar / kartochkalar -------------------------------- */
 
 .cards { display:grid; gap:var(--gutter); margin-top:var(--s-32); }
+/* Mobilda kartochkalar sarlavha bloki bilan yaqinroq turadi */
+@media (max-width:767px) { .cards { margin-top:var(--s-16); } }
 /* minmax(0,1fr) — oddiy `1fr` da ustunning eng kichik kengligi kontentga
    bog'lanadi va kartochka o'z ustunidan kengroq bo'lib, konteynerdan chiqib
    ketadi (otzivlar blokida 18px chiqib ketgan edi). */
@@ -1247,6 +1263,32 @@ body.is-locked { overflow:hidden; }
 /* ✎ Kursor ostida to'xtash bekor qilindi (mijoz qarori, 2026-08-21):
    lenta hech to'xtamasligi kerak. */
 @media (prefers-reduced-motion: reduce) { .logos__track { animation:none; } }
+
+/* ✎ Mobilda lenta ikki qatorga bo'linadi (mijoz qarori, 2026-08-22).
+   Bitta qatorda logolar telefon ekranida juda kichrayib ketardi.
+
+   Harakat ham to'xtaydi: barmoq bilan surib ko'riladi. Telefonda o'z-o'zidan
+   yuradigan lenta sahifa scroll'i bilan raqobatlashadi, ikkinchidan
+   takrorlangan nusxalar (lenta uch marta yozilgan) ikki qatorda ko'zga
+   tashlanardi — shuning uchun mobilda faqat ASLI ko'rsatiladi. */
+@media (max-width:767px) {
+  .logos {
+    width:auto; margin-left:0;
+    overflow-x:auto; scroll-snap-type:x proximity;
+    scrollbar-width:none;
+    padding-inline:var(--pad);
+    margin-inline:calc(var(--pad) * -1);
+  }
+  .logos::-webkit-scrollbar { display:none; }
+  .logos__track {
+    animation:none; width:auto;
+    display:grid; grid-auto-flow:column;
+    grid-template-rows:repeat(2, auto);
+    gap:var(--s-16) var(--s-24);
+  }
+  .logo-tile[aria-hidden="true"] { display:none; }
+  .logo-tile { height:56px; padding-inline:var(--s-8); scroll-snap-align:start; }
+}
 /* Plitka o'rniga ixcham katak: balandligi qat'iy, kengligi kontentga
    qarab — qator bir tekis yuradi. */
 .logo-tile { flex:0 0 auto; height:84px; display:flex; align-items:center; justify-content:center; padding-inline:var(--s-40); }
@@ -1373,6 +1415,8 @@ section[id] { scroll-margin-top:var(--s-24); }
 .field > label { display:block; margin-bottom:var(--s-8); }
 .field select,
 .field input[type=text],
+.field input[type=tel],
+.field input[type=email],
 .field input[type=number] {
   width:100%; height:56px; padding:0 var(--s-16);
   border:1px solid var(--line-2); background:var(--white); color:var(--ink);
@@ -1387,6 +1431,7 @@ section[id] { scroll-margin-top:var(--s-24); }
   background-repeat:no-repeat;
   background-position:right var(--s-24) center;
 }
+.field input[type=tel] { font-variant-numeric:tabular-nums; }
 .field select:focus, .field input:focus { outline:none; border-color:var(--enzo-500); border-width:2px; }
 
 /* margin:0 — brauzerning o'z uslubida range'da 2px margin bor, u slayderni
@@ -1611,6 +1656,10 @@ section[id] { scroll-margin-top:var(--s-24); }
   .deck__head { gap:var(--s-16); }
   .deck { margin-top:var(--s-16); }
   .deck__cap { margin-top:var(--s-12); }
+  /* Kadr kengroq, sahna esa aynan kadr balandligida — ostida bo'sh joy
+     qolmaydi va izoh kadrga yopishadi. */
+  .deck__card { width:86vw; }
+  .deck__stage { height:calc(86vw * 9 / 16); }
 }
 @media (min-width:640px) {
   .deck__head { flex-direction:row; align-items:center; justify-content:space-between; }
@@ -1696,6 +1745,14 @@ section[id] { scroll-margin-top:var(--s-24); }
 .footer a:hover { color:var(--white); }
 
 .f-col { grid-column:1 / -1; margin-bottom:var(--s-40); }
+/* ✎ Mobilda ustunlar ikkitadan (mijoz qarori, 2026-08-22): to'rtta ro'yxat
+   ustma-ust turganda footer telefonda ikki ekranga cho'zilib ketardi.
+   Brend bloki (logotip va shior) to'liq kenglikda qoladi — u sarlavha
+   emas, boshlanish. */
+@media (max-width:767px) {
+  .f-col { grid-column:span 6; margin-bottom:var(--s-32); }
+  .f-col--brand { grid-column:1 / -1; }
+}
 .f-col h3 { color:var(--white); margin-bottom:var(--s-16); }
 .f-col li + li { margin-top:var(--s-12); }
 .f-slogan { color:var(--enzo-300); margin-top:var(--s-16); max-width:36ch; }
