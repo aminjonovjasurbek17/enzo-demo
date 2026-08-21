@@ -1414,8 +1414,17 @@
     holat.className = 't-small form__status';
     holat.textContent = 'Yuborilyapti…';
 
+    /* Xatga faqat TO'LDIRILGAN maydonlar ketadi. Reklamasiz kelgan
+       arizada beshta bo'sh «Utm …» qatori keraksiz shovqin — menejer
+       xatni ochganda darrov ism va telefonni ko'rishi kerak. */
     var body = {};
-    new FormData(form).forEach(function (v, k) { body[k] = v; });
+    new FormData(form).forEach(function (v, k) {
+      if (typeof v === 'string' && !v.trim()) return;
+      body[k] = v;
+    });
+
+    /* Xat sarlavhasida ism turadi — pochtada ariza qidirish oson bo'ladi. */
+    body.subject = 'ENZO GROUP — ariza: ' + ism.value.trim();
 
     fetch(url, {
       method: 'POST',
