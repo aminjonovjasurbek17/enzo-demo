@@ -1238,6 +1238,201 @@
 })();
 
 
+/* 18 · Reklama manbasi (UTM) va hodisalar
+   ---------------------------------------------------------------------------
+   Reklama saytdagi formaga olib keladi (Instagram → sayt), shuning uchun ikki
+   narsa kerak: ariza QAYERDAN kelgani va reklama tizimiga «lid bo'ldi» degan
+   signal.
+
+   UTM sessiyada saqlanadi: odam reklamadan bosh sahifaga tushib, keyin shifer
+   sahifasiga o'tib, formani o'sha yerda to'ldirishi mumkin — o'shanda ham
+   manba yo'qolmasligi kerak.
+
+   `enzoTrack` — bitta yig'uvchi nuqta. Hozircha sayt hech qanday hisoblagichga
+   ulanmagan (Meta Pixel ID mijozdan kutilyapti), shuning uchun u faqat mavjud
+   bo'lganini chaqiradi. Pixel qo'yilganda bu blokka tegilmaydi. */
+(function () {
+  'use strict';
+
+  var KEY = 'enzo-utm';
+  var FIELDS = ['utm_source', 'utm_medium', 'utm_campaign', 'utm_content', 'utm_term'];
+
+  var saqla = function (o) {
+    try { sessionStorage.setItem(KEY, JSON.stringify(o)); } catch (e) {}
+  };
+  var oqi = function () {
+    try { return JSON.parse(sessionStorage.getItem(KEY) || '{}'); } catch (e) { return {}; }
+  };
+
+  var qs = new URLSearchParams(location.search);
+  var bor = false;
+  var utm = {};
+  FIELDS.forEach(function (k) {
+    var v = qs.get(k);
+    if (v) { utm[k] = v.slice(0, 120); bor = true; }
+  });
+
+  /* Yangi manba eskisini almashtiradi: odam qaysi reklamadan kelgan bo'lsa,
+     oxirgisi hisoblanadi. */
+  if (bor) { saqla(utm); } else { utm = oqi(); }
+  window.__enzoUtm = utm;
+
+  /* Reklama tizimlariga signal. Ulanmagan bo'lsa — hech narsa qilmaydi. */
+  window.enzoTrack = function (nom, qosh) {
+    try {
+      if (typeof window.fbq === 'function') window.fbq('track', nom, qosh || {});
+      if (typeof window.gtag === 'function') window.gtag('event', nom, qosh || {});
+      if (window.dataLayer && window.dataLayer.push) {
+        var d = { event: nom };
+        Object.keys(qosh || {}).forEach(function (k) { d[k] = qosh[k]; });
+        window.dataLayer.push(d);
+      }
+    } catch (e) {}
+  };
+
+  /* Telefon, pochta va Telegram bosilishi ham aloqa hisoblanadi: mijozlarning
+     bir qismi forma to'ldirmasdan to'g'ridan-to'g'ri qo'ng'iroq qiladi. */
+  document.addEventListener('click', function (e) {
+    var a = e.target.closest && e.target.closest('a[href]');
+    if (!a) return;
+    var h = a.getAttribute('href') || '';
+    var tur = h.indexOf('tel:') === 0 ? 'telefon'
+            : h.indexOf('mailto:') === 0 ? 'pochta'
+            : h.indexOf('t.me/') > -1 ? 'telegram' : '';
+    if (!tur) return;
+    window.enzoTrack('Contact', { usul: tur });
+  });
+})();
+
+
+/* 19 · Ariza formasi
+   ---------------------------------------------------------------------------
+   Uch ish: telefonni o'qiladigan ko'rinishga solish, yuborish va natijani
+   ko'rsatish.
+
+   ⚠️ Eng muhim qoida: manzil (`data-endpoint`) qo'yilmagan bo'lsa forma o'zini
+   «yuborildi» deb KO'RSATMAYDI. Yolg'on «rahmat» — arizasi hech qayerga
+   bormaganini bilmagan mijoz demakdir. Manzil yo'q bo'lsa telefon va Telegram
+   taklif qilinadi.
+
+   Yuborish `fetch` bilan: sahifa qayta yuklanmaydi, ya'ni odam qayerda turgan
+   bo'lsa o'sha yerda qoladi. */
+(function () {
+  'use strict';
+
+  var form = document.getElementById('leadForm');
+  if (!form) return;
+
+  var tel   = form.querySelector('#f-tel');
+  var ism   = form.querySelector('#f-name');
+  var btn   = form.querySelector('button[type="submit"]');
+  var holat = form.querySelector('#formStatus');
+  if (!tel || !ism || !btn || !holat) return;
+
+  var ketdi = false;
+
+  /* --- Telefon maskasi: +998 (90) 123-45-67 -------------------------------
+     Faqat raqamlar olinadi. 998 boshi majburiy emas: odam «90…» deb yozsa
+     ham to'g'ri shakl chiqadi. */
+  var raqamlar = function (s) { return (s || '').replace(/\D/g, ''); };
+
+  var tanasi = function (xom) {
+    var d = raqamlar(xom);
+    if (d.indexOf('998') === 0) d = d.slice(3);
+    return d.slice(0, 9);
+  };
+
+  var mask = function (xom) {
+    var d = tanasi(xom);
+    var out = '+998';
+    if (d.length) out += ' (' + d.slice(0, 2);
+    if (d.length >= 2) out += ')';
+    if (d.length > 2) out += ' ' + d.slice(2, 5);
+    if (d.length > 5) out += '-' + d.slice(5, 7);
+    if (d.length > 7) out += '-' + d.slice(7, 9);
+    return out;
+  };
+
+  tel.addEventListener('focus', function () {
+    if (!tel.value) tel.value = '+998 ';
+  });
+  tel.addEventListener('input', function () {
+    tel.value = mask(tel.value);
+  });
+  tel.addEventListener('blur', function () {
+    if (!tanasi(tel.value)) tel.value = '';
+  });
+
+  var xato = function (matn) {
+    holat.className = 't-small form__status is-error';
+    holat.textContent = matn;
+  };
+
+  form.addEventListener('submit', function (e) {
+    e.preventDefault();
+    if (ketdi) return;
+
+    /* Bot tuzog'i to'ldirilgan bo'lsa — jim to'xtaymiz. */
+    var trap = form.querySelector('[name="company"]');
+    if (trap && trap.value) return;
+
+    if (!ism.value.trim()) { xato('Ismingizni yozing'); ism.focus(); return; }
+    if (tanasi(tel.value).length !== 9) {
+      xato('Telefon raqamini toʻliq kiriting');
+      tel.focus();
+      return;
+    }
+
+    /* Yashirin maydonlar shu payt to'ldiriladi — sahifa ochilganda emas:
+       odam bir necha sahifa aylanib kelgan bo'lishi mumkin. */
+    var utm = window.__enzoUtm || {};
+    Object.keys(utm).forEach(function (k) {
+      var el = form.querySelector('[name="' + k + '"]');
+      if (el) el.value = utm[k];
+    });
+    var ref = form.querySelector('[name="referrer"]');
+    if (ref) ref.value = document.referrer || '';
+    var pg = form.querySelector('[name="page"]');
+    if (pg) pg.value = location.pathname;
+
+    var url = form.getAttribute('data-endpoint');
+    if (!url) {
+      /* Ulanish hali yo'q — bor haqiqat aytiladi, «rahmat» yozilmaydi. */
+      holat.className = 't-small form__status is-warn';
+      holat.innerHTML = 'Onlayn ariza hozircha ulanmoqda. Iltimos, qoʻngʻiroq qiling: ' +
+        '<a href="tel:+998558107777">+998 55 810 77 77</a> yoki ' +
+        '<a href="https://t.me/enzogroup_uz" target="_blank" rel="noopener">Telegram</a> orqali yozing.';
+      return;
+    }
+
+    ketdi = true;
+    btn.disabled = true;
+    holat.className = 't-small form__status';
+    holat.textContent = 'Yuborilyapti…';
+
+    var body = {};
+    new FormData(form).forEach(function (v, k) { body[k] = v; });
+
+    fetch(url, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(body)
+    }).then(function (r) {
+      if (!r.ok) throw new Error(r.status);
+      form.classList.add('is-sent');
+      holat.className = 't-small form__status';
+      holat.textContent = '';
+      /* «Lid» signali aynan shu yerda — ariza haqiqatan qabul qilinganda. */
+      window.enzoTrack('Lead', { manba: (window.__enzoUtm || {}).utm_source || 'sayt' });
+    }).catch(function () {
+      ketdi = false;
+      btn.disabled = false;
+      xato('Yuborib boʻlmadi. Iltimos, +998 55 810 77 77 raqamiga qoʻngʻiroq qiling.');
+    });
+  });
+})();
+
+
 /* 14 · Kirish animatsiyasi — o'tkazib yuborish
    ---------------------------------------------------------------------------
    Pardaning YO'QOLISHI CSS animatsiyasi bilan bo'ladi (style.css §22), bu

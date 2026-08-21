@@ -23,6 +23,11 @@
     if (sessionStorage.getItem('enzo-intro')) return;
     if (matchMedia('(prefers-reduced-motion: reduce)').matches) return;
     if (location.hash) return;
+    /* ✎ Reklamadan kelgan odam pardani ko'rmaydi (2026-08-22). Havolada
+       utm_ bo'lsa — bu bosilgan reklama; unga to'langan 2,4 soniyani
+       logotip animatsiyasiga sarflash to'g'ri emas, u nima va'da
+       qilinganini darrov ko'rishi kerak. */
+    if (location.search.indexOf('utm_') > -1) return;
     sessionStorage.setItem('enzo-intro', '1');
     var root = document.documentElement;
     root.classList.add('has-intro');
@@ -460,17 +465,45 @@
           </ul>
         </div>
 
-        <form class="form__box reveal">
+        <!-- ✎ Forma qayta qurildi (2026-08-22). Sabab: reklama trafigi
+             saytdagi shu formaga tushadi (Instagram → sayt), demak forma
+             haqiqatan ishlashi va qayerdan kelgani bilinishi kerak.
+
+             data-endpoint — arizani qabul qiladigan manzil. HOZIRCHA
+             BO'SH: amoCRM ulanishi mijozdan kutilyapti. Bo'sh bo'lganda
+             forma o'zini «yuborildi» deb ko'rsatmaydi (bu yolg'on bo'lardi)
+             — buning o'rniga telefon va Telegram taklif qilinadi.
+             Manzil qo'yilishi bilan hech narsa o'zgartirmasdan ishlaydi.
+
+             Yashirin maydonlar — reklama manbasi. Ular URL'dagi utm_*
+             dan to'ldiriladi va odam boshqa sahifaga o'tsa ham saqlanadi
+             (js/main.js §18). -->
+        <form class="form__box reveal" id="leadForm" data-endpoint="" novalidate>
           <div class="field">
             <label class="t-caption" for="f-name">Ism</label>
-            <input type="text" id="f-name" placeholder="Ismingiz" required>
+            <input type="text" id="f-name" name="name" placeholder="Ismingiz"
+                   autocomplete="name" required>
           </div>
           <div class="field">
             <label class="t-caption" for="f-tel">Telefon</label>
-            <input type="text" id="f-tel" placeholder="+998(__) ___-__-__" required>
+            <input type="tel" id="f-tel" name="phone" placeholder="+998 (__) ___-__-__"
+                   autocomplete="tel" inputmode="tel" required>
           </div>
+
+          <input type="hidden" name="utm_source"   value="">
+          <input type="hidden" name="utm_medium"   value="">
+          <input type="hidden" name="utm_campaign" value="">
+          <input type="hidden" name="utm_content"  value="">
+          <input type="hidden" name="utm_term"     value="">
+          <input type="hidden" name="referrer"     value="">
+          <input type="hidden" name="page"         value="">
+          <!-- Bot tuzog'i: odam ko'rmaydi, avtomat to'ldiradi -->
+          <input type="text" name="company" tabindex="-1" autocomplete="off"
+                 aria-hidden="true" class="form__trap">
+
           <button class="btn btn--on-dark" type="submit">Yuborish</button>
           <p class="t-caption form__legal">Yuborish tugmasini bosish orqali siz maʼlumotlaringiz qayta ishlanishiga rozilik bildirasiz.</p>
+          <p class="t-small form__status" id="formStatus" role="status" aria-live="polite"></p>
         </form>
 
       </div>

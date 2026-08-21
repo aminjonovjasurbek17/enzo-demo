@@ -2028,6 +2028,36 @@ section[id] { scroll-margin-top:var(--s-24); }
 
 .about__vcap { margin-top:var(--s-12); color:var(--ink-60); }
 
+/* --- Forma: holat matni va «yuborildi» ko'rinishi (2026-08-22) ---------- */
+
+/* Bot tuzog'i. `display:none` ATAYLAB ishlatilmagan: ba'zi botlar yashirin
+   maydonni aniqlab, uni chetlab o'tadi. Maydon ekrandan tashqariga
+   chiqariladi — odam uni ko'rmaydi, avtomat esa to'ldiradi va shu bilan
+   o'zini bildiradi. */
+.form__trap {
+  position:absolute; left:-9999px; top:auto;
+  width:1px; height:1px; opacity:0; pointer-events:none;
+}
+
+.form__status { margin-top:var(--s-16); color:var(--enzo-300); }
+.form__status:empty { margin-top:0; }
+.form__status a { color:var(--white); text-decoration:underline; }
+/* To'q ko'k fonda qizil o'qilmaydi — xato uchun oq matn va qizil chiziq */
+.form__status.is-error { color:var(--white); border-left:3px solid var(--play-red); padding-left:var(--s-12); }
+.form__status.is-warn  { color:var(--white); border-left:3px solid var(--enzo-300); padding-left:var(--s-12); }
+
+/* Ariza qabul qilinganda maydonlar o'rniga tasdiq turadi. Forma DOM'da
+   qoladi (yo'q qilinmaydi) — orqaga qaytish yoki qayta yuborish kerak
+   bo'lsa hammasi joyida. */
+.form__box.is-sent .field,
+.form__box.is-sent button,
+.form__box.is-sent .form__legal { display:none; }
+.form__box.is-sent::after {
+  content:'Arizangiz qabul qilindi. Menejer ish vaqtida qoʻngʻiroq qiladi.';
+  display:block; color:var(--white); font-size:19px; line-height:1.5;
+  border-left:3px solid var(--enzo-300); padding-left:var(--s-16);
+}
+
 /* 22 · KIRISH ANIMATSIYASI (2026-08-20) ---------------------------------- */
 /* Parda faqat `html.has-intro` da ko'rinadi — qarorni `<head>` dagi kichik
    skript qabul qiladi (sessiyada bir marta, harakat kamaytirilmagan bo'lsa).
