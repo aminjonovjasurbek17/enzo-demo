@@ -1373,11 +1373,9 @@ section[id] { scroll-margin-top:var(--s-24); }
 /* To'lib boruvchi chiziq: qadamlar bo'ylab o'tgan chiziq o'quvchi bilan
    birga oldinga siljiydi, yetib borgan qadam yonadi.
 
-   ✎ Tarix: avval bu bo'lim ekranga QADALARDI (sticky, 260svh yo'l) —
-   shunda chiziq to'lishiga ko'proq vaqt bo'lardi. Mijoz uni olib tashlashni
-   so'radi (2026-08-21): chiziq to'lib bo'lgandan keyin ham bo'lim yana bir
-   ekran davomida joyida turardi va scroll «to'xtab qolgandek» sezilardi.
-   Endi bo'lim oddiy oqimda, chiziq ekranga kirishi bilan to'ladi.
+   Katta ekranda bo'lim ekranga qadaladi (sticky) va shu turgan payt
+   chiziq to'ladi; to'lib bo'lgach sahna joyidan qo'zg'aladi. Yo'l
+   uzunligi — 160svh (pastdagi izohga qarang).
 
    ⚠️ Scroll hech qachon to'sib qo'yilmaydi. JS faqat `--p` sonini
    yangilaydi, scroll'ga umuman tegmaydi. */
@@ -1427,12 +1425,23 @@ section[id] { scroll-margin-top:var(--s-24); }
 .pstep__text { margin-top:var(--s-12); color:var(--ink-60); }
 
 @media (min-width:1024px) {
-  /* ✎ Qadash (sticky) OLIB TASHLANDI — mijoz qarori, 2026-08-21.
-     Sahna 260svh yo'l talab qilardi: chiziq to'lib bo'lgandan keyin ham
-     bo'lim yana bir ekran davomida joyida turardi va scroll «to'xtab
-     qolgandek» sezilardi — pastga tushganda ham, yuqoriga qaytganda ham.
-     Endi bo'lim oddiy oqimda, chiziq esa ekranga kirib kelishi bilan
-     to'ladi. */
+  /* ✎ Qadash QAYTARILDI, lekin qisqartirildi (mijoz qarori, 2026-08-22).
+     Tarix: avval yo'l 260svh edi — chiziq to'lib bo'lgandan keyin ham
+     bo'lim yana bir ekran davomida ushlab turardi va scroll «to'xtab
+     qolgandek» sezilardi. Keyin qadash butunlay olib tashlandi — endi
+     aksincha bo'ldi: bo'lim animatsiya boshlanishiga ulgurmasdan o'tib
+     ketardi.
+
+     Yechim — o'rtasi: yo'l 160svh. Sahna 100svh, demak to'lishga aynan
+     60svh (900px ekranda ~540px) qoladi. Chiziq to'lgan payt sahna
+     joyidan qo'zg'aladi: ushlab turish bor, lekin ortiqcha emas. */
+  .pin { height:160svh; }
+  .pin__stage {
+    position:sticky; top:var(--header-h);
+    height:calc(100svh - var(--header-h));
+    display:flex; align-items:center;
+    padding-block:0;
+  }
 
   /* ✎ Ustunlar orasidagi vertikal ajratuvchilar olib tashlandi (2026-08-21):
      ularning o'rnini gorizontal chiziq egalladi — ikkalasi birga bo'lsa

@@ -1205,6 +1205,30 @@
 })();
 
 
+/* 13b · Logo lentasi — yuklanmagan rasmni bir marta qayta so'rash
+   ---------------------------------------------------------------------------
+   Lenta bir vaqtda 27 ta SVG so'raydi (ro'yxat uch marta takrorlanadi).
+   Ba'zan ulardan bittasi yo'lda uzilib qoladi va o'rnida brauzerning
+   «buzilgan rasm» ikonkasi turib qoladi — fayl joyida bo'lsa ham.
+
+   Shuning uchun bitta urinish: xato bo'lsa manba qayta qo'yiladi (keshni
+   chetlab o'tish uchun so'rov qo'shimchasi bilan). Ikkinchi marta
+   urinilmaydi — fayl haqiqatan yo'q bo'lsa cheksiz aylanish bo'lardi. */
+(function () {
+  'use strict';
+
+  document.addEventListener('error', function (e) {
+    var img = e.target;
+    if (!img || img.tagName !== 'IMG') return;
+    if (!img.closest || !img.closest('.logo-tile')) return;
+    if (img.dataset.retry) return;
+    img.dataset.retry = '1';
+    var s = img.getAttribute('src');
+    img.setAttribute('src', s + (s.indexOf('?') > -1 ? '&' : '?') + 'r=1');
+  }, true);   // capture: rasm xatosi ko'pikka chiqmaydi
+})();
+
+
 /* 14 · Kirish animatsiyasi — o'tkazib yuborish
    ---------------------------------------------------------------------------
    Pardaning YO'QOLISHI CSS animatsiyasi bilan bo'ladi (style.css §22), bu
