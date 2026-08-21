@@ -388,7 +388,14 @@
       setTimeout(function () { el.classList.add('is-in'); }, idx * STEP);
       io.unobserve(el);
     });
-  }, { threshold: 0.12, rootMargin: '0px 0px -8% 0px' });
+  /* Kuzatuv chegarasi.
+     ✎ Chegara pasaytirildi (mijoz qarori, 2026-08-21): avval element
+     balandligining 12% i ko'rinishi VA pastdan 8% ichkariga kirishi
+     kerak edi. Baland bloklarda («Nima uchun ENZO» bento kartochkalari)
+     bu shuni anglatardiki, kartochka ekranda turgan bo'lsa ham hali
+     ko'rinmasdi — foydalanuvchi pastga tushib bo'lgach paydo bo'lardi.
+     Endi element chetidan bir necha piksel kirishi kifoya. */
+  }, { threshold: 0, rootMargin: '0px 0px -5% 0px' });
 
   items.forEach(function (el) { io.observe(el); });
 })();

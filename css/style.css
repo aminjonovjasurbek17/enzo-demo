@@ -1368,27 +1368,22 @@ section[id] { scroll-margin-top:var(--s-24); }
 }
 
 /* --- §5.14 · Ish jarayoni ---------------------------------------------- */
-/* ✎ Ekranga qadalgan sahna + to'lib boruvchi chiziq (2026-08-21).
+/* To'lib boruvchi chiziq: qadamlar bo'ylab o'tgan chiziq o'quvchi bilan
+   birga oldinga siljiydi, yetib borgan qadam yonadi.
 
-   Muammo: chiziq oddiy oqimda to'lardi, ya'ni tez scroll qilinganda bo'lim
-   ko'zdan o'tib ketguncha animatsiya oxiriga yetmasdi.
+   ✎ Tarix: avval bu bo'lim ekranga QADALARDI (sticky, 260svh yo'l) —
+   shunda chiziq to'lishiga ko'proq vaqt bo'lardi. Mijoz uni olib tashlashni
+   so'radi (2026-08-21): chiziq to'lib bo'lgandan keyin ham bo'lim yana bir
+   ekran davomida joyida turardi va scroll «to'xtab qolgandek» sezilardi.
+   Endi bo'lim oddiy oqimda, chiziq ekranga kirishi bilan to'ladi.
 
-   Yechim: `position:sticky`. Sahna ekranda turadi, sahifa esa uning
-   ostidagi bo'sh yo'l bo'ylab siljiydi — o'sha siljish chiziqni to'ldiradi.
-   To'rtinchi qadam yongandan keyin sahna joyidan qo'zg'aladi.
+   ⚠️ Scroll hech qachon to'sib qo'yilmaydi. JS faqat `--p` sonini
+   yangilaydi, scroll'ga umuman tegmaydi. */
 
-   ⚠️ Scroll HECH QACHON to'sib qo'yilmaydi. Sticky — brauzerning o'z
-   mexanizmi, kompozitorda ishlaydi: foydalanuvchi xohlagan payt tepaga
-   qaytadi yoki tezroq o'tib ketadi. JS bu yerda faqat `--p` sonini
-   yangilaydi, scroll'ga umuman tegmaydi.
-
-   Yo'l uzunligi 260svh: sahna 100svh, demak to'lish uchun 160svh siljish
-   qoladi — 900px ekranda ~1440px, ya'ni odatdagi ikki-uch aylanish. */
-
+/* Bo'lim tashqi paddingi nolga tenglangan — ichki oraliqni .pin__stage
+   beradi (bo'lim bir vaqtlar qadalgan sahna edi, o'sha tuzilma qoldi). */
 .process-sec { padding-block:0; }
 
-/* Mobil: qadash yo'q. Kichik ekranda sahna baribir sig'maydi va sticky
-   faqat bo'limni cho'zib yuborardi. U yerda oddiy oqim qoladi. */
 .pin { position:relative; }
 .pin__stage { padding-block:var(--s-72); }
 
@@ -1430,13 +1425,12 @@ section[id] { scroll-margin-top:var(--s-24); }
 .pstep__text { margin-top:var(--s-12); color:var(--ink-60); }
 
 @media (min-width:1024px) {
-  .pin { height:260svh; }
-  .pin__stage {
-    position:sticky; top:var(--header-h);
-    height:calc(100svh - var(--header-h));
-    display:flex; align-items:center;
-    padding-block:0;
-  }
+  /* ✎ Qadash (sticky) OLIB TASHLANDI — mijoz qarori, 2026-08-21.
+     Sahna 260svh yo'l talab qilardi: chiziq to'lib bo'lgandan keyin ham
+     bo'lim yana bir ekran davomida joyida turardi va scroll «to'xtab
+     qolgandek» sezilardi — pastga tushganda ham, yuqoriga qaytganda ham.
+     Endi bo'lim oddiy oqimda, chiziq esa ekranga kirib kelishi bilan
+     to'ladi. */
 
   /* ✎ Ustunlar orasidagi vertikal ajratuvchilar olib tashlandi (2026-08-21):
      ularning o'rnini gorizontal chiziq egalladi — ikkalasi birga bo'lsa
@@ -1645,16 +1639,22 @@ section[id] { scroll-margin-top:var(--s-24); }
 .map__shot img { width:100%; height:100%; object-fit:cover; display:block;
   filter:saturate(.9) contrast(1.02); transition:transform 400ms var(--ease); }
 .map:hover .map__shot img { transform:scale(1.03); }
-.map__body { padding:var(--s-24) var(--s-32) var(--s-32); }
+/* ✎ Matn qismi oq fonda (mijoz qarori, 2026-08-21). To'q ko'k footer
+   ichida kartochka endi ikki qavat: tepada xarita, pastida oq maydon —
+   xuddi qog'oz kartochka kabi ajralib turadi. */
+.map__body {
+  background:var(--white); color:var(--enzo-800);
+  padding:var(--s-24) var(--s-32) var(--s-32);
+}
 /* Pin CSS bilan chizilmaydi: skrinshotning o'zida Yandex belgisi bor,
    ustiga ikkinchisini qo'ysak joy ikki marta belgilangandek ko'rinardi. */
-.map__title { margin-top:0; color:var(--white); }
-.map__addr  { display:block; margin-top:var(--s-8); color:var(--enzo-300); }
+.map__title { margin-top:0; color:var(--enzo-800); }
+.map__addr  { display:block; margin-top:var(--s-8); color:var(--enzo-500); }
 .map__go {
-  display:inline-block; margin-top:var(--s-16); color:var(--white); font-weight:500;
+  display:inline-block; margin-top:var(--s-16); color:var(--enzo-500); font-weight:600;
 }
 .map__go::after { content:' →'; }
-.map:hover .map__go { color:var(--enzo-300); }
+.map:hover .map__go { color:var(--enzo-800); }
 @media (min-width:768px) { .maps { grid-template-columns:1fr 1fr; } }
 
 .f-bottom {
