@@ -1260,7 +1260,7 @@ body.is-locked { overflow:hidden; }
 /* Ro'yxat UCH marta takrorlanadi, ikki emas. Sabab o'lchov: bitta to'plam
    ~1600px, keng ekran esa 1920px. Ikki nusxada lenta -50% ga yetganda
    o'ngdan bo'sh joy ochilib qolardi — uch nusxada bunday holat yo'q. */
-.logos__track { display:flex; width:max-content; animation:logo-yur 60s linear infinite; }
+.logos__track { display:flex; width:max-content; animation:logo-yur 38s linear infinite; }
 @keyframes logo-yur { from { transform:translateX(0); } to { transform:translateX(-33.3333%); } }
 /* ✎ Kursor ostida to'xtash bekor qilindi (mijoz qarori, 2026-08-21):
    lenta hech to'xtamasligi kerak. */
@@ -1273,23 +1273,6 @@ body.is-locked { overflow:hidden; }
    yuradigan lenta sahifa scroll'i bilan raqobatlashadi, ikkinchidan
    takrorlangan nusxalar (lenta uch marta yozilgan) ikki qatorda ko'zga
    tashlanardi — shuning uchun mobilda faqat ASLI ko'rsatiladi. */
-.logos__track--rev { display:none; }
-
-/* ✎ Mobilda IKKI QATOR, ikkisi qarama-qarshi yo'nalishda (mijoz qarori,
-   2026-08-22). Avvalgi variantda harakat butunlay to'xtatilgan edi — mijoz
-   lenta yurib turishini so'radi.
-
-   Qatorlar mazmuni bo'yicha bo'linadi: birinchi lentada faqat `--a`
-   logolari (5 ta), ikkinchi lentada faqat `--b` (4 ta). Shu sababli
-   bitta logo ikki qatorda takrorlanmaydi. Har ikkalasida ro'yxat uch
-   nusxa — animatsiya -33,33% da uzluksiz yopiladi. */
-@media (max-width:767px) {
-  .logos { display:grid; gap:var(--s-16); }
-  .logos__track--rev { display:flex; animation-direction:reverse; }
-  .logos__track .logo-tile--b { display:none; }
-  .logos__track--rev .logo-tile--a { display:none; }
-  .logo-tile { height:48px; padding-inline:var(--s-20); }
-}
 /* Plitka o'rniga ixcham katak: balandligi qat'iy, kengligi kontentga
    qarab — qator bir tekis yuradi. */
 .logo-tile { flex:0 0 auto; height:84px; display:flex; align-items:center; justify-content:center; padding-inline:var(--s-40); }
@@ -1657,18 +1640,6 @@ section[id] { scroll-margin-top:var(--s-24); }
 
 /* Sarlavha va o'tkazish tugmalari bitta qatorda */
 .deck__head { display:flex; flex-direction:column; gap:var(--s-24); }
-/* ✎ Mobilda oraliqlar qisqardi (mijoz qarori, 2026-08-22): kadr o'tkazish
-   tugmalariga yaqin turadi (ular bir ish qiladi), izoh esa kadrga —
-   u kadrning bir qismi. */
-@media (max-width:767px) {
-  .deck__head { gap:var(--s-16); }
-  .deck { margin-top:var(--s-16); }
-  .deck__cap { margin-top:var(--s-12); }
-  /* Kadr kengroq, sahna esa aynan kadr balandligida — ostida bo'sh joy
-     qolmaydi va izoh kadrga yopishadi. */
-  .deck__card { width:86vw; }
-  .deck__stage { height:calc(86vw * 9 / 16); }
-}
 @media (min-width:640px) {
   .deck__head { flex-direction:row; align-items:center; justify-content:space-between; }
 }
@@ -1815,12 +1786,6 @@ section[id] { scroll-margin-top:var(--s-24); }
 .map:hover .map__go { color:var(--enzo-800); }
 @media (min-width:768px) { .maps { grid-template-columns:1fr 1fr; } }
 
-/* ✎ Mobilda pastki qator ikki qatorga bo'linadi va o'ng chetda suzuvchi
-   Telegram tugmasi uchun joy qoldiriladi — avval «Fargʻona viloyati»
-   yozuvi tugma ostida qolib ketardi (mijoz koʻrsatdi, 2026-08-22). */
-@media (max-width:767px) {
-  .f-bottom { flex-direction:column; gap:var(--s-8); padding-right:72px; }
-}
 .f-bottom {
   margin-top:var(--s-56); padding:var(--s-24) 0;
   border-top:1px solid rgba(255,255,255,.2);
@@ -2265,3 +2230,58 @@ html.has-intro .intro {
 }
 /* Animatsiya tugagach parda hech narsani ushlab turmasin */
 html.has-intro .intro { pointer-events:none; }
+
+
+/* ═══════════════════════════════════════════════════════════════════════
+   23 · MOBIL QATLAM (2026-08-22)
+   ═══════════════════════════════════════════════════════════════════════
+   Bu bo'lim ATAYLAB faylning eng oxirida turadi.
+
+   Sabab qimmatga tushdi: mobil qoidalar avval o'zlari o'zgartirmoqchi
+   bo'lgan asosiy qoidalarning YONIGA yozilgandi — ba'zilari esa
+   asosiy qoidadan oldinga tushib qolgandi. CSS'da `@media` kuch
+   qo'shmaydi: bir xil kuchdagi ikki qoidadan faylda KEYIN turgani
+   qo'llanadi. Natijada bir necha tuzatish hech qachon ishlamagan —
+   brauzerda hech narsa o'zgarmagandek ko'rinardi.
+
+   Qoida: mobil uchun yangi tuzatish shu yerga yoziladi, boshqa joyga
+   emas. Shunda u albatta kuchga kiradi.
+   ═════════════════════════════════════════════════════════════════════ */
+
+@media (max-width:767px) {
+
+  /* --- Galereya: kadr kengroq, sahna aynan kadr balandligida -----------
+     Sahna balandligi 220px qilib qotirilgan, kadr esa 280×157 edi:
+     ostida ~60px o'lik joy qolar va izoh undan ham pastga tushib,
+     qaysi kadrga tegishli ekani bilinmasdi. */
+  .deck__head { gap:var(--s-16); }
+  .deck { margin-top:var(--s-16); }
+  .deck__card { width:86vw; }
+  .deck__stage { height:calc(86vw * 9 / 16); }
+  .deck__cap { margin-top:var(--s-12); }
+
+  /* --- Logo lentasi: ikki qator, qarama-qarshi yo'nalishda -------------
+     Qatorlar mazmun bo'yicha bo'linadi: birinchisida faqat «--a» (5 ta),
+     ikkinchisida faqat «--b» (4 ta) — shuning uchun bitta logo ikki
+     qatorda takrorlanmaydi. Har ikkalasida ro'yxat uch nusxa: animatsiya
+     -33,33% da uzluksiz yopiladi. */
+  .logos { display:grid; gap:var(--s-12); }
+  .logos__track { animation-duration:24s; }
+  .logos__track--rev { display:flex; animation-direction:reverse; }
+  .logos__track .logo-tile--b { display:none; }
+  .logos__track--rev .logo-tile--a { display:none; }
+  .logo-tile { height:44px; padding-inline:var(--s-20); }
+
+  /* --- Footer pastki qatori -------------------------------------------
+     Ikki yozuv ustma-ust; o'ng chetda suzuvchi Telegram tugmasi uchun
+     joy qoldiriladi, aks holda «Fargʻona viloyati» uning ostida qolardi. */
+  .f-bottom {
+    flex-direction:column; gap:var(--s-12);
+    padding-right:76px; margin-top:var(--s-40);
+  }
+}
+
+/* Ikkinchi lenta faqat mobilda kerak — desktopda bitta qator qoladi.
+   (Media so'rovidan TASHQARIDA va oxirida: asosiy «.logos__track»
+   qoidasidan keyin turishi shart.) */
+@media (min-width:768px) { .logos__track--rev { display:none; } }
