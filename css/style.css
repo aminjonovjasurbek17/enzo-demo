@@ -1425,17 +1425,16 @@ section[id] { scroll-margin-top:var(--s-24); }
 .pstep__text { margin-top:var(--s-12); color:var(--ink-60); }
 
 @media (min-width:1024px) {
-  /* ✎ Qadash QAYTARILDI, lekin qisqartirildi (mijoz qarori, 2026-08-22).
-     Tarix: avval yo'l 260svh edi — chiziq to'lib bo'lgandan keyin ham
-     bo'lim yana bir ekran davomida ushlab turardi va scroll «to'xtab
-     qolgandek» sezilardi. Keyin qadash butunlay olib tashlandi — endi
-     aksincha bo'ldi: bo'lim animatsiya boshlanishiga ulgurmasdan o'tib
-     ketardi.
+  /* Yo'l uzunligi 260svh: sahna 100svh, demak to'lishga 160svh siljish
+     qoladi — 900px ekranda ~1440px. Aynan shu masofa animatsiya tezligini
+     belgilaydi.
 
-     Yechim — o'rtasi: yo'l 160svh. Sahna 100svh, demak to'lishga aynan
-     60svh (900px ekranda ~540px) qoladi. Chiziq to'lgan payt sahna
-     joyidan qo'zg'aladi: ushlab turish bor, lekin ortiqcha emas. */
-  .pin { height:160svh; }
+     ✎ Tarix (2026-08-22): yo'l avval 160svh ga qisqartirilgan, keyin
+     qadash butunlay olib tashlangan, so'ng yana qaytarilgan edi. Mijoz
+     dastlabki tezlikni tanladi — 260svh o'z holida qoldi. Muammo yo'l
+     uzunligida emas edi: u chiziq to'lgandan KEYIN ham joyida qolardi.
+     Yechim pastda — «is-done» klassi. */
+  .pin { height:260svh; }
   .pin__stage {
     position:sticky; top:var(--header-h);
     height:calc(100svh - var(--header-h));
