@@ -1248,45 +1248,40 @@ body.is-locked { overflow:hidden; }
 /* ✎ Ikkita vertikal video (2026-08-21). Uchta 16:9 to'ldirgich o'rniga
    mijozning haqiqiy 9:16 kadrlari. Ikki ustun setkaning yarmini egallaydi:
    vertikal kadr uch ustunda juda ingichka bo'lib qolardi. */
-.reels--2 { grid-template-columns:repeat(2, minmax(0,1fr)); max-width:680px; }
-@media (max-width:767px) { .reels--2 { grid-template-columns:1fr; max-width:none; } }
+/* ✎ 2026-08-21 (kechqurun): kartochkalar setkaning butun kengligiga
+   yoyildi. Avval ular 680px bilan cheklangan edi va bo'limning o'ng
+   yarmi bo'sh qolardi. */
+.reels--2 { grid-template-columns:repeat(2, minmax(0,1fr)); max-width:none; }
+@media (max-width:767px) { .reels--2 { grid-template-columns:1fr; } }
 
-/* ✎ Matnli otzivlar — videolar yonida (2026-08-21).
-   Katta ekranda bo'lim ikkiga bo'linadi: chapda ikki video (setkaning
-   5 ustuni), o'ngda oltita matn ikki ustunda. Kichik ekranda ikkalasi
-   ham to'liq kenglikka tushadi va ustma-ust joylashadi — vertikal video
-   yonida ingichka matn ustuni telefonda o'qib bo'lmas edi. */
-.tquotes {
-  grid-column:1 / -1; margin-top:var(--s-40);
-  display:grid; grid-template-columns:repeat(2, minmax(0,1fr)); gap:var(--gutter);
-  align-content:start;
-}
-@media (max-width:767px) { .tquotes { grid-template-columns:1fr; } }
-@media (min-width:1024px) {
-  .reels--2 { grid-column:1 / span 5; max-width:none; }
-  .tquotes  { grid-column:7 / -1; margin-top:var(--s-40); }
-}
+/* Kadr endi GORIZONTAL. Vertikal video o'rtada, to'liq ko'rinadi (hech
+   narsa kesilmaydi), yonlardagi bo'sh joyni esa o'sha videoning o'z
+   kadri to'ldiradi — kattalashtirilgan va blur qilingan holda.
 
-.tq {
-  background:var(--white); border:1px solid var(--line);
-  padding:var(--s-24);
-  display:flex; flex-direction:column;
-  transition:border-color 150ms var(--ease);
-}
-.tq:hover { border-color:var(--enzo-500); }
-.tq__text { color:var(--ink); text-wrap:pretty; }
-/* Ism bloki pastga qadaladi — matn uzunligi har xil bo'lsa ham
-   kartochkalardagi imzolar bir chiziqda turadi. */
-.tq__who  { margin-top:auto; padding-top:var(--s-16); }
-.tq__name { display:block; font-weight:600; color:var(--enzo-800); }
-.tq__role { display:block; margin-top:var(--s-4); color:var(--ink-60); }
-
+   Nima uchun rasm, video emas: fon uchun ikkinchi video qo'yilsa har
+   bir kartochka ikki marta yuklanardi (~22 MB → ~44 MB). Poster rasmi
+   bir xil kadrni beradi va deyarli hech narsa turmaydi. */
 .reel__poster {
   position:relative; display:block;
-  aspect-ratio:9/16; background:var(--enzo-800);
+  aspect-ratio:16/10; background:var(--enzo-800);
   overflow:hidden;
 }
+.reel__bg {
+  position:absolute; inset:0; width:100%; height:100%;
+  object-fit:cover; display:block;
+  /* Blur chekkalarda so'nib qolmasin uchun kadr biroz kattalashtiriladi */
+  transform:scale(1.15);
+  filter:blur(28px) saturate(1.15) brightness(.62);
+}
+.reel__frame {
+  position:relative; height:100%; aspect-ratio:9/16;
+  margin-inline:auto; overflow:hidden;
+}
 .reel__poster video { width:100%; height:100%; object-fit:cover; display:block; }
+/* Telefonda ikki kartochka ustma-ust tushadi va gorizontal kadr juda
+   past bo'lib qolardi (kenglik ~360px → balandlik ~225px, ichidagi
+   vertikal video ~126px). Mobilda kadr kvadratga yaqinlashadi. */
+@media (max-width:767px) { .reel__poster { aspect-ratio:4/3; } }
 .reel__poster.is-on .reel__play { display:none; }
 
 /* Play tugmasi — kvadrat, radius yo'q (DESIGN.md §6.1). Oq maydon to'q
