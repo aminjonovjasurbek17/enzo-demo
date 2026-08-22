@@ -128,7 +128,14 @@ h1,h2,h3,h4 { text-wrap:balance; }
    sarlavhalari, ular `--ink` da qoladi, aks holda sahifada ierarxiya
    yo'qoladi va hamma narsa ko'k bo'lib ketadi.
    Tana matni, izohlar, ro'yxatlar — o'zgarmaydi. */
-.t-display, .t-h1, .t-h2 { color:var(--enzo-800); }
+/* ✎ `.product__head .t-h3` roʻyxatga qoʻshildi (mijoz qarori, 2026-08-22):
+   mahsulot nomlari («ENZO — Shifer», «ENZO — Tayyor beton» …) qora
+   turardi va oddiy matndan ajralmasdi. Bu — boʻlimning nomi, sarlavha
+   darajasi H2 dan past boʻlsa ham brend rangida boʻlishi kerak.
+   Faqat mahsulot bloklarida: qolgan H3 lar (kartochka sarlavhalari)
+   avvalgidek qora — ular roʻyxat ichidagi element, boʻlim nomi emas. */
+.t-display, .t-h1, .t-h2,
+.product__head .t-h3 { color:var(--enzo-800); }
 
 /* To'q fonda sarlavha bo'limning o'z rangini oladi (oq) — ko'k ko'k ustida
    qolib ketmasligi uchun. Hero, to'q bo'limlar, footer. */
@@ -450,6 +457,41 @@ body.is-locked { overflow:hidden; }
   position:absolute; z-index:-1; inset:0;
   overflow:hidden;
 }
+
+/* ── Hero pardalari (2026-08-22, mijoz koʻrsatdi) ──────────────────────────
+   Ikki gradient: tepada — sarlavha uchun, pastda — izoh va tugmalar uchun.
+
+   NEGA SARHADDA EMAS, HERO ICHIDA. Avval tepadagi parda `.header::before`
+   edi. Sarhad `z-index:100` bilan alohida qatlam yaratadi, ya'ni uning
+   pardasi hero matnining USTIGA tushardi: sarlavha pardaning ostida qolib,
+   xiralashib koʻrinardi. Endi parda kadr qatlamining oʻzida — rasmdan
+   yuqorida, matndan pastda. Sarhadning oq logotipi va tugmalari esa
+   baribir hammasidan yuqorida qoladi.
+
+   Pastki parda mijoz koʻrsatgan muammoni yopadi: izoh mikser kabinalari
+   ustiga tushib, oq matn oq mashinada oʻqilmasdi. */
+.hero__frame::before,
+.hero__frame::after { content:''; position:absolute; left:0; right:0; pointer-events:none; }
+
+.hero__frame::before {          /* tepa — sarlavha ostidagi qorayish */
+  top:0; height:58%;
+  background:linear-gradient(180deg,
+    rgba(8,18,32,.78) 0%,
+    rgba(8,18,32,.55) 34%,
+    rgba(8,18,32,.22) 68%,
+    rgba(8,18,32,0)  100%);
+}
+.hero__frame::after {           /* past — izoh va tugmalar ostidagi qorayish */
+  bottom:0; height:42%;
+  background:linear-gradient(0deg,
+    rgba(8,18,32,.80) 0%,
+    rgba(8,18,32,.55) 38%,
+    rgba(8,18,32,0)  100%);
+}
+
+/* Sarhadning oʻz tasmasi hero boʻlgan sahifada oʻchadi — aks holda ikki
+   parda ustma-ust tushib, tepa haddan tashqari qorayardi. */
+body:has(.hero) .header:not(.is-scrolled)::before { opacity:0; }
 
 @media (min-width:1024px) {
   .hero__frame {
@@ -1921,9 +1963,21 @@ section[id] { scroll-margin-top:var(--s-24); }
 @media (min-width:1024px) { .lang { display:flex; } }
 
 /* Mobil menyu ichida — pastda, to'liq kenglikda */
-.menu__lang { display:flex; justify-content:center; margin-top:var(--s-16); }
-.menu__lang .lang__opt { font-size:17px; padding:10px 16px; }
-@media (min-width:1024px) { .menu__lang { display:none; } }
+/* ✎ 2026-08-22: `.menu__lang` olib tashlandi — til almashtirgich mobil
+   menyudan hero tepasiga koʻchdi (mijoz qarori). Til tanlash menyuni
+   ochishni talab qilmaydi: u sahifaga kirgan zahoti koʻrinadi.
+
+   Desktopda almashtirgich sarhadda turadi, shuning uchun hero'dagi nusxa
+   1024px dan boshlab yashiriladi — ikkita bir xil boshqaruv koʻrinmasin. */
+.hero__lang {
+  display:flex; justify-content:flex-start;
+  margin-left:-12px;                   /* tugma ichki chekinishi (12px) qadar:
+                                          «UZ» harfi sarlavha bilan bitta
+                                          vertikal chiziqda tursin */
+  margin-bottom:var(--s-16);
+}
+.hero__lang .lang__opt { font-size:15px; padding:8px 12px; }
+@media (min-width:1024px) { .hero__lang { display:none; } }
 
 /* 16 · TAQQOSLASH — zavod ↔ vositachi (§5.10, 2026-08-19) ---------------- */
 /* Ikki ustun. Chap ustun to'q — u yerda javob turadi, ko'z birinchi shunga
@@ -2320,6 +2374,19 @@ html.has-intro .intro {
   /* `contain`, `cover` emas: tor ekranda `cover` logotipni qirqib
      tashlardi. Fon bir xil bo'lgani uchun harflar ko'rinmaydi. */
   object-fit:contain;
+}
+/* ✎ Telefonda logotip kattalashtiriladi (mijoz koʻrsatdi, 2026-08-22).
+   Kadr 1920×1080, ekran esa 360×800 — `contain` bilan video atigi
+   360×203 boʻlib chiziladi va logotip juda mayda qolardi.
+
+   `cover` emas, aniq masshtab: `cover` tik ekranda videoni balandlik
+   boʻyicha choʻzib, logotipni chetlaridan qirqib tashlaydi. 2,1 esa
+   kadrning oʻrtadagi ~48% ini koʻrsatadi — logotip butun sigʻadi,
+   qirqiladigan joyda faqat bir xil rangli fon qoladi.
+
+   Animatsiyaning oʻzi oʻzgarmaydi: bu faqat oʻlcham. */
+@media (max-width:767px) {
+  .intro__v { scale:2.1; }
 }
 @keyframes intro-out {
   to { opacity:0; visibility:hidden; }
