@@ -3,6 +3,20 @@
 (function () {
   'use strict';
 
+  /* ── T() — JS ichidagi matnlar uchun tarjima ────────────────────────────
+     HTML'dagi matnlar `data-i18n` kaliti bilan almashtiriladi (js/i18n.js),
+     lekin bu faylda ham foydalanuvchi koʻradigan matn bor: hudud roʻyxati
+     va kalkulyator xabarlari. Ular lugʻatda OʻZ oʻzbekcha matni bilan
+     kalitlanadi — shuning uchun bu yerda kalit oʻylab topilmaydi, matnning
+     oʻzi yoziladi.
+
+     Lugʻat yoʻq boʻlsa (oʻzbek lotin — asosiy til, yoki yuklanmay qolgan
+     holat) matn oʻzgarishsiz qaytadi: sayt hech qachon boʻsh chiqmaydi. */
+  function T(s) {
+    var d = window.ENZO_JS_LUGAT;
+    return (d && d[s] != null) ? d[s] : s;
+  }
+
   /* Bu IIFE ichida bir necha blok ketma-ket turadi. Biri yo'q elementga
      murojaat qilib xato bersa, KEYINGILARI ham ishga tushmaydi — shu jumladan
      kalkulyator. Shuning uchun har blok o'z elementini avval tekshiradi.
@@ -205,7 +219,7 @@
       shifer: {
         nom: 'Shifer', field: 'f-shifer', sel: 'c-shifer', birlik: 'dona', boshl: 100,
         narx: function () { return SHIFER[$('c-shifer').value] || 0; },
-        izoh: function () { return 'Narx bitta varaq uchun hisoblangan'; }
+        izoh: function () { return T('Narx bitta varaq uchun hisoblangan'); }
       },
       sement: {
         nom: 'Sement', field: 'f-sement', sel: 'c-sement', boshl: 100,
@@ -236,7 +250,7 @@
           if ($('c-jbi').value !== 'pk2') return 0;
           return PK2[$('c-pk2') ? $('c-pk2').value : ''] || 0;
         },
-        izoh: function () { return 'Aniq pozitsiya (uzunlik, yuklama) menejer bilan tasdiqlanadi'; }
+        izoh: function () { return T('Aniq pozitsiya (uzunlik, yuklama) menejer bilan tasdiqlanadi'); }
       }
     };
 
@@ -244,14 +258,14 @@
     var elRegion = $('c-region'), elDistrict = $('c-district');
     REGIONS.forEach(function (r, i) {
       var o = document.createElement('option');
-      o.value = String(i); o.textContent = r[0];
+      o.value = String(i); o.textContent = T(r[0]);
       elRegion.appendChild(o);
     });
     var fillDistricts = function () {
       elDistrict.textContent = '';
       REGIONS[+elRegion.value][2].forEach(function (d) {
         var o = document.createElement('option');
-        o.value = d; o.textContent = d;
+        o.value = d; o.textContent = T(d);
         elDistrict.appendChild(o);
       });
     };
@@ -312,21 +326,21 @@
 
       $('o-product').textContent = p.nom;
       $('o-qty').textContent  = fmt(qty) + ' ' + birlik;
-      $('o-addr').textContent = elDistrict.value + ', ' + REGIONS[+elRegion.value][0];
+      $('o-addr').textContent = T(elDistrict.value) + ', ' + T(REGIONS[+elRegion.value][0]);
 
       if (noaniq) {
-        $('c-hint').textContent = 'Muammo emas — miqdor va manzilni qoldiring, menejer mos turini tanlab, aniq narxni beradi.';
-        elCap.textContent = 'Bu tanlov uchun narx tanlangan turga bogʻliq';
-        $('c-price').textContent = 'Menejer hisoblab beradi';
-        $('o-spec').textContent = 'Menejer bilan aniqlanadi';
-        $('o-ship').textContent = SHIP_TEXT;
+        $('c-hint').textContent = T('Muammo emas — miqdor va manzilni qoldiring, menejer mos turini tanlab, aniq narxni beradi.');
+        elCap.textContent = T('Bu tanlov uchun narx tanlangan turga bogʻliq');
+        $('c-price').textContent = T('Menejer hisoblab beradi');
+        $('o-spec').textContent = T('Menejer bilan aniqlanadi');
+        $('o-ship').textContent = T(SHIP_TEXT);
         return;
       }
 
       var tovar = val(p.narx) * qty;
 
       $('c-hint').textContent = p.izoh(qty);
-      elCap.textContent = 'Sizning konfiguratsiyangiz uchun taxminiy narx';
+      elCap.textContent = T('Sizning konfiguratsiyangiz uchun taxminiy narx');
       $('c-price').textContent = fmt(tovar) + ' soʻm';
       /* 2ПК da pozitsiyani ikki savol belgilaydi — turkum va o'lcham.
          Xulosada ikkalasi ham ko'rinishi kerak, aks holda mijoz qaysi
@@ -336,7 +350,7 @@
         spec = '2ПК ' + elPk2.options[elPk2.selectedIndex].textContent;
       }
       $('o-spec').textContent = spec;
-      $('o-ship').textContent = SHIP_TEXT;
+      $('o-ship').textContent = T(SHIP_TEXT);
     };
 
     /* Mahsulot kartochkasidagi «Narxni bilib oling» kalkulyatorga tushiradi va
@@ -1412,7 +1426,7 @@
     ketdi = true;
     btn.disabled = true;
     holat.className = 't-small form__status';
-    holat.textContent = 'Yuborilyapti…';
+    holat.textContent = T('Yuborilyapti…');
 
     /* Xatga faqat TO'LDIRILGAN maydonlar ketadi. Reklamasiz kelgan
        arizada beshta bo'sh «Utm …» qatori keraksiz shovqin — menejer

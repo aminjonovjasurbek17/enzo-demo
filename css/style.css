@@ -650,6 +650,12 @@ html.is-static *::after {
    abadiy osilib qolar va butun sahifani bekitardi. Aynan shu sababdan
    Figma importida «hech narsa koʻrinmadi». Statik rejimda parda umuman
    koʻrsatilmaydi. */
+/* Tarjima kelguncha sahifa yashiriladi (js/i18n.js). Busiz koʻz bir zumga
+   oʻzbekcha matnni ilgʻab qoladi va sahifa «sakrab» oʻzgargandek koʻrinadi.
+   Faqat oʻzbek lotindan BOSHQA til tanlanganda qoʻyiladi — asosiy tilda
+   hech narsa kutilmaydi. */
+html.is-tarjima body { visibility:hidden; }
+
 html.is-static.has-intro { overflow:visible; }
 html.is-static .intro { display:none !important; }
 
