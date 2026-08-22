@@ -530,10 +530,12 @@ body.is-locked { overflow:hidden; }
   font-size:clamp(18px, 1.6vw, 23px); line-height:1.5;
   color:rgba(255,255,255,.92);
 }
-/* Tor ekranda qo'lda qo'yilgan uzilish kerak emas — u yerda matn baribir
-   o'z kengligi bo'yicha bo'linadi va majburiy uzilish qator o'rtasida
-   g'alati bo'shliq qoldirardi. */
-@media (max-width:519px) { .hero__note br { display:none; } }
+/* ✎ 2026-08-22: eski `@media (max-width:519px) { .hero__note br {display:none} }`
+   olib tashlandi. U tor ekranda uzilishlarni bekor qilardi — endi aksincha,
+   mobilda uzilish AYNAN kerak (mijoz koʻrsatdi, §23 ga qarang).
+   `br.only-mobil` — faqat mobil uchun qoʻshimcha uzilish; desktopda izoh
+   avvalgidek ikki qatorda qoladi. */
+.hero__note br.only-mobil { display:none; }
 .hero__cta  { margin-top:var(--s-32); display:grid; gap:var(--s-12); }
 .hero__cta .btn { width:100%; }
 
@@ -2407,6 +2409,23 @@ html.has-intro .intro { pointer-events:none; }
      ekran kengligiga qarab «Zavoddan toʻgʻri» birinchi qatorda qolib
      ketardi va sarlavhaning ritmi buzilardi. */
   .hero__title > span { display:block; }
+
+  /* ✎ Matn bloki bir pogʻona yuqoriga (mijoz koʻrsatdi, 2026-08-22):
+     104 → 88px. */
+  .hero { padding-top:calc(64px + var(--s-24)); }
+
+  /* ✎ Kadr kattalashtirildi (mijoz koʻrsatdi): mikserlar mayda edi va
+     oʻng pastki burchakka siqilgandi. Masshtab 1,14 va koʻrish nuqtasi
+     bir oz yuqoriga — mashinalar kadr oʻrtasiga chiqadi.
+     Masshtab `.hero__img` da, `.hero__frame` da emas: qatlamga «nafas»
+     animatsiyasi qoʻyilgan, ustiga yana masshtab qoʻshilsa ikkalasi
+     bir-birini bekor qilardi. */
+  .hero__img { object-position:50% 42%; scale:1.14; }
+
+  /* ✎ Izoh uch qatorda (mijoz koʻrsatdi): «Har partiyada hujjat,» dan
+     keyin uziladi. Ikki qatorda uchinchi qator mikser kabinalari ustiga
+     tushib, matn ham, kadr ham oʻqilmasdi. */
+  .hero__note br { display:inline !important; }
 
   /* --- FAQ aloqa bloki: telefon raqami bir qatorda --------------------
      `t-h2` bu yerda 28px — raqam 320px joyga sigʻmay, «77» keyingi qatorga
