@@ -356,7 +356,7 @@ h1,h2,h3,h4 { text-wrap:balance; }
 .menu {
   position:fixed; inset:0; z-index:99;
   background:var(--enzo-800); color:var(--white);
-  display:flex; flex-direction:column; justify-content:flex-start; gap:var(--s-24);
+  display:flex; flex-direction:column; justify-content:flex-start; gap:var(--s-16);
   padding:calc(var(--s-96) + var(--s-24)) var(--pad) var(--s-56);
   transform:translateY(-100%);
   transition:transform 250ms var(--ease);
@@ -369,7 +369,16 @@ h1,h2,h3,h4 { text-wrap:balance; }
    o'zgaradi. */
 /* Pastki guruh ekran tubiga YOPISHMAYDI: eskizda uning ostida ham havo
    bor. `margin-top:auto` bilan o'sha havo yo'qolardi. */
-.menu__foot { margin-top:12vh; padding-bottom:8vh; display:flex; flex-direction:column; gap:var(--s-16); }
+/* ✎ Zichlik mijoz eskizidan oʻlchab olindi (2026-08-22): eskizda ikkala
+   guruh — havolalar ham, tugma/telefon/til ham — yaxlit blok boʻlib
+   oʻqiladi. Avvalgi oraliqlar (havolalar 24px, guruh 16px, til 24px)
+   ikkalasini ham yoyib yuborgandi.
+
+   `margin-top` 12vh dan 16vh ga koʻtarildi: guruhlar zichlashgani uchun
+   umumiy balandlik ~36px qisqardi, kompensatsiyasiz butun pastki blok
+   yuqoriga siljib ketardi. Endi u eskizdagi joyida (ekranning ~60%)
+   qoladi, ostidagi havo ham oʻzgarmaydi. */
+.menu__foot { margin-top:16vh; padding-bottom:8vh; display:flex; flex-direction:column; gap:var(--s-12); }
 .menu__foot .btn { width:100%; }
 .menu__phone { font-size:20px; font-weight:500; display:flex; align-items:center; gap:var(--s-12); }
 .menu__phone svg { width:20px; height:20px; }
@@ -1825,7 +1834,7 @@ section[id] { scroll-margin-top:var(--s-24); }
 @media (min-width:1024px) { .lang { display:flex; } }
 
 /* Mobil menyu ichida — pastda, to'liq kenglikda */
-.menu__lang { display:flex; justify-content:center; margin-top:var(--s-24); }
+.menu__lang { display:flex; justify-content:center; margin-top:var(--s-16); }
 .menu__lang .lang__opt { font-size:17px; padding:10px 16px; }
 @media (min-width:1024px) { .menu__lang { display:none; } }
 
