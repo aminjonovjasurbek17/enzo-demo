@@ -2582,7 +2582,12 @@ html.has-intro .intro { pointer-events:none; }
 @media (min-width:1280px) {
   .footer .grid {
     grid-template-columns:minmax(0, 1fr) repeat(4, max-content);
-    column-gap:clamp(32px, 4vw, 72px);
+    /* ✎ Oraliq kengaytirildi (mijoz: «Sayt xaritasi» ikki oraliq
+       chapga). Oʻng qirra xarita chizigʻiga qadalgan, ustun kengliklari
+       esa matnga bogʻliq — shuning uchun guruhni chapga suradigan yagona
+       narsa shu oraliq. 4vw → 5,1vw: 1440px da 58 → 73px, guruh chapi
+       46px chapga suriladi. */
+    column-gap:clamp(40px, 5.1vw, 88px);
   }
   .f-col--brand { grid-column:1; }
   .f-col--map   { grid-column:2; }
