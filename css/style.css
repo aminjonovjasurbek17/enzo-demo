@@ -1963,21 +1963,21 @@ section[id] { scroll-margin-top:var(--s-24); }
 @media (min-width:1024px) { .lang { display:flex; } }
 
 /* Mobil menyu ichida — pastda, to'liq kenglikda */
-/* ✎ 2026-08-22: `.menu__lang` olib tashlandi — til almashtirgich mobil
-   menyudan hero tepasiga koʻchdi (mijoz qarori). Til tanlash menyuni
-   ochishni talab qilmaydi: u sahifaga kirgan zahoti koʻrinadi.
+/* ✎ 2026-08-22: til almashtirgich mobil menyudan SARHADGA koʻchdi (mijoz
+   qarori) — desktopdagidek, telefon belgisining yonida. Til tanlash endi
+   menyuni ochishni ham, sahifani aylantirishni ham talab qilmaydi.
 
-   Desktopda almashtirgich sarhadda turadi, shuning uchun hero'dagi nusxa
-   1024px dan boshlab yashiriladi — ikkita bir xil boshqaruv koʻrinmasin. */
-.hero__lang {
-  display:flex; justify-content:flex-start;
-  margin-left:-12px;                   /* tugma ichki chekinishi (12px) qadar:
-                                          «UZ» harfi sarlavha bilan bitta
-                                          vertikal chiziqda tursin */
-  margin-bottom:var(--s-16);
+   Avval u hero matnining tepasiga qoʻyilgandi; mijoz uni sarlavha
+   qatoriga emas, sahifaning eng tepasiga soʻradi.
+
+   Tor ekranda oraliqlar qisqartiriladi: 360px da sarhadda logotip,
+   uch til tugmasi, telefon belgisi va menyu tugmasi bir qatorga
+   sigʻishi kerak. */
+@media (max-width:1023px) {
+  .lang { display:flex; }
+  .lang__opt { font-size:14px; padding:6px 7px; }
+  .header__actions { gap:var(--s-8); }
 }
-.hero__lang .lang__opt { font-size:15px; padding:8px 12px; }
-@media (min-width:1024px) { .hero__lang { display:none; } }
 
 /* 16 · TAQQOSLASH — zavod ↔ vositachi (§5.10, 2026-08-19) ---------------- */
 /* Ikki ustun. Chap ustun to'q — u yerda javob turadi, ko'z birinchi shunga
@@ -2485,7 +2485,9 @@ html.has-intro .intro { pointer-events:none; }
 
   /* ✎ Matn bloki bir pogʻona yuqoriga (mijoz koʻrsatdi, 2026-08-22):
      104 → 88px. */
-  .hero { padding-top:calc(64px + var(--s-24)); }
+  /* ✎ Sarlavha yuqoriroqqa (mijoz koʻrsatdi, 2026-08-22): til
+     almashtirgich sarhadga koʻchgach tepada boʻsh joy qoldi. 88 → 64px. */
+  .hero { padding-top:calc(64px + var(--s-4)); }
 
   /* ✎ Kadr kattalashtirildi (mijoz koʻrsatdi): mikserlar mayda edi va
      oʻng pastki burchakka siqilgandi. Masshtab 1,14 va koʻrish nuqtasi
