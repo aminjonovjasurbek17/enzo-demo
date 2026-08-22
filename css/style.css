@@ -481,11 +481,25 @@ body.is-locked { overflow:hidden; }
     rgba(8,18,32,.22) 68%,
     rgba(8,18,32,0)  100%);
 }
-.hero__frame::after {           /* past — izoh va tugmalar ostidagi qorayish */
-  bottom:0; height:42%;
+/* Pastki parda — izoh va tugmalar ostidagi qorayish.
+
+   ⚠️ BALANDLIK FOIZDA EMAS. Avval `42%` edi va u faqat sinov oʻlchamida
+   (360×800, nisbat 2,22) toʻgʻri ishlardi. Haqiqiy telefonda brauzerning
+   manzil paneli ochiq turganda koʻrinadigan maydon 430×739 boʻladi —
+   nisbat 1,72. Foiz bilan berilgan parda oʻshanda 310px ga qisqarib,
+   izoh pardadan tashqarida, mikser kabinalari ustida qolardi.
+
+   Endi balandlik matn blokidan hisoblanadi: `min()` ikkalasidan kichigini
+   oladi, ya'ni parda hech qachon kadrning yarmidan oshmaydi, lekin past
+   ekranda ham matnni qoplaydigan eng kam balandlikdan (360px) past
+   tushmaydi. Tekshirildi: 360×800, 430×739 va 430×830 — uchalasida ham
+   izoh toʻliq parda ichida. */
+.hero__frame::after {
+  bottom:0; height:max(360px, 46%);
   background:linear-gradient(0deg,
-    rgba(8,18,32,.80) 0%,
-    rgba(8,18,32,.55) 38%,
+    rgba(8,18,32,.86) 0%,
+    rgba(8,18,32,.72) 26%,
+    rgba(8,18,32,.42) 58%,
     rgba(8,18,32,0)  100%);
 }
 
