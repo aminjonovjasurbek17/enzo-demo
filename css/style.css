@@ -1659,7 +1659,10 @@ section[id] { scroll-margin-top:var(--s-24); }
 
 /* To'q fon — kulrang bo'lim ichida kontrast beradi.
    Ierarxiya: raqam (H2) > izoh > tugma. */
-.faq__aside { background:var(--enzo-800); color:var(--white); padding:var(--s-32); margin-top:var(--s-32); }
+/* `grid-column:1 / -1` SHART: blok endi `.grid` ning bevosita bolasi
+   (savollardan keyin), 12 ustunli setkada esa joylashtirilmagan element
+   BITTA ustunni egallab, ip kabi ingichka boʻlib qolardi. */
+.faq__aside { grid-column:1 / -1; background:var(--enzo-800); color:var(--white); padding:var(--s-32); margin-top:var(--s-40); }
 .faq__aside-lead { color:var(--enzo-300); }
 .faq__aside-tel {
   display:flex; align-items:center; gap:var(--s-12);
@@ -1677,8 +1680,20 @@ section[id] { scroll-margin-top:var(--s-24); }
      chegarasi oxirgi savolning chizig'i bilan bitta liniyada turadi.
      `position:sticky` olib tashlandi — u pastdan tekislashga to'sqinlik
      qilardi va bu yerda foydasi ham yo'q edi (ustun uzun emas). */
-  .faq__head  { display:flex; flex-direction:column; }
-  .faq__aside { margin-top:auto; }
+  /* ✎ 2026-08-22: `.faq__aside` DOM'da savollar ROʻYXATIDAN KEYIN turadi
+     (mijoz eskizi — telefonda avval savollar, keyin aloqa bloki). Desktopda
+     esa u yana chap ustunning pastiga qaytariladi: uchala element ham
+     birinchi qatorda, blok `align-self:end` bilan pastga bosiladi.
+     Qatorning balandligini savollar roʻyxati beradi — u uzun, shuning uchun
+     sarlavha (tepada) va blok (pastda) hech qachon ustma-ust tushmaydi. */
+  .faq-sec .faq__head  { grid-row:1; grid-column:1 / span 4; align-self:start; }
+  .faq-sec .faq__aside { grid-row:2; grid-column:1 / span 4; align-self:end; margin-top:var(--s-32); }
+  /* Roʻyxat ikkala qatorni ham egallaydi — u qatorlar balandligini
+     belgilaydi va blok uning pastki chizigʻiga tekislanadi.
+     Sarlavha 1-qatorda, blok 2-qatorda: ular hech qachon ustma-ust
+     tushmaydi (bitta qatorda ikkovini turgʻizib koʻrildi — sarlavha uzun
+     boʻlgan kunda blok uning ustiga chiqib qolardi). */
+  .faq-sec .body-col   { grid-row:1 / span 2; grid-column:6 / span 7; }
 }
 
 /* --- §5.16 · Galereya mozaikasi ---------------------------------------- */
@@ -2360,6 +2375,27 @@ html.has-intro .intro { pointer-events:none; }
     margin-top:var(--s-40); padding-bottom:var(--s-72);
   }
   .f-bottom span:last-child { text-align:right; }
+
+  /* --- Hero: sarlavha TEPADA, izoh va tugmalar PASTDA -----------------
+     ✎ Mijoz eskizi (2026-08-22). Avval butun matn pastga bosilgandi
+     (`.hero` — `align-items:flex-end`): sarlavha aynan mikser kabinalari
+     ustiga tushar va kadr oʻqilmasdi. Endi ikki guruh ekranning ikki
+     uchiga ajratiladi, oʻrtada kadrning oʻzi ochiq qoladi.
+
+     Ishlash tartibi: `.hero` cho'ziladi → `.container` va `.grid` butun
+     balandlikni oladi → `.hero__copy` ustun bo'ladi va `.hero__note` ga
+     qo'yilgan `margin-top:auto` uni tugmalar bilan birga pastga suradi. */
+  .hero { align-items:stretch; }
+  .hero > .container { display:flex; }
+  .hero__grid { align-content:stretch; }
+  .hero__copy { display:flex; flex-direction:column; }
+  .hero__note { margin-top:auto; }
+
+  /* --- FAQ aloqa bloki: telefon raqami bir qatorda --------------------
+     `t-h2` bu yerda 28px — raqam 320px joyga sigʻmay, «77» keyingi qatorga
+     tushardi. Raqam bitta butun maʼlumot, oʻrtasidan boʻlinmaydi. */
+  .faq__aside { padding:var(--s-24); }
+  .faq__aside-tel .t-h2 { font-size:24px; white-space:nowrap; }
 
   /* Suzuvchi tugmaning o'ng qirrasi ham o'sha chiziqda. Avval 24px edi,
      kontent chekkasi esa `--pad` (tor ekranda 20px) — tugma 4px ichkarida
