@@ -2268,17 +2268,50 @@ html.has-intro .intro { pointer-events:none; }
   .logos { display:grid; gap:var(--s-12); }
   .logos__track { animation-duration:24s; }
   .logos__track--rev { display:flex; animation-direction:reverse; }
-  .logos__track .logo-tile--b { display:none; }
-  .logos__track--rev .logo-tile--a { display:none; }
+  /* ✎ `:not(--rev)` SHART. Avval bu qoida shunchaki
+     «.logos__track .logo-tile--b» edi — ikkinchi lentaning o'zida ham
+     «logos__track» klassi bor, ichida esa FAQAT «--b» kafellar (12 ta).
+     Ya'ni qoida ikkinchi qatorni butunlay yashirib qo'yardi: qator bor,
+     lekin bo'sh. Ekranda bitta qator ko'rinardi. */
+  .logos__track:not(.logos__track--rev) .logo-tile--b { display:none; }
   .logo-tile { height:44px; padding-inline:var(--s-20); }
 
   /* --- Footer pastki qatori -------------------------------------------
-     Ikki yozuv ustma-ust; o'ng chetda suzuvchi Telegram tugmasi uchun
-     joy qoldiriladi, aks holda «Fargʻona viloyati» uning ostida qolardi. */
+     ✎ Mijoz qarori (2026-08-22): ikki yozuv BIR QATORDA, ikki yonda —
+     lekin chetga taqalmasdan. Chap va o'ng qirralari yuqoridagi xarita
+     kartochkasining qirralari bilan bitta chiziqda turadi (ikkalasi ham
+     `--pad` dan boshlanadi), ya'ni sahifadagi hamma element bir xil
+     vertikal chiziqqa tekislanadi.
+
+     Avvalgi yechim (ustun + `padding-right:76px`) bekor qilindi: u
+     suzuvchi Telegram tugmasidan qochish uchun edi, natijada esa o'ng
+     yozuv o'z chizig'idan chiqib ketardi. Endi tugmadan qochish
+     `padding-bottom` bilan hal qilinadi — qator tugmadan yuqorida
+     tugaydi, gorizontal tekislash buzilmaydi. */
   .f-bottom {
-    flex-direction:column; gap:var(--s-12);
-    padding-right:76px; margin-top:var(--s-40);
+    flex-direction:row; flex-wrap:nowrap; gap:var(--s-16);
+    justify-content:space-between; align-items:baseline;
+    margin-top:var(--s-40); padding-bottom:var(--s-72);
   }
+  .f-bottom span:last-child { text-align:right; }
+
+  /* Suzuvchi tugmaning o'ng qirrasi ham o'sha chiziqda. Avval 24px edi,
+     kontent chekkasi esa `--pad` (tor ekranda 20px) — tugma 4px ichkarida
+     turib, tekislikni buzardi. */
+  .soc { right:var(--pad); bottom:var(--pad); }
+
+  /* --- Menyudagi telefon raqami ---------------------------------------
+     360px kenglikda «+998 55 810 77 77» ikki qatorga tushib ketardi:
+     20px shrift + belgi + oraliq chetlarga sig'masdi. Raqam — bitta
+     butun ma'lumot, o'rtasidan bo'linmaydi. */
+  .menu__phone { white-space:nowrap; }
+}
+
+/* Eng tor telefonlar (iPhone SE va shunga o'xshash 360px va past).
+   `nowrap` o'zi yetmaydi — raqam chetdan chiqib ketmasligi uchun
+   shrift bir pog'ona pasayadi. */
+@media (max-width:379px) {
+  .menu__phone { font-size:18px; gap:var(--s-8); }
 }
 
 /* Ikkinchi lenta faqat mobilda kerak — desktopda bitta qator qoladi.
