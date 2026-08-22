@@ -2561,3 +2561,35 @@ html.has-intro .intro { pointer-events:none; }
    (Media so'rovidan TASHQARIDA va oxirida: asosiy «.logos__track»
    qoidasidan keyin turishi shart.) */
 @media (min-width:768px) { .logos__track--rev { display:none; } }
+
+/* ── FOOTER: keng ekranda ustunlar mazmuniga qarab yoyiladi ────────────────
+   ✎ Mijoz qarori 2026-08-22: boʻlimlar orasi kengroq boʻlsin va
+   «Ijtimoiy tarmoqlar» ning matni oʻng chetdagi xarita kartochkasining
+   chizigʻiga tegib tursin.
+
+   12 ustunli setka buni bera olmasdi: unda har blok qatʼiy kenglikka ega
+   va oxirgisining matni chetdan ~85px berida tugardi. Bu yerda setka
+   qayta belgilanadi — toʻrt ustun `max-content`, yaʼni har biri aynan oʻz
+   matni kengligida. Brend ustuni esa `1fr` bilan qolgan joyni yutadi va
+   toʻrtalasini oʻngga suradi. Natijada:
+     · oraliqlar teng va keng (`clamp` bilan ekranga moslashadi);
+     · oxirgi ustunning oʻng qirrasi kontent chizigʻida tugaydi;
+     · «Aloqa» dagi ish vaqti endi bir qatorga sigʻadi.
+
+   Faqat 1280px dan boshlab: undan tor ekranda toʻrt ustunning oʻz
+   kengligi (~710px) brend ustuniga joy qoldirmaydi va setka toshib
+   ketardi — u yerda avvalgi 12 ustunli joylashuv qoladi. */
+@media (min-width:1280px) {
+  .footer .grid {
+    grid-template-columns:minmax(0, 1fr) repeat(4, max-content);
+    column-gap:clamp(32px, 4vw, 72px);
+  }
+  .f-col--brand { grid-column:1; }
+  .f-col--map   { grid-column:2; }
+  .f-col--prod  { grid-column:3; }
+  .f-col--cont  { grid-column:4; }
+  .f-col--soc   { grid-column:5; }
+  .maps         { grid-column:1 / -1; }
+  /* Ish vaqti endi sigʻadi — muvozanatlashning hojati yoʻq */
+  .f-col--cont li { text-wrap:auto; }
+}
