@@ -303,6 +303,12 @@ h1,h2,h3,h4 { text-wrap:balance; }
   transition:opacity 200ms var(--ease);
 }
 .header.is-scrolled::before { opacity:0; }
+/* ✎ Menyu ochiqligida tasma ham oʻchadi (2026-08-22). Tasma hero kadrining
+   yorugʻ osmoni uchun kerak, menyu esa toʻq koʻk panel — u yerda tasma
+   faqat zarar: header menyudan yuqorida turgani uchun (z-index 100 va 99)
+   uning soyasi birinchi oq havola qutisiga tushib, uni kulrang koʻrsatardi. */
+body.is-locked .header::before,
+html.is-menu-open .header::before { opacity:0; }
 
 /* Tasma ustida shaffoflik bilan zaiflashtirishning hojati yo'q */
 .header:not(.is-scrolled) .nav a          { opacity:1; }
@@ -356,14 +362,26 @@ h1,h2,h3,h4 { text-wrap:balance; }
 .menu {
   position:fixed; inset:0; z-index:99;
   background:var(--enzo-800); color:var(--white);
-  display:flex; flex-direction:column; justify-content:flex-start; gap:var(--s-16);
-  padding:calc(var(--s-96) + var(--s-24)) var(--pad) var(--s-56);
+  display:flex; flex-direction:column; justify-content:flex-start; gap:var(--s-12);
+  /* ✎ Chetdan 32px (mijoz eskizi, 2026-08-22) — sahifaning odatdagi
+     `--pad` (20px) emas. Menyu — alohida ekran, undagi oq qutilar chetdan
+     nafas olishi kerak. Pastdagi 8vh — eskizdagi havo. */
+  padding:calc(var(--s-96) + var(--s-40)) var(--s-32) 8vh;
   transform:translateY(-100%);
   transition:transform 250ms var(--ease);
   visibility:hidden;
 }
 .menu.is-open { transform:translateY(0); visibility:visible; }
-.menu a.menu__link { font-size:26px; font-weight:600; letter-spacing:-0.02em; }
+/* ✎ Havolalar — oq quti, koʻk matn (mijoz eskizi, 2026-08-22).
+   Avval koʻk fonda oq matn edi: bosiladigan joy koʻrinmasdi, telefonda
+   qayerni bosish kerakligi faqat matnning oʻzidan bilinardi. Quti
+   bosiladigan maydonni koʻrsatadi va balandligi 48px — barmoq oʻlchovi. */
+.menu a.menu__link {
+  background:var(--white); color:var(--enzo-800);
+  font-size:20px; font-weight:600; letter-spacing:-0.02em;
+  text-align:center; padding:8px var(--s-16); min-height:48px;
+  display:flex; align-items:center; justify-content:center;
+}
 /* `margin-top:auto` — pastki guruh ekran pastiga qadaladi, havolalar esa
    tepada qoladi. Ular orasidagi bo'shliq ekran balandligiga qarab o'zi
    o'zgaradi. */
@@ -378,10 +396,21 @@ h1,h2,h3,h4 { text-wrap:balance; }
    umumiy balandlik ~36px qisqardi, kompensatsiyasiz butun pastki blok
    yuqoriga siljib ketardi. Endi u eskizdagi joyida (ekranning ~60%)
    qoladi, ostidagi havo ham oʻzgarmaydi. */
-.menu__foot { margin-top:16vh; padding-bottom:8vh; display:flex; flex-direction:column; gap:var(--s-12); }
+/* ✎ `margin-top:auto` (2026-08-22) — pastki guruh ekran tubiga qadaladi,
+   ostidagi havoni esa `.menu` ning `padding-bottom:8vh` i beradi.
+   Avval `margin-top:16vh` edi: balandligi turlicha telefonlarda guruh goh
+   yuqorida, goh pastda qolardi. Endi joyi har qanday ekranda bir xil. */
+.menu__foot { margin-top:auto; display:flex; flex-direction:column; gap:var(--s-16); }
 .menu__foot .btn { width:100%; }
-.menu__phone { font-size:20px; font-weight:500; display:flex; align-items:center; gap:var(--s-12); }
-.menu__phone svg { width:20px; height:20px; }
+/* Tugma brend koʻkida: oq quti havolalar ham oq boʻlgani uchun, oq tugma
+   ular orasida yoʻqolib ketardi — harakat emas, yana bitta havola kabi. */
+.menu__foot .btn--on-dark { background:var(--enzo-500); color:var(--white); }
+.menu__foot .btn--on-dark:hover { background:var(--enzo-600); }
+.menu__phone {
+  font-size:24px; font-weight:500;
+  display:flex; align-items:center; justify-content:center; gap:var(--s-12);
+}
+.menu__phone svg { width:24px; height:24px; }
 body.is-locked { overflow:hidden; }
 
 /* 10 · HERO (PROMPT.md §5.1) --------------------------------------------- */
@@ -448,13 +477,13 @@ body.is-locked { overflow:hidden; }
 .hero__img {
   position:absolute; inset:0;
   width:100%; height:100%; object-fit:cover;
-  /* Kadr 2:1 — tor ekranda kuchli qirqiladi. Markazdan olinsa matn mikser
-     kabinalari ustiga tushadi (o'lchandi: 360px da 1,62:1). Kadr chapga
-     surilsa matn ostida bo'sh beton maydon qoladi va 360–768px da o'tadi.
-     Yakuniy mobil ishlov alohida bosqichda. */
-  object-position:14% 50%;
+  /* ✎ Vaqtinchalik `object-position:14%` olib tashlandi (2026-08-22):
+     mobilga endi alohida vertikal kadr beriladi (`<picture>` ichidagi
+     `<source>`), shuning uchun siljitishga hojat yo'q. 768–1023px oralig'i
+     hamon desktop kadrini oladi — u yerda 2:1 hali ham torlik qiladi. */
+  object-position:50% 50%;
 }
-@media (min-width:1024px) { .hero__img { object-position:50% 50%; } }
+@media (min-width:768px) and (max-width:1023px) { .hero__img { object-position:14% 50%; } }
 
 .hero__grid { width:100%; }
 .hero__copy { grid-column:1 / -1; }
@@ -607,6 +636,13 @@ html.is-static *::after {
   animation:none !important;
   transition:none !important;
 }
+/* 🐛 Kirish pardasi (`.intro`) sof CSS animatsiyasi bilan yoʻqoladi.
+   Yuqoridagi `animation:none` uni ham toʻxtatib qoʻyardi — parda ekranda
+   abadiy osilib qolar va butun sahifani bekitardi. Aynan shu sababdan
+   Figma importida «hech narsa koʻrinmadi». Statik rejimda parda umuman
+   koʻrsatilmaydi. */
+html.is-static.has-intro { overflow:visible; }
+html.is-static .intro { display:none !important; }
 
 /* Sarlavha — so'zma-so'z ochilish (2026-08-19).
    Har bir so'z pastdan ko'tarilib, o'zining pastki qirrasi atrofida
@@ -2340,8 +2376,8 @@ html.has-intro .intro { pointer-events:none; }
 /* Eng tor telefonlar (iPhone SE va shunga o'xshash 360px va past).
    `nowrap` o'zi yetmaydi — raqam chetdan chiqib ketmasligi uchun
    shrift bir pog'ona pasayadi. */
-@media (max-width:379px) {
-  .menu__phone { font-size:18px; gap:var(--s-8); }
+@media (max-width:359px) {
+  .menu__phone { font-size:20px; gap:var(--s-8); }
 }
 
 /* Ikkinchi lenta faqat mobilda kerak — desktopda bitta qator qoladi.

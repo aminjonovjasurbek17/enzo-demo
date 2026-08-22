@@ -17,7 +17,7 @@ if(q.indexOf('menu=1')>-1)d.classList.add('is-menu-open');</script>
 <meta name="description" content="ENZO GROUP – 2009-yildan beri Fargʻonadagi oʻz zavodida shifer, sement va beton ishlab chiqarib, mahsulotni toʻgʻridan-toʻgʻri qurilish maydonigacha yetkazib beradi">
 <link rel="preload" href="assets/fonts/SFProDisplay-Bold.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="preload" href="assets/fonts/SFProDisplay-Regular.woff2" as="font" type="font/woff2" crossorigin>
-<link rel="stylesheet" href="css/style.css?v=20260822f">
+<link rel="stylesheet" href="css/style.css?v=20260822g">
 <script>
 /* Kirish animatsiyasi — ko'rsatilsinmi? Qaror sahifa chizilishidan oldin
    qabul qilinadi, shuning uchun skript `<head>` da va tashqi fayl emas.
@@ -197,9 +197,19 @@ if(q.indexOf('menu=1')>-1)d.classList.add('is-menu-open');</script>
          tashlandi — mijoz qarori 2026-08-19: kadr ustidagi mayda yozuvlar
          diqqatni matn ustunidan tortib olardi. -->
     <div class="hero__frame" id="heroFrame">
-      <img class="hero__img" src="assets/img/hero-u2-mijoz.jpg"
-           alt="ENZO zavodi: sement silosi, beton uzeli va mikser parki"
-           width="2400" height="1197" fetchpriority="high">
+      <!-- ✎ Mobil uchun ALOHIDA kadr (2026-08-22). Desktop kadri 2:1 —
+           360px da u shu qadar qirqilardiki, matn mikser kabinalari ustiga
+           tushardi; vaqtincha `object-position:14%` bilan ushlab turilgandi.
+           Yangi kadr 0,914:1 (vertikalga yaqin), telefonda to'liq ko'rinadi
+           va hech qanday siljitishga muhtoj emas. -->
+      <picture>
+        <source media="(max-width:767px)"
+                srcset="assets/img/hero-mobil.jpg 900w, assets/img/hero-mobil@2x.jpg 1400w"
+                sizes="100vw" width="900" height="985">
+        <img class="hero__img" src="assets/img/hero-u2-mijoz.jpg"
+             alt="ENZO zavodi: sement silosi, beton uzeli va mikser parki"
+             width="2400" height="1197" fetchpriority="high">
+      </picture>
     </div>
 
     <div class="container">
@@ -1508,6 +1518,6 @@ if(q.indexOf('menu=1')>-1)d.classList.add('is-menu-open');</script>
   </button>
 </div>
 
-<script src="js/main.js?v=20260822f"></script>
+<script src="js/main.js?v=20260822g"></script>
 </body>
 </html>
