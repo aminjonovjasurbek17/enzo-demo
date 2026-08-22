@@ -3,11 +3,19 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
+<!-- Statik rejim: `?static=1` bilan ochilganda skroll animatsiyalari
+     o'chadi va butun kontent darrov ko'rinadi. Dizayn vositalari uchun
+     (Figma `html.to.design`, skrinshot skriptlari) — ular sahifaning
+     boshlang'ich holatini o'qiydi, unda esa `.reveal` bloklari
+     `opacity:0` bo'ladi va sahifa bo'sh ko'chadi.
+     `<head>` da va tashqi fayl emas: sinf birinchi bo'yashdan OLDIN
+     qo'yilishi shart, aks holda kontent bir zumga ko'rinmay turadi. -->
+<script>if(location.search.indexOf('static=1')>-1)document.documentElement.classList.add('is-static');</script>
 <title>Enzo beton ishlab chiqarish fabrikasi</title>
 <meta name="description" content="ENZO GROUP – 2009-yildan beri Fargʻonadagi oʻz zavodida shifer, sement va beton ishlab chiqarib, mahsulotni toʻgʻridan-toʻgʻri qurilish maydonigacha yetkazib beradi">
 <link rel="preload" href="assets/fonts/SFProDisplay-Bold.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="preload" href="assets/fonts/SFProDisplay-Regular.woff2" as="font" type="font/woff2" crossorigin>
-<link rel="stylesheet" href="css/style.css?v=20260822d">
+<link rel="stylesheet" href="css/style.css?v=20260822e">
 <script>
 /* Kirish animatsiyasi — ko'rsatilsinmi? Qaror sahifa chizilishidan oldin
    qabul qilinadi, shuning uchun skript `<head>` da va tashqi fayl emas.
@@ -1498,6 +1506,6 @@
   </button>
 </div>
 
-<script src="js/main.js?v=20260822d"></script>
+<script src="js/main.js?v=20260822e"></script>
 </body>
 </html>

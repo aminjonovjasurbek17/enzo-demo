@@ -587,6 +587,23 @@ body.is-locked { overflow:hidden; }
   transition:opacity 400ms var(--ease), transform 400ms var(--ease);
 }
 
+/* ✎ STATIK REJIM — `?static=1` (2026-08-22).
+   Sayt boʻlimlari skroll paytida paydo boʻladi, yaʼni sahifaning
+   BOSHLANGʻICH holatida ularning koʻpi `opacity:0`. Dizayn vositalari
+   (Figma'ning `html.to.design` plagini, skrinshot skriptlari, arxivchilar)
+   aynan shu boshlangʻich holatni oʻqiydi — natijada sahifa deyarli boʻsh
+   koʻchadi.
+
+   `?static=1` bilan ochilganda `<html>` ga `is-static` qoʻshiladi
+   (index.html boshidagi kichik skript) va butun harakat oʻchadi. */
+html.is-static .reveal { opacity:1 !important; transform:none !important; }
+html.is-static *,
+html.is-static *::before,
+html.is-static *::after {
+  animation:none !important;
+  transition:none !important;
+}
+
 /* Sarlavha — so'zma-so'z ochilish (2026-08-19).
    Har bir so'z pastdan ko'tarilib, o'zining pastki qirrasi atrofida
    ag'dariladi. `perspective` ota-elementda: busiz `rotateX` yassi
