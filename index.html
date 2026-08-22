@@ -17,7 +17,7 @@ if(q.indexOf('menu=1')>-1)d.classList.add('is-menu-open');</script>
 <meta name="description" content="ENZO GROUP – 2009-yildan beri Fargʻonadagi oʻz zavodida shifer, sement va beton ishlab chiqarib, mahsulotni toʻgʻridan-toʻgʻri qurilish maydonigacha yetkazib beradi">
 <link rel="preload" href="assets/fonts/SFProDisplay-Bold.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="preload" href="assets/fonts/SFProDisplay-Regular.woff2" as="font" type="font/woff2" crossorigin>
-<link rel="stylesheet" href="css/style.css?v=20260822i">
+<link rel="stylesheet" href="css/style.css?v=20260822j">
 <script>
 /* Kirish animatsiyasi — ko'rsatilsinmi? Qaror sahifa chizilishidan oldin
    qabul qilinadi, shuning uchun skript `<head>` da va tashqi fayl emas.
@@ -221,9 +221,15 @@ if(q.indexOf('menu=1')>-1)d.classList.add('is-menu-open');</script>
           <p class="hero__kinds t-rise" style="--d:60ms">
             <span>Shifer</span><span>Sement</span><span>Beton</span>
           </p>
-          <h1 class="t-display t-words" style="--lag:260ms">
-            <span>Zavoddan toʻgʻri</span>
-            <span>qurilish maydonigacha</span>
+          <!-- ✎ Uchta span — mobil uchun qator uzilishlari (mijoz koʻrsatdi,
+               2026-08-22): «Zavoddan» / «toʻgʻri qurilish» / «maydonigacha».
+               Desktopda span'lar `inline` boʻlib qoladi va matn oʻz-oʻzicha
+               oʻralaveradi — yaʼni uchga boʻlish desktop koʻrinishiga
+               tegmaydi. Mobilda esa ular `block` boʻladi (style.css §23). -->
+          <h1 class="t-display t-words hero__title" style="--lag:260ms">
+            <span>Zavoddan</span>
+            <span>toʻgʻri qurilish</span>
+            <span>maydonigacha</span>
           </h1>
           <!-- Izoh ikki qatorda (mijoz qarori, 2026-08-20). Uzilish joyi
                qo'lda belgilangan: `max-width` ga tashlab qo'yilsa, u ekran
@@ -1519,6 +1525,6 @@ if(q.indexOf('menu=1')>-1)d.classList.add('is-menu-open');</script>
   </button>
 </div>
 
-<script src="js/main.js?v=20260822i"></script>
+<script src="js/main.js?v=20260822j"></script>
 </body>
 </html>

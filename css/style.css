@@ -625,7 +625,14 @@ body.is-locked { overflow:hidden; }
 
    `?static=1` bilan ochilganda `<html>` ga `is-static` qoʻshiladi
    (index.html boshidagi kichik skript) va butun harakat oʻchadi. */
-html.is-static .reveal { opacity:1 !important; transform:none !important; }
+/* Uchala mexanizm ham majburan ochiladi. `.reveal` — bloklar, `.t-rise` —
+   matn qatorlari, `.t-words .w` — sarlavhadagi har bir soʻz. Faqat
+   `.reveal` ochilsa hero sarlavhasi va izohi koʻrinmay qolardi: ular
+   boshqa mexanizmda. (`prefers-reduced-motion` blokida ham aynan shu uch
+   qoida bor — sabab bir xil.) */
+html.is-static .reveal,
+html.is-static .t-rise,
+html.is-static .t-words .w { opacity:1 !important; transform:none !important; }
 /* `?menu=1` — mobil menyu ochiq holda. U JS bilan ochiladi (`.is-open`),
    shuning uchun import vositalari uni doim YOPIQ holda oladi. Bu yerda
    sinf `<html>` da: element hali yaratilmagan paytda ham ishlaydi. */
@@ -2394,6 +2401,12 @@ html.has-intro .intro { pointer-events:none; }
   .hero__grid { align-content:stretch; }
   .hero__copy { display:flex; flex-direction:column; }
   .hero__note { margin-top:auto; }
+
+  /* Sarlavha qatorlari qatʼiy: «Zavoddan» / «toʻgʻri qurilish» /
+     «maydonigacha» (mijoz koʻrsatdi). Tabiiy oʻralishga tashlab qoʻyilsa,
+     ekran kengligiga qarab «Zavoddan toʻgʻri» birinchi qatorda qolib
+     ketardi va sarlavhaning ritmi buzilardi. */
+  .hero__title > span { display:block; }
 
   /* --- FAQ aloqa bloki: telefon raqami bir qatorda --------------------
      `t-h2` bu yerda 28px — raqam 320px joyga sigʻmay, «77» keyingi qatorga
