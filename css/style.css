@@ -1888,25 +1888,6 @@ section[id] { scroll-margin-top:var(--s-24); }
   .f-col--cont { grid-column:1 / -1; }
   .f-col--soc  { grid-column:1 / -1; }
 }
-/* ✎ Ijtimoiy tarmoqlar — ikkinchi qatorda, «Sayt xaritasi» chizigʻidan
-   (6-ustun) boshlanadi (mijoz qarori, 2026-08-22).
-
-   Avval `10 / span 3` edi, yaʼni «Aloqa» ustuni bilan bir xil joyda —
-   shuning uchun u aynan uning OSTIGA tushib, oʻng chetda yolgʻiz turardi
-   va yuqoridagi ustunlar chizigʻiga tegishmasdi.
-
-   Havolalar ham bir qatorda: ular ikkitagina va qisqa, ustunga terilsa
-   blok keraksiz choʻzilib ketardi. `li + li` ning vertikal oraligʻi shu
-   yerda bekor qilinadi — aks holda ular yonma-yon turib ham qiyshayardi. */
-@media (min-width:1024px) {
-  .f-col--soc { grid-column:6 / -1; margin-top:var(--s-24); }
-  .f-col--soc ul { display:flex; flex-wrap:wrap; gap:var(--s-40); }
-  /* Tanlagich ataylab kuchliroq (.f-col.f-col--soc): umumiy
-     «.f-col li + li { margin-top:12px }» qoidasi bu yerdan KEYIN turadi
-     va teng kuchda boʻlsa oʻsha yutardi — havolalar yonma-yon turib ham
-     ikkinchisi 12px pastga siljib qolardi. */
-  .f-col.f-col--soc li + li { margin-top:0; }
-}
 .f-col h3 { color:var(--white); margin-bottom:var(--s-16); }
 .f-col li + li { margin-top:var(--s-12); }
 .f-slogan { color:var(--enzo-300); margin-top:var(--s-16); max-width:36ch; }
@@ -1965,13 +1946,28 @@ section[id] { scroll-margin-top:var(--s-24); }
 
 @media (min-width:1024px) {
   .footer { padding-top:var(--s-96); }
-  .f-col--brand { grid-column:1 / span 4; }
-  /* ✎ Uch ustun bir xil qadamda boshlanadi — 6, 8, 10 (mijoz qarori,
-     2026-08-16). Avval 6, 8, 11 edi: "Sayt xaritasi" va "Mahsulotlar"
-     bir-biriga yaqin, "Aloqa" esa uzoqroq turardi. */
-  .f-col--map   { grid-column:6 / span 2; }
-  .f-col--prod  { grid-column:8 / span 2; }
-  .f-col--cont  { grid-column:10 / span 3; }
+  .f-col--brand { grid-column:1 / span 3; }
+  /* ✎ Endi TO'RT ustun (mijoz qarori, 2026-08-22): «Ijtimoiy tarmoqlar»
+     ikkinchi qatordan chiqib, «Aloqa» dan keyin shu qatorga qo'shildi.
+     Butun guruh chapga surildi — 6, 8, 10 o'rniga 5, 7, 9, 11.
+
+     Brend ustuni 4 → 3 ustunga qisqardi: shiori 36ch bilan cheklangan,
+     shuning uchun uch ustun yetadi. Qadam hamma joyda bir xil (2 ustun),
+     ya'ni to'rttasi teng kenglikda turadi. */
+  .f-col--map   { grid-column:4 / span 2; }
+  .f-col--prod  { grid-column:6 / span 2; }
+  .f-col--cont  { grid-column:8 / span 2; }
+  /* Tarmoqlar ustuni KENGROQ (3 ustun): «Telegram @enzogroup_uz» ikki
+     ustunga sigʻmay, hisob nomi oʻrtasidan sinib ketardi. Ish vaqti esa
+     ikki qatorga boʻlinsa gʻalati koʻrinmaydi — shuning uchun qoʻshimcha
+     kenglik aynan tarmoqlarga berildi. */
+  .f-col--soc   { grid-column:10 / span 3; }
+
+  /* Ish vaqti qatori ikki qatorga boʻlinsa, uzilish MAʼNO boʻyicha
+     boʻlsin: «Dushanba – Shanba,» / «08:00 – 18:00». `text-wrap:balance`
+     busiz brauzer uni «08:00» va «– 18:00» deb ajratib qoʻyardi.
+     Qoʻllab-quvvatlamaydigan brauzerda oddiy uzilish qoladi — zarari yoʻq. */
+  .f-col--cont li { text-wrap:balance; }
 }
 
 /* 15 · TIL ALMASHTIRGICH (2026-08-19) ------------------------------------ */
