@@ -597,6 +597,10 @@ body.is-locked { overflow:hidden; }
    `?static=1` bilan ochilganda `<html>` ga `is-static` qoʻshiladi
    (index.html boshidagi kichik skript) va butun harakat oʻchadi. */
 html.is-static .reveal { opacity:1 !important; transform:none !important; }
+/* `?menu=1` — mobil menyu ochiq holda. U JS bilan ochiladi (`.is-open`),
+   shuning uchun import vositalari uni doim YOPIQ holda oladi. Bu yerda
+   sinf `<html>` da: element hali yaratilmagan paytda ham ishlaydi. */
+html.is-menu-open .menu { transform:none !important; visibility:visible !important; }
 html.is-static *,
 html.is-static *::before,
 html.is-static *::after {
