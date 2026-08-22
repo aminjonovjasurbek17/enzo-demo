@@ -1888,7 +1888,25 @@ section[id] { scroll-margin-top:var(--s-24); }
   .f-col--cont { grid-column:1 / -1; }
   .f-col--soc  { grid-column:1 / -1; }
 }
-@media (min-width:1024px) { .f-col--soc { grid-column:10 / span 3; } }
+/* ✎ Ijtimoiy tarmoqlar — ikkinchi qatorda, «Sayt xaritasi» chizigʻidan
+   (6-ustun) boshlanadi (mijoz qarori, 2026-08-22).
+
+   Avval `10 / span 3` edi, yaʼni «Aloqa» ustuni bilan bir xil joyda —
+   shuning uchun u aynan uning OSTIGA tushib, oʻng chetda yolgʻiz turardi
+   va yuqoridagi ustunlar chizigʻiga tegishmasdi.
+
+   Havolalar ham bir qatorda: ular ikkitagina va qisqa, ustunga terilsa
+   blok keraksiz choʻzilib ketardi. `li + li` ning vertikal oraligʻi shu
+   yerda bekor qilinadi — aks holda ular yonma-yon turib ham qiyshayardi. */
+@media (min-width:1024px) {
+  .f-col--soc { grid-column:6 / -1; margin-top:var(--s-24); }
+  .f-col--soc ul { display:flex; flex-wrap:wrap; gap:var(--s-40); }
+  /* Tanlagich ataylab kuchliroq (.f-col.f-col--soc): umumiy
+     «.f-col li + li { margin-top:12px }» qoidasi bu yerdan KEYIN turadi
+     va teng kuchda boʻlsa oʻsha yutardi — havolalar yonma-yon turib ham
+     ikkinchisi 12px pastga siljib qolardi. */
+  .f-col.f-col--soc li + li { margin-top:0; }
+}
 .f-col h3 { color:var(--white); margin-bottom:var(--s-16); }
 .f-col li + li { margin-top:var(--s-12); }
 .f-slogan { color:var(--enzo-300); margin-top:var(--s-16); max-width:36ch; }
