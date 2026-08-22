@@ -2341,21 +2341,25 @@ html.has-intro .intro { pointer-events:none; }
   .deck__stage { height:calc(86vw * 9 / 16); }
   .deck__cap { margin-top:var(--s-12); }
 
-  /* --- Logo lentasi: ikki qator, qarama-qarshi yo'nalishda -------------
-     Qatorlar mazmun bo'yicha bo'linadi: birinchisida faqat «--a» (5 ta),
-     ikkinchisida faqat «--b» (4 ta) — shuning uchun bitta logo ikki
-     qatorda takrorlanmaydi. Har ikkalasida ro'yxat uch nusxa: animatsiya
-     -33,33% da uzluksiz yopiladi. */
-  .logos { display:grid; gap:var(--s-12); }
-  .logos__track { animation-duration:24s; }
-  .logos__track--rev { display:flex; animation-direction:reverse; }
-  /* ✎ `:not(--rev)` SHART. Avval bu qoida shunchaki
-     «.logos__track .logo-tile--b» edi — ikkinchi lentaning o'zida ham
-     «logos__track» klassi bor, ichida esa FAQAT «--b» kafellar (12 ta).
-     Ya'ni qoida ikkinchi qatorni butunlay yashirib qo'yardi: qator bor,
-     lekin bo'sh. Ekranda bitta qator ko'rinardi. */
-  .logos__track:not(.logos__track--rev) .logo-tile--b { display:none; }
-  .logo-tile { height:44px; padding-inline:var(--s-20); }
+  /* --- Logo lentasi: BITTA qator, logolar zich ------------------------
+     ✎ Mijoz qarori 2026-08-22 (ikki qatorli variant bekor qilindi).
+
+     Muammo oraliqda edi: `.partners .logo-tile` ga `padding-inline:56px`
+     berilgan — bu qoida media so'rovidan tashqarida turgani va tanlagichi
+     kuchliroq bo'lgani uchun mobilda ham ishlardi. Ya'ni ikki logo orasi
+     112px: 360px ekranda bir vaqtning o'zida bittadan ortiq logo
+     ko'rinmasdi. Odam bitta logoni ko'rib, keyingisini KUTIB turardi.
+
+     Endi oraliq 16px (ikki chetdan 32px) — ekranda uch-to'rt logo birga
+     turadi va lenta uzluksiz o'qiladi. Ikkinchi qator olib tashlandi:
+     bitta zich qator ikki siyrak qatordan ko'ra ko'proq logo ko'rsatadi.
+
+     Ikkinchi lenta (`--rev`) endi hech qayerda ko'rinmaydi: bu yerda
+     mobilda, pastdagi `@media (min-width:768px)` da esa desktopda. */
+  .logos__track--rev { display:none; }
+  .logo-tile          { height:44px; padding-inline:var(--s-16); }
+  .partners .logo-tile { height:40px; padding-inline:var(--s-16); }
+
 
   /* --- Footer pastki qatori -------------------------------------------
      ✎ Mijoz qarori (2026-08-22): ikki yozuv BIR QATORDA, ikki yonda —
