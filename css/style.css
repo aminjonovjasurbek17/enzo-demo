@@ -2499,9 +2499,11 @@ html.has-intro .intro { pointer-events:none; }
 
   /* ✎ Matn bloki bir pogʻona yuqoriga (mijoz koʻrsatdi, 2026-08-22):
      104 → 88px. */
-  /* ✎ Sarlavha yuqoriroqqa (mijoz koʻrsatdi, 2026-08-22): til
-     almashtirgich sarhadga koʻchgach tepada boʻsh joy qoldi. 88 → 64px. */
-  .hero { padding-top:calc(64px + var(--s-4)); }
+  /* ✎ Matn bloki tepasidagi boʻshliq (mijoz koʻrsatdi, 2026-08-22).
+     Uch qadam: 104 → 88 (bir pogʻona yuqoriga) → 68 (til almashtirgich
+     sarhadga koʻchgach) → 96 (mijoz «ikki oraliq pastga» dedi).
+     64px — sarhad balandligi, qolgani boʻshliq. */
+  .hero { padding-top:calc(64px + var(--s-32)); }
 
   /* ✎ Kadr kattalashtirildi (mijoz koʻrsatdi): mikserlar mayda edi va
      oʻng pastki burchakka siqilgandi. Masshtab 1,14 va koʻrish nuqtasi
